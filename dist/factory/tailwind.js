@@ -25,7 +25,7 @@ __export(tailwind_exports, {
 });
 module.exports = __toCommonJS(tailwind_exports);
 function removeWhiteSpaceInClasses(classes) {
-  const whitespace = /(\r|\t| )/g;
+  const whitespace = /(\r|\t)/g;
   const lineBreak = /(\n)/g;
   let formattedClasses = classes;
   if (whitespace.test(formattedClasses)) {
@@ -36,7 +36,7 @@ function removeWhiteSpaceInClasses(classes) {
     try {
       return allFormattedClasses.filter((rawClass) => {
         return !!rawClass && rawClass !== "\n";
-      }).map((rawClass, i) => {
+      }).map((rawClass) => {
         return rawClass.trim();
       }).join(" ");
     } catch (e) {
@@ -48,11 +48,12 @@ function removeWhiteSpaceInClasses(classes) {
 function getStyledElementClassName(styles, variantProps, variantStyles) {
   const props = variantProps;
   const dynamicStyles = variantStyles;
-  const _styles = `${styles ? `${removeWhiteSpaceInClasses(styles)} ` : ""}${Object.entries(dynamicStyles).map(([key, values]) => {
+  const _variantStyles = Object.entries(dynamicStyles).map(([key, values]) => {
     const variantStyle = values[props[key]];
     return removeWhiteSpaceInClasses(variantStyle);
-  }).join(" ")}`;
-  return _styles;
+  });
+  const _styles = removeWhiteSpaceInClasses(styles);
+  return `${_styles}${_variantStyles.length >= 1 && _styles ? " " : ""}${_variantStyles.join(" ")}`;
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

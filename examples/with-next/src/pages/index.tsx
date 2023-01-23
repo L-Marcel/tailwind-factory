@@ -1,25 +1,16 @@
-import { tf } from "tailwind-factory";
+import { useState } from "react";
+import { Container, Header } from "./styles";
 
 export default function Home() {
-  const Elem = tf("div", "", {
-    variants: {
-      a: {
-        abc: "asdas",
-        sdas: "asdas",
-      },
-      b: {
-        test: "sadas",
-      },
-    },
-    defaultVariants: {
-      a: "abc",
-      b: "test",
-    },
-  });
+  const [isBlueTheme, setIsBlueTheme] = useState(true);
 
   return (
     <main>
-      <Elem>abc</Elem>
+      <Container theme={isBlueTheme? "blue":"green"}>
+        
+        
+        <button onClick={() => setIsBlueTheme(isBlueTheme => !isBlueTheme)}/>
+      </Container>
     </main>
   );
 }

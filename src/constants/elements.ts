@@ -177,3 +177,15 @@ export const strictElements = [
   "use",
   "view",
 ] as const;
+
+export const factoryElementsMap = {
+  ...strictElements.reduce(
+    (prev, key) => {
+      prev[key] = key;
+      return prev;
+    },
+    {} as {
+      [Key in (typeof strictElements)[number]]: (typeof strictElements)[number];
+    }
+  ),
+};

@@ -9,7 +9,7 @@ type VariantStyles = {
 };
 
 export function removeWhiteSpaceInClasses(classes: string) {
-  const whitespace = /(\r|\t| )/g;
+  const whitespace = /(\r|\t)/g;
   const lineBreak = /(\n)/g;
   let formattedClasses = classes;
 
@@ -24,7 +24,7 @@ export function removeWhiteSpaceInClasses(classes: string) {
         .filter((rawClass) => {
           return !!rawClass && rawClass !== "\n";
         })
-        .map((rawClass, i) => {
+        .map((rawClass) => {
           return rawClass.trim();
         })
         .join(" ");
@@ -44,14 +44,14 @@ export function getStyledElementClassName<V, S>(
   const props = variantProps as VariantProps;
   const dynamicStyles = variantStyles as VariantStyles;
 
-  const _styles = `${
-    styles ? `${removeWhiteSpaceInClasses(styles)} ` : ""
-  }${Object.entries(dynamicStyles)
-    .map(([key, values]) => {
-      const variantStyle = values[props[key]];
-      return removeWhiteSpaceInClasses(variantStyle);
-    })
-    .join(" ")}`;
+  const _variantStyles = Object.entries(dynamicStyles).map(([key, values]) => {
+    const variantStyle = values[props[key]];
+    return removeWhiteSpaceInClasses(variantStyle);
+  });
 
-  return _styles;
+  const _styles = removeWhiteSpaceInClasses(styles);
+
+  return `${_styles}${
+    _variantStyles.length >= 1 && _styles ? " " : ""
+  }${_variantStyles.join(" ")}`;
 }

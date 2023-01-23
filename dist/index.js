@@ -730,7 +730,7 @@ var require_react_development = __commonJS({
             }
           }
         }
-        var ReactElement = function(type, key, ref, self, source, owner, props) {
+        var ReactElement2 = function(type, key, ref, self, source, owner, props) {
           var element = {
             $$typeof: REACT_ELEMENT_TYPE,
             type,
@@ -828,10 +828,10 @@ var require_react_development = __commonJS({
               }
             }
           }
-          return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+          return ReactElement2(type, key, ref, self, source, ReactCurrentOwner.current, props);
         }
         function cloneAndReplaceKey(oldElement, newKey) {
-          var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
+          var newElement = ReactElement2(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
           return newElement;
         }
         function cloneElement(element, config, children) {
@@ -880,7 +880,7 @@ var require_react_development = __commonJS({
             }
             props.children = childArray;
           }
-          return ReactElement(element.type, key, ref, self, source, owner, props);
+          return ReactElement2(element.type, key, ref, self, source, owner, props);
         }
         function isValidElement(object) {
           return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
@@ -2153,7 +2153,7 @@ var import_react = __toESM(require_react());
 
 // src/factory/tailwind.tsx
 function removeWhiteSpaceInClasses(classes) {
-  const whitespace = /(\r|\t| )/g;
+  const whitespace = /(\r|\t)/g;
   const lineBreak = /(\n)/g;
   let formattedClasses = classes;
   if (whitespace.test(formattedClasses)) {
@@ -2164,7 +2164,7 @@ function removeWhiteSpaceInClasses(classes) {
     try {
       return allFormattedClasses.filter((rawClass) => {
         return !!rawClass && rawClass !== "\n";
-      }).map((rawClass, i) => {
+      }).map((rawClass) => {
         return rawClass.trim();
       }).join(" ");
     } catch (e) {
@@ -2176,58 +2176,56 @@ function removeWhiteSpaceInClasses(classes) {
 function getStyledElementClassName(styles, variantProps, variantStyles) {
   const props = variantProps;
   const dynamicStyles = variantStyles;
-  const _styles = `${styles ? `${removeWhiteSpaceInClasses(styles)} ` : ""}${Object.entries(dynamicStyles).map(([key, values]) => {
+  const _variantStyles = Object.entries(dynamicStyles).map(([key, values]) => {
     const variantStyle = values[props[key]];
     return removeWhiteSpaceInClasses(variantStyle);
-  }).join(" ")}`;
-  return _styles;
+  });
+  const _styles = removeWhiteSpaceInClasses(styles);
+  return `${_styles}${_variantStyles.length >= 1 && _styles ? " " : ""}${_variantStyles.join(" ")}`;
 }
 
 // src/index.tsx
 function tf(element, styles = "", config = {}) {
-  if (typeof element === "string") {
-    const definedVariants = (config == null ? void 0 : config.variants) ? Object.entries(config == null ? void 0 : config.variants).reduce((prev, [key]) => {
-      prev.push(key);
-      return prev;
-    }, []) : [];
-    const CreatedElement = (props) => {
-      const { elementProps, variants } = Object.entries(props).reduce(
-        (prev, [key, value]) => {
-          if (definedVariants.includes(key)) {
-            Object.assign(prev.variants, {
-              [key]: value
-            });
-          } else {
-            Object.assign(prev.elementProps, {
-              [key]: value
-            });
-          }
-          return prev;
-        },
-        {
-          elementProps: {},
-          variants: __spreadValues({}, (config == null ? void 0 : config.defaultVariants) || {})
+  const definedVariants = (config == null ? void 0 : config.variants) ? Object.entries(config == null ? void 0 : config.variants).reduce((prev, [key]) => {
+    prev.push(key);
+    return prev;
+  }, []) : [];
+  const FinalElement = (props) => {
+    const { elementProps, variants } = Object.entries(props).reduce(
+      (prev, [key, value]) => {
+        if (definedVariants.includes(key)) {
+          Object.assign(prev.variants, {
+            [key]: value
+          });
+        } else {
+          Object.assign(prev.elementProps, {
+            [key]: value
+          });
         }
-      );
-      const elementClassName = getStyledElementClassName(
-        styles,
-        variants,
-        (config == null ? void 0 : config.variants) || {}
-      );
-      const classNameInProps = (elementProps == null ? void 0 : elementProps.className) ? `${styles ? " " : ""}${removeWhiteSpaceInClasses(elementProps == null ? void 0 : elementProps.className)}` : "";
-      return (0, import_react.createElement)(
-        element,
-        __spreadProps(__spreadValues({}, elementProps), {
-          className: elementClassName + classNameInProps
-        }),
-        elementProps == null ? void 0 : elementProps.children
-      );
-    };
-    CreatedElement.displayName = element;
-    return CreatedElement;
-  } else {
-    return element;
-  }
+        return prev;
+      },
+      {
+        elementProps: {},
+        variants: __spreadValues({}, (config == null ? void 0 : config.defaultVariants) || {})
+      }
+    );
+    const elementClassName = getStyledElementClassName(
+      styles,
+      variants,
+      (config == null ? void 0 : config.variants) || {}
+    );
+    const classNameInProps = (elementProps == null ? void 0 : elementProps.className) ? `${elementClassName ? " " : ""}${removeWhiteSpaceInClasses(
+      elementProps == null ? void 0 : elementProps.className
+    )}` : "";
+    return (0, import_react.createElement)(
+      element,
+      __spreadProps(__spreadValues({}, elementProps), {
+        className: elementClassName + classNameInProps
+      }),
+      elementProps == null ? void 0 : elementProps.children
+    );
+  };
+  return FinalElement;
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
