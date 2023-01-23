@@ -1,4 +1,11 @@
-import { ComponentProps, FunctionComponent, createElement } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import {
+  ComponentProps,
+  FunctionComponent,
+  createElement,
+  JSXElementConstructor,
+} from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 
 export type StyledElementOptions<V, D> = {
@@ -7,7 +14,7 @@ export type StyledElementOptions<V, D> = {
 };
 
 export function tf<
-  T extends keyof IntrinsicElements | JSXElementConstructor<any>,
+  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
   V,
   D extends {
     [Key in keyof V]?: keyof V[Key];
@@ -30,12 +37,10 @@ export function tf<
         : Variants
       : Variants;
 
-    type Props = T extends keyof JSX.IntrinsicElements
+    type Props = T extends JSXElementConstructor<any>
+      ? ComponentProps<T>
+      : T extends keyof JSX.IntrinsicElements
       ? JSX.IntrinsicElements[T]
-      : T extends JSX.Element
-      ? T extends infer P
-        ? ComponentProps<P>
-        : never
       : never;
 
     const definedVariants = config?.variants

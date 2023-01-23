@@ -1,7 +1,21 @@
 import { tf } from "tailwind-factory";
 
 export default function Home() {
-  const Elem = tf("button", "", {});
+  const Elem = tf("div", "", {
+    variants: {
+      a: {
+        abc: "asdas",
+        sdas: "asdas",
+      },
+      b: {
+        test: "sadas",
+      },
+    },
+    defaultVariants: {
+      a: "abc",
+      b: "test",
+    },
+  });
 
   return (
     <main>
