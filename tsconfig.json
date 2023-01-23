@@ -1,0 +1,4 @@
+{
+  "extends": "@lmarcel/ts-config/react",
+  "include": ["src"]
+}
