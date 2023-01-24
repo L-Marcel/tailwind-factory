@@ -11,5 +11,7 @@ dist/package.json
 jest.config.js
 pnpm-lock.yaml
 examples
-README.md
 tsconfig.json
+README.en-US.md
+l-marcel.config.json
+.github
