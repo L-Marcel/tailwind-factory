@@ -1,30 +1,42 @@
 {
   "name": "tailwind-factory",
   "version": "1.0.0",
-  "description": "",
+  "description": "A lib to create and extends React components like stitches using Tailwind classes!",
+  "keywords": [
+    "tailwind",
+    "styled-components",
+    "stitches",
+    "react",
+    "typescript",
+    "next"
+  ],
+  "repository": "https://github.com/l-marcel/tailwind-factory",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand --watch",
     "dev": "tsup src/**/*.ts, src/**/*.tsx --dts --watch",
-    "build": "tsup src/**/*.ts, src/**/*.tsx --dts"
+    "build": "tsup src/**/*.ts, src/**/*.tsx --dts --minify",
+    "versions": "changeset version",
+    "publish": "changeset publish"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Lucas Marcel Silva de Brito <lmgh1312@gmail.com> (https://github.com/l-marcel)",
+  "contributors": [],
+  "license": "MIT",
   "devDependencies": {
     "@lmarcel/eslint-config": "^2.0.0",
     "@lmarcel/ts-config": "^1.0.0",
     "@swc/core": "^1.3.27",
     "@swc/jest": "^0.2.24",
+    "@types/jest": "^29.2.6",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
     "eslint": "^8.32.0",
     "jest": "^29.3.1",
     "node": "^19.4.0",
     "react": "^18.2.0",
-    "typescript": "^4.9.4"
-  },
-  "dependencies": {
-    "tsup": "^6.5.0"
+    "ts-jest": "^29.0.5",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.4",
+    "@changesets/cli": "^2.26.0"
   }
 }

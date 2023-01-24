@@ -1,13 +1,27 @@
-import { FunctionComponent, JSXElementConstructor, ComponentProps, ReactElement } from 'react';
+import { JSXElementConstructor, ComponentProps } from 'react';
 
-type FactoryElement = keyof JSX.IntrinsicElements | FunctionComponent | JSXElementConstructor<any>;
 type FactoryExtractKeys<V> = {
     [Key in keyof V]?: keyof V[Key];
+};
+type FactoryExtractRequiredKeysAndValues<V> = {
+    [Key in keyof V]: {
+        [Property in keyof V[Key]]: string;
+    };
+};
+type FactoryExtractKeysAndValues<V> = {
+    [Key in keyof V]?: {
+        [Property in keyof V[Key]]?: string;
+    };
 };
 type StyledElementOptions<V, D, O> = {
     variants?: V;
     defaultVariants?: D & Partial<O>;
 };
-declare function tf<T extends FactoryElement, V, D, O extends FactoryExtractKeys<V>>(element: T, styles?: string, config?: StyledElementOptions<V, D, O>): (props: (T extends keyof JSX.IntrinsicElements ? JSX.IntrinsicElements[T] : T extends infer X ? ComponentProps<T> : ComponentProps<T>) & (D extends infer C ? Partial<V extends infer U ? FactoryExtractKeys<U> : V> & Required<Omit<V extends infer U ? FactoryExtractKeys<U> : V, keyof C>> : V extends infer U ? FactoryExtractKeys<U> : V)) => ReactElement<{}, string | JSXElementConstructor<any>>;
+type FactoryElement = keyof JSX.IntrinsicElements | JSXElementConstructor<any>;
+declare function tf<Type extends FactoryElement, StyleVariants, DefaultStyleVariants, DefaultStyleVariantsScheme extends FactoryExtractKeys<StyleVariants>>(element: Type, styles?: string, config?: StyledElementOptions<StyleVariants, DefaultStyleVariants, DefaultStyleVariantsScheme>): ((props: ComponentProps<Type> & (DefaultStyleVariants extends infer C ? Partial<StyleVariants extends infer U ? FactoryExtractKeys<U> : any> & Required<Omit<StyleVariants extends infer U ? FactoryExtractKeys<U> : any, keyof C>> : StyleVariants extends infer U ? FactoryExtractKeys<U> : any)) => JSX.Element) & {
+    extends: <NewStyleVariants, NewDefaultStyleVariants, NewDefaultStyleVariantsScheme extends FactoryExtractKeys<FactoryExtractRequiredKeysAndValues<StyleVariants> & NewStyleVariants>>(styles?: string, newConfig?: StyledElementOptions<NewStyleVariants & FactoryExtractKeysAndValues<StyleVariants>, NewDefaultStyleVariants, NewDefaultStyleVariantsScheme>) => ((props: ComponentProps<Type> & (NewDefaultStyleVariants extends infer C_1 ? Partial<StyleVariants & NewStyleVariants extends infer U_1 ? FactoryExtractKeys<U_1> : any> & Required<Omit<StyleVariants & NewStyleVariants extends infer U_1 ? FactoryExtractKeys<U_1> : any, keyof C_1>> : StyleVariants & NewStyleVariants extends infer U_1 ? FactoryExtractKeys<U_1> : any)) => JSX.Element) & {
+        extends: any;
+    };
+};
 
-export { FactoryElement, FactoryExtractKeys, StyledElementOptions, tf };
+export { FactoryElement, FactoryExtractKeys, FactoryExtractKeysAndValues, FactoryExtractRequiredKeysAndValues, StyledElementOptions, tf };

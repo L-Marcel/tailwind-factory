@@ -1,4 +1,15 @@
 src
 node_modules
 tsconfig.json
+src/tests
 dist/package.json
+.npmignore
+.gitignore
+.eslintrc.json
+.editorconfig
+.changeset
+jest.config.js
+pnpm-lock.yaml
+examples
+README.md
+tsconfig.json
