@@ -3,6 +3,3 @@ pnpm-lock.yarml
 package-lock.json
 .yarn
 .vscode
-
-#To prevent a bug in my portfolio
-README.md
