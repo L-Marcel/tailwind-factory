@@ -1,5 +1,11 @@
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 
+# Summary
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Snippets](#snippets)
+4. [Roadmap](#roadmap)
+
 # Installation
 First, you need to install and configure [`Tailwind`](https://tailwindcss.com/docs/installation/)!
 
@@ -76,7 +82,7 @@ export const Title = tf(JSXTitle, `
 You can extends styles too:
 ```tsx
 //Example extending the styles
-//Note: all styled components have a `extends` function
+//Note: all factory components have a `extends` function
 export const Header = Container.extends(`
   flex
   justify-center
@@ -104,11 +110,15 @@ export const Header = Container.extends(`
 });
 ```
 
-### Roadmap 
-- [x] Create a styled component
-- [x] Add a method to extends a styled component
+## Snippets
+Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
+
+## Roadmap 
+- [x] Create a factory components
+- [x] Add a method to extends a factory component
 - [x] Tailwind intellisense support
-- [ ] Snippets
+- [x] Snippets
 - [ ] Improve default variants types' check
 - [ ] Add all tests
-- [ ] Add a property to interpolate variants
+- [ ] Add interpolated variants
+- [ ] Add `as` property in factory components

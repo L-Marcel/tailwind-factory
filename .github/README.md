@@ -84,7 +84,7 @@ export const Title = tf(JSXTitle, `
 
 <p>Você também pode estender os estilos:</p>
 <pre lang="tsx"><code lang="tsx">//Exemplo estendendo os estilos
-//Nota: todos os componentes estilizados possuem uma função `extends`
+//Nota: todos os componentes criados dessa forma possuem uma função `extends`
 export const Header = Container.extends(`
   flex
   justify-center
@@ -111,17 +111,22 @@ export const Header = Container.extends(`
   }
 });</code></pre>
 
+<h2>Snippets</h2>
+<p>Tailwind Factory tem uma extensão oficial que acompanhar alguns snippets. Veja em: <a href="https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory" target="__blank__">
+Tailwind Factory Extension</a></p>
+
 <div id="grid">
   <div id="grid-item">
     <h2 align="center">Roadmap:</h2>
     <ul>
-      <li id="checked"><p>Criar um componente estilizado;</p></li>
-      <li id="checked"><p>Adicionar um método para estender um componente estilizado;</p></li>
+      <li id="checked"><p>Criar um componente;</p></li>
+      <li id="checked"><p>Adicionar um método para estender um componente;</p></li>
       <li id="checked"><p>Suporte para o Tailwind intellisense;</p></li>
       <li id="unchecked"><p>Snippets;</p></li>
       <li id="unchecked"><p>Melhorar a checagem da tipagem das variantes padrões;</p></li>
       <li id="unchecked"><p>Adicionar todos os testes;</p></li>
-      <li id="unchecked"><p>Adicionar uma propriedade para interpolar variantes.</p></li>
+      <li id="unchecked"><p>Adicionar variantes interpoladas;</p></li>
+      <li id="unchecked"><p>Adicionar propriedade 'as' nos componentes;</p></li>
     </ul>
   </div>
 </div>

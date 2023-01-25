@@ -84,7 +84,7 @@ export const Title = tf(JSXTitle, `
 
 <p>You can extends styles too:</p>
 <pre lang="tsx"><code lang="tsx">//Example extending the styles
-//Note: all styled components have a `extends` function
+//Note: all factory components have a `extends` function
 export const Header = Container.extends(`
   flex
   justify-center
@@ -111,17 +111,22 @@ export const Header = Container.extends(`
   }
 });</code></pre>
 
+<h2>Snippets</h2>
+<p>Tailwind Factory has an official extension that accompanies some snippets. See in: <a href="https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory" target="__blank__">
+Tailwind Factory Extension</a></p>
+
 <div id="grid">
   <div id="grid-item">
     <h2 align="center">Roadmap:</h2>
     <ul>
-      <li id="checked"><p>Create a styled component;</p></li>
-      <li id="checked"><p>Add a method to extends a styled component;</p></li>
+      <li id="checked"><p>Create a factory component;</p></li>
+      <li id="checked"><p>Add a method to extends a factory component;</p></li>
       <li id="checked"><p>Tailwind intellisense support;</p></li>
-      <li id="unchecked"><p>Snippets;</p></li>
+      <li id="checked"><p>Snippets;</p></li>
       <li id="unchecked"><p>Improve default variants types' check;</p></li>
       <li id="unchecked"><p>Add all tests;</p></li>
-      <li id="unchecked"><p>Add a property to interpolate variants.</p></li>
+      <li id="unchecked"><p>Add interpolated variants;</p></li>
+      <li id="unchecked"><p>Add 'as' property in factory components.</p></li>
     </ul>
   </div>
 </div>
