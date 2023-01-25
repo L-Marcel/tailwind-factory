@@ -1,4 +1,4 @@
-A lib to create and extends React components defining variants like Stitches using Tailwind classes!
+A lib to create and extends React components defining variants like Stitches using Tailwind!
 
 # Installation
 First, you need to install and configure [`Tailwind`](https://tailwindcss.com/docs/installation/)!

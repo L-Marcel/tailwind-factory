@@ -1,0 +1,11 @@
+{
+  "translatedDescription": "Uma biblioteca para criar e estender componentes do React definindo variantes como o Stitches usando o Tailwind!",
+  "pinned": true,
+  "technologies": [
+    "Next",
+    "React",
+    "Node",
+    "Jest",
+    "TailwindCSS"
+  ]
+}

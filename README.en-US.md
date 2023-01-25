@@ -1,6 +1,6 @@
 <div valing="top">
   <h1>Tailwind <span>Factory</span></h1>
-  <p>A lib to create and extends React components defining variants like Stitches using Tailwind classes!</p>
+  <p>A lib to create and extends React components defining variants like Stitches using Tailwind!</p>
   <nav>
     <div id="repository-buttons"/>
     <a class="navigation-link disabled" href="https://github.com/L-Marcel/l-marcel/blob/main/README.md" target="__blank__">
@@ -12,6 +12,8 @@
     </a>
   </nav>
 </div>
+
+<br/>
 
 <p>First, you need to install and configure <a class="navigation-link" href="https://tailwindcss.com/docs/installation/" target="__blank__">
 Tailwind

@@ -13,6 +13,8 @@
   </nav>
 </div>
 
+<br/>
+
 <p>Primeiro você precisa instalar e configurar o <a class="navigation-link" href="https://tailwindcss.com/docs/installation/" target="__blank__">
 Tailwind
 </a>!</p>
