@@ -1,0 +1,40 @@
+{
+  "Tailwind Factory Init": {
+    "prefix": "tfi",
+    "body": [
+      "import { tf } from \"tailwind-factory\";",
+      "",
+      "export const ${1:Container} = tf(\"${2|div,p,h1,h2,h3,a,main,header,footer,section,article,abbr,address,area,aside,audio,b,base,bdi,bdo,big,blockquote,body,br,button,canvas,caption,center,cite,code,col,colgroup,data,datalist,dd,del,details,dfn,dialog,dl,dt,em,embed,fieldset,figcaption,figure,form,h4,h5,h6,head,hgroup,hr,html,i,iframe,img,input,ins,kbd,keygen,label,legend,li,link,map,mark,menu,menuitem,meta,meter,nav,noindex,noscript,object,ol,optgroup,option,output,param,picture,pre,progress,q,rp,rt,ruby,s,samp,slot,script,select,small,source,span,strong,style,sub,summary,sup,table,template,tbody,td,textarea,tfoot,th,thead,time,title,tr,track,u,ul,var,video,wbr,svg,animate,animateMotion,animateTransform,circle,clipPath,defs,desc,ellipse,feBlend,feColorMatrix,feComponentTransfer,feComposite,feConvolveMatrix,feDiffuseLighting,feDisplacementMap,feDistantLight,feDropShadow,feFlood,feFuncA,feFuncB,feFuncG,feFuncR,feGaussianBlur,feImage,feMerge,feMergeNode,feMorphology,feOffset,fePointLight,feSpecularLighting,feSpotLight,feTile,feTurbulence,filter,foreignObject,g,image,line,linearGradient,marker,mask,metadata,mpath,path,pattern,polygon,polyline,radialGradient,rect,stop,switch,symbol,text,textPath,tspan,use,view|}\", `",
+      "  $3",
+      "`. {",
+      "  variants: {},",
+      "  defaultVariants: {}",
+      "});$0"
+    ],
+    "description": "Import Tailwind Factory and create a new factory component"
+  },
+	"Tailwind Factory Component": {
+		"prefix": "tfc",
+		"body": [
+			"export const ${1:NewComponent} = tf(\"${2|div,p,h1,h2,h3,a,main,header,footer,section,article,abbr,address,area,aside,audio,b,base,bdi,bdo,big,blockquote,body,br,button,canvas,caption,center,cite,code,col,colgroup,data,datalist,dd,del,details,dfn,dialog,dl,dt,em,embed,fieldset,figcaption,figure,form,h4,h5,h6,head,hgroup,hr,html,i,iframe,img,input,ins,kbd,keygen,label,legend,li,link,map,mark,menu,menuitem,meta,meter,nav,noindex,noscript,object,ol,optgroup,option,output,param,picture,pre,progress,q,rp,rt,ruby,s,samp,slot,script,select,small,source,span,strong,style,sub,summary,sup,table,template,tbody,td,textarea,tfoot,th,thead,time,title,tr,track,u,ul,var,video,wbr,svg,animate,animateMotion,animateTransform,circle,clipPath,defs,desc,ellipse,feBlend,feColorMatrix,feComponentTransfer,feComposite,feConvolveMatrix,feDiffuseLighting,feDisplacementMap,feDistantLight,feDropShadow,feFlood,feFuncA,feFuncB,feFuncG,feFuncR,feGaussianBlur,feImage,feMerge,feMergeNode,feMorphology,feOffset,fePointLight,feSpecularLighting,feSpotLight,feTile,feTurbulence,filter,foreignObject,g,image,line,linearGradient,marker,mask,metadata,mpath,path,pattern,polygon,polyline,radialGradient,rect,stop,switch,symbol,text,textPath,tspan,use,view|}\", `",
+			"  $3",
+			"`. {",
+			"  variants: {},",
+			"  defaultVariants: {}",
+			"});$0"
+		],
+		"description": "Create a new factory component"
+	},
+	"Tailwind Factory Extended Component": {
+		"prefix": "tfe",
+		"body": [
+			"export const ${1:NewComponent} = ${2:Parent}.extends(`",
+			"  $3",
+			"`. {",
+			"  variants: {},",
+			"  defaultVariants: {}",
+			"});$0"
+		],
+		"description": "Create a new extended factory component"
+	}
+}

@@ -3,3 +3,4 @@ pnpm-lock.yarml
 package-lock.json
 .yarn
 .vscode
+.ignore

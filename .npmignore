@@ -15,3 +15,5 @@ tsconfig.json
 README.en-US.md
 l-marcel.config.json
 .github
+extensions
+.ignore
