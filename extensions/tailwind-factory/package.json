@@ -4,8 +4,8 @@
   "description": "The official kit to enhance the Tailwind Factory experience.",
   "publisher": "l-marcel",
   "license": "MIT",
-  "icon": "https://github.com/L-Marcel/tailwind-factory/blob/main/extensions/tailwind-factory/assets/logo.png?raw=true",
-  "version": "0.0.1",
+  "icon": "assets/logo.png",
+  "version": "0.0.3",
   "repository": "https://github.com/L-Marcel/tailwind-factory/tree/main/extensions/tailwind-factory",
   "engines": {
     "vscode": "^1.74.0"
