@@ -20,8 +20,7 @@ Tailwind</a>!</p>
 
 <p>Para instalar o Tailwind Factory você precisa rodar em seu projeto:</p>
 
-<pre><code>
-//Usando pnpm
+<pre><code>//Usando pnpm
 pnpm add tailwind-factory
 
 //Usando npm
