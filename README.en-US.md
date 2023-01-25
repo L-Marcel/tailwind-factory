@@ -36,7 +36,7 @@ yarn add tailwind-factory
 Tailwind CSS IntelliSense
 </a> and add the following configuration:</p>
 
-<pre>
+<pre lang="tsx">
 //Tailwind IntelliSense Regex
 "tailwindCSS.experimental.classRegex": [
   ["tf\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // tf(`...`)
@@ -45,7 +45,7 @@ Tailwind CSS IntelliSense
 </pre>
 
 <h2>Usage</h2>
-<pre>
+<pre lang="tsx">
 import { tf } from "tailwind-factory";
 
 //Example of a common use case
@@ -73,7 +73,7 @@ export const Container = tf("div", `
 </pre>
 
 <p>Tailwind Factory also support custom components:</p>
-<pre>
+<pre lang="tsx">
 //Example using a custom JSX component
 const JSXTitle = (
   //The component need to have the className property!
@@ -94,7 +94,7 @@ export const Title = tf(JSXTitle, `
 </pre>
 
 <p>You can extends styles too:</p>
-<pre>
+<pre lang="tsx">
 //Example extending the styles
 //Note: all styled components have a `extends` function
 export const Header = Container.extends(`
