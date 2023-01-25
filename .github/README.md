@@ -15,13 +15,12 @@
 
 <br/>
 
-<p>Primeiro você precisa instalar e configurar o <a class="navigation-link" href="https://tailwindcss.com/docs/installation/" target="__blank__">
-Tailwind
-</a>!</p>
+<p>Primeiro você precisa instalar e configurar o <a href="https://tailwindcss.com/docs/installation/" target="__blank__">
+Tailwind</a>!</p>
 
 <p>Para instalar o Tailwind Factory você precisa rodar em seu projeto:</p>
 
-<pre>
+<pre><code>
 //Usando pnpm
 pnpm add tailwind-factory
 
@@ -30,24 +29,19 @@ npm install tailwind-factory
 
 //Usando yarn
 yarn add tailwind-factory
-</pre>
+</code></pre>
 
-<p>Agora, você precisa instalar o <a class="navigation-link" href="https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss/" target="__blank__">
-Tailwind CSS IntelliSense
-</a> e adicionar as configurações abaixo:</p>
+<p>Agora, você precisa instalar o <a href="https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss/" target="__blank__">
+Tailwind CSS IntelliSense</a> e adicionar as configurações abaixo:</p>
 
-<pre lang="tsx">
-//Tailwind IntelliSense Regex
+<pre lang="tsx"><code lang="tsx">//Tailwind IntelliSense Regex
 "tailwindCSS.experimental.classRegex": [
   ["tf\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // tf(`...`)
   ["\\.extends\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // xxx.extends(`...`)
-],
-</pre>
+],</code></pre>
 
 <h2>Uso</h2>
-<pre lang="tsx">
-import { tf } from "tailwind-factory";
-
+<pre lang="tsx"><code lang="tsx">import { tf } from "tailwind-factory";
 //Exemplo de um caso de uso comum
 //Nota: use ` para usar o Tailwind CSS IntelliSense
 // e " or ' para usar o autocomplete das propriedades
@@ -69,33 +63,28 @@ export const Container = tf("div", `
     size: "lg",
     theme: "light"
   }
-});
-</pre>
+});</code></pre>
 
 <p>Tailwind Factory também suporta components customizados:</p>
-<pre lang="tsx">
-//Exemplo usando um componente JSX
+<pre lang="tsx"><code lang="tsx">//Exemplo usando um componente JSX
 const JSXTitle = (
   //The component need to have the className property!
   { children, className }: { 
     children: ReactNode, 
     className?: string 
   }
-) => <h2 className={className}>
+) => &lt;h2 className={className}>
 {children}
-</h2>;
-
+&lt;/h2>;
 //É recomendado criar o elemento fora da função
 // para previnir um bug com o Tailwind CSS IntelliSense
 export const Title = tf(JSXTitle, `
   text-3xl
   text-inherit
-`, {})
-</pre>
+`, {})</code></pre>
 
 <p>Você também pode estender os estilos:</p>
-<pre lang="tsx">
-//Exemplo estendendo os estilos
+<pre lang="tsx"><code lang="tsx">//Exemplo estendendo os estilos
 //Nota: todos os componentes estilizados possuem uma função `extends`
 export const Header = Container.extends(`
   flex
@@ -121,8 +110,7 @@ export const Header = Container.extends(`
     border: "enabled",
     size: "sm"
   }
-});
-</pre>
+});</code></pre>
 
 <div id="grid">
   <div id="grid-item">
