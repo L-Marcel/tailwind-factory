@@ -16,6 +16,5 @@ l-marcel.config.json
 .github
 extensions
 .ignore
-playwright.config.ts
-playwright-report
 setupTests.ts
+.vscode

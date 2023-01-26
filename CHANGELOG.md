@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.1.7
+
+### Patch Changes
+
+- Removing .vscode folder
+
 ## 1.1.6
 
 ### Patch Changes

@@ -4,9 +4,3 @@ package-lock.json
 .yarn
 .vscode
 .ignore
-/test-results/
-/playwright-report/
-/playwright/.cache/
-
-/src/tests/e2e
-playwright.config.ts
