@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1674754531561" clover="3.2.0">
+  <project timestamp="1674754531561" name="All files">
+    <metrics statements="29" coveredstatements="29" conditionals="86" coveredconditionals="51" methods="8" coveredmethods="8" elements="123" coveredelements="88" complexity="0" loc="29" ncloc="29" packages="1" files="1" classes="1"/>
+    <file name="index.tsx" path="C:\projects\tailwind-factory\src\index.tsx">
+      <metrics statements="29" coveredstatements="29" conditionals="86" coveredconditionals="51" methods="8" coveredmethods="8"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="33" count="1" type="stmt"/>
+      <line num="55" count="7" type="cond" truecount="4" falsecount="2"/>
+      <line num="57" count="6" type="stmt"/>
+      <line num="58" count="6" type="stmt"/>
+      <line num="68" count="6" type="stmt"/>
+      <line num="70" count="19" type="cond" truecount="2" falsecount="0"/>
+      <line num="71" count="7" type="stmt"/>
+      <line num="75" count="12" type="stmt"/>
+      <line num="80" count="19" type="stmt"/>
+      <line num="90" count="6" type="stmt"/>
+      <line num="96" count="6" type="cond" truecount="4" falsecount="2"/>
+      <line num="102" count="6" type="stmt"/>
+      <line num="137" count="2" type="stmt"/>
+      <line num="139" count="2" type="cond" truecount="4" falsecount="2"/>
+      <line num="141" count="1" type="stmt"/>
+      <line num="142" count="1" type="stmt"/>
+      <line num="152" count="4" type="stmt"/>
+      <line num="154" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="155" count="2" type="stmt"/>
+      <line num="159" count="8" type="stmt"/>
+      <line num="164" count="10" type="stmt"/>
+      <line num="174" count="4" type="stmt"/>
+      <line num="180" count="4" type="cond" truecount="4" falsecount="2"/>
+      <line num="186" count="4" type="stmt"/>
+      <line num="196" count="2" type="stmt"/>
+      <line num="201" count="7" type="stmt"/>
+    </file>
+  </project>
+</coverage>

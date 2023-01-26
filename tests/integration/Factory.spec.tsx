@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { tf } from "../../src";
+import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 describe("[Main] Tailwind Factory", () => {
   it("Should be able to create a simple factory component", () => {
@@ -21,7 +22,7 @@ describe("[Main] Tailwind Factory", () => {
 
     expect(title.tagName).toBe("P");
     expect(title).toHaveTextContent("Example");
-    expect(title).toHaveClass("text-blue-500 text-sm", { exact: true });
+    expect(title.className).toBe("text-blue-500 text-sm");
   });
 
   it("Should be able to create a factory component with variants", () => {
@@ -62,13 +63,13 @@ describe("[Main] Tailwind Factory", () => {
 
     expect(container.tagName).toBe("DIV");
     expect(container).toContainHTML("<p>Example</p>");
-    expect(container).toHaveClass("flex relative", { exact: true });
+    expect(container.className).toBe("flex relative");
 
     const fixedContainer = screen.getByTestId("fixed-container");
 
     expect(fixedContainer.tagName).toBe("DIV");
     expect(fixedContainer).toContainHTML("<p>Example</p>");
-    expect(fixedContainer).toHaveClass("flex absolute", { exact: true });
+    expect(fixedContainer.className).toBe("flex absolute");
   });
 
   it("Should be able to create a factory component with many variants", () => {
@@ -129,13 +130,13 @@ describe("[Main] Tailwind Factory", () => {
 
     expect(container.tagName).toBe("DIV");
     expect(container).toContainHTML("<p>Example</p>");
-    expect(container).toHaveClass("flex relative bg-red-500 w-5", { exact: true });
+    expect(container.className).toBe("flex relative bg-red-500 w-5");
 
     const fixedContainer = screen.getByTestId("fixed-container");
 
     expect(fixedContainer.tagName).toBe("DIV");
     expect(fixedContainer).toContainHTML("<p>Example</p>");
-    expect(fixedContainer).toHaveClass("flex absolute bg-blue-500 w-3", { exact: true });
+    expect(fixedContainer.className).toBe("flex absolute bg-blue-500 w-3");
   });
 
   it("Should be able to set extends function", () => {
@@ -170,9 +171,7 @@ describe("[Main] Tailwind Factory", () => {
 
     expect(description.tagName).toBe("P");
     expect(description).toHaveTextContent("Example");
-    expect(description).toHaveClass("text-blue-500 text-sm first-line:text-green-200", {
-      exact: true,
-    });
+    expect(description.className).toBe("text-blue-500 text-sm first-line:text-green-200");
   });
 
   it("Should be able to extends a factory component with variants respecting the classes priority", () => {
@@ -222,10 +221,10 @@ describe("[Main] Tailwind Factory", () => {
 
     render(
       <>
-        <Hero data-testid="hero">
+        <Hero data-testid="fixed-hero">
           <p>Example</p>
         </Hero>
-        <Hero fixed={false} data-testid="fixed-hero">
+        <Hero fixed={false} data-testid="hero">
           <p>Example</p>
         </Hero>
         <Hero fixed="sticky" data-testid="sticky-hero">
@@ -234,22 +233,71 @@ describe("[Main] Tailwind Factory", () => {
       </>
     );
 
-    const hero = screen.getByTestId("hero");
-
-    expect(hero.tagName).toBe("DIV");
-    expect(hero).toContainHTML("<p>Example</p>");
-    expect(hero).toHaveClass("flex mt-5 absolute top-3", { exact: true });
-
     const fixedHero = screen.getByTestId("fixed-hero");
 
     expect(fixedHero.tagName).toBe("DIV");
     expect(fixedHero).toContainHTML("<p>Example</p>");
-    expect(fixedHero).toHaveClass("flex relative mt-5", { exact: true });
+    expect(fixedHero.className).toBe("flex mt-5 absolute top-3");
+
+    const hero = screen.getByTestId("hero");
+
+    expect(hero.tagName).toBe("DIV");
+    expect(hero).toContainHTML("<p>Example</p>");
+    expect(hero.className).toBe("flex mt-5 relative");
 
     const stickyHero = screen.getByTestId("sticky-hero");
 
     expect(stickyHero.tagName).toBe("DIV");
     expect(stickyHero).toContainHTML("<p>Example</p>");
-    expect(stickyHero).toHaveClass("flex mt-5 sticky", { exact: true });
+    expect(stickyHero.className).toBe("flex mt-5 sticky");
+  });
+
+  it("Should be able to create a factory component from another component", () => {
+    const UnstyledHeader = ({
+      navigation,
+      ...props
+    }: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
+      navigation: string[];
+    }) => {
+      return (
+        <header {...props}>
+          <nav>
+            <ul>
+              {navigation.map((item) => {
+                return <li key={item}>{item}</li>;
+              })}
+            </ul>
+          </nav>
+        </header>
+      );
+    };
+
+    const Header = tf(
+      UnstyledHeader,
+      `
+      mx-3
+      my-2
+    `,
+      {
+        variants: {
+          theme: {
+            dark: `
+            bg-zinc-800
+          `,
+            light: `
+            bg-zinc-200
+          `,
+          },
+        },
+      }
+    );
+
+    render(<Header data-testid="header" navigation={["Home", "Profile"]} theme="dark" />);
+
+    const header = screen.getByTestId("header");
+
+    expect(header.tagName).toBe("HEADER");
+    expect(header).toContainHTML("<nav><ul><li>Home</li><li>Profile</li></ul></nav>");
+    expect(header.className).toBe("mx-3 my-2 bg-zinc-800");
   });
 });

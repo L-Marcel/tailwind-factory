@@ -22,6 +22,7 @@ export function removeWhiteSpaceInClasses(classes: string) {
     try {
       return allFormattedClasses
         .filter((rawClass) => {
+          rawClass = rawClass.trim();
           return !!rawClass && rawClass !== "\n";
         })
         .map((rawClass) => {

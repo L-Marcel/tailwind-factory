@@ -18,3 +18,4 @@ extensions
 .ignore
 setupTests.ts
 .vscode
+coverage

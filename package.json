@@ -15,7 +15,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test:e2e": "playwright test",
-    "test": "jest --runInBand --watch",
+    "test": "jest --runInBand --watch --collect-coverage",
     "dev": "tsup src/**/*.ts, src/**/*.tsx --dts --watch",
     "build": "tsup src/**/*.ts, src/**/*.tsx --dts --minify",
     "set:changes": "changeset",

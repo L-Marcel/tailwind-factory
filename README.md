@@ -114,8 +114,8 @@ export const Header = Container.extends(`
 # Classes Priority
 1. Inline Classes
 2. Factory Variants
-3. Factory Styles
-4. Extended Factory Variants
+3. Extended Factory Variants
+4. Factory Styles
 5. Extended Factory Styles
 
 ## Snippets
