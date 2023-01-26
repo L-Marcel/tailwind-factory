@@ -1,5 +1,17 @@
 # tailwind-factory
 
+## 1.1.3
+
+### Patch Changes
+
+- Removing error with "yes" or "no" variants
+
+## 1.1.2
+
+### Patch Changes
+
+- Changing readme
+
 ## 1.1.1
 
 ### Patch Changes

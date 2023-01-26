@@ -1,6 +1,6 @@
 import { JSXElementConstructor, ComponentProps } from 'react';
 
-type BooleanString = "true" | "false" | "yes" | "no";
+type BooleanString = "true" | "false";
 type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
 type FactoryExtractKeys<V> = {
     [Key in keyof V]?: ValueType<keyof V[Key]>;

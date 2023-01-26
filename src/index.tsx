@@ -4,7 +4,7 @@ import { ComponentProps, createElement, JSXElementConstructor } from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { uniteProperties } from "./utils/uniteProperties";
 
-type BooleanString = "true" | "false" | "yes" | "no";
+type BooleanString = "true" | "false";
 type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
 
 export type FactoryExtractKeys<V> = {
