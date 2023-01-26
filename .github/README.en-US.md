@@ -126,7 +126,8 @@ Tailwind Factory Extension</a></p>
       <li id="checked"><p>Improve default variants types' check;</p></li>
       <li id="unchecked"><p>Add all tests;</p></li>
       <li id="unchecked"><p>Add interpolated variants;</p></li>
-      <li id="unchecked"><p>Add 'as' property in factory components.</p></li>
+      <li id="unchecked"><p>Add 'as' property in factory components;</p></li>
+      <li id="unchecked"><p>Separate factory components `extends` function.</p></li>
     </ul>
   </div>
 </div>

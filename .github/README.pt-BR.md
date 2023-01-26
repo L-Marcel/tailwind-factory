@@ -127,6 +127,7 @@ Tailwind Factory Extension</a></p>
       <li id="unchecked"><p>Adicionar todos os testes;</p></li>
       <li id="unchecked"><p>Adicionar variantes interpoladas;</p></li>
       <li id="unchecked"><p>Adicionar propriedade 'as' nos componentes;</p></li>
+      <li id="unchecked"><p>Separar a função `extends` dos componentes.</p></li>
     </ul>
   </div>
 </div>

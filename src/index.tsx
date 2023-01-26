@@ -116,7 +116,7 @@ export function tf<
       FactoryExtractRequiredKeysAndValues<StyleVariants> & NewStyleVariants
     >
   >(
-    styles = "",
+    newStyles = "",
     newConfig: StyledElementOptions<
       NewStyleVariants & FactoryExtractKeysAndValues<StyleVariants>,
       NewDefaultStyleVariants,
@@ -172,7 +172,7 @@ export function tf<
       );
 
       const elementClassName = getStyledElementClassName(
-        styles,
+        styles + (styles ? " " : "") + newStyles,
         variants,
         extendedConfig?.variants || {}
       );

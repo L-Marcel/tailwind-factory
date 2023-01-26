@@ -122,3 +122,4 @@ Tailwind Factory has an official extension that accompanies some snippets. See i
 - [ ] Add all tests
 - [ ] Add interpolated variants
 - [ ] Add `as` property in factory components
+- [ ] Separate factory components `extends` function
