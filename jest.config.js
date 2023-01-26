@@ -1,6 +1,6 @@
 module.exports = {
   bail: false,
-  roots: ["<rootDir>/src/tests/integration", "<rootDir>/src/tests/unitary"],
+  roots: ["<rootDir>/tests/integration", "<rootDir>/tests/unitary"],
   transform: {
     "^.+\\.spec.(t|j)s?$": ["@swc/jest"],
   },

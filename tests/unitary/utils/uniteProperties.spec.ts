@@ -1,4 +1,4 @@
-import { uniteProperties } from "../../../utils/uniteProperties";
+import { uniteProperties } from "../../../src/utils/uniteProperties";
 
 describe("[Utils] UniteProperties", () => {
   it("Should be able to unite properties when all objects are void", () => {

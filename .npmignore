@@ -1,7 +1,7 @@
 src
 node_modules
 tsconfig.json
-src/tests
+tests
 dist/package.json
 .npmignore
 .gitignore

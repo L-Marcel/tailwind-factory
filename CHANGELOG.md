@@ -1,5 +1,23 @@
 # tailwind-factory
 
+## 1.1.6
+
+### Patch Changes
+
+- Removing unnecessary files from build
+
+## 1.1.5
+
+### Patch Changes
+
+- Sending build...
+
+## 1.1.4
+
+### Patch Changes
+
+- Removing erro on extend styles
+
 ## 1.1.3
 
 ### Patch Changes

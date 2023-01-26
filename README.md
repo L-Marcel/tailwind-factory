@@ -2,9 +2,10 @@ A lib to create and extends React components defining variants like Stitches usi
 
 # Summary
 1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Snippets](#snippets)
-4. [Roadmap](#roadmap)
+2. [Basic Usage](#basic-usage)
+3. [Classes Priority](#classes-priority)
+4. [Snippets](#snippets)
+5. [Roadmap](#roadmap)
 
 # Installation
 First, you need to install and configure [`Tailwind`](https://tailwindcss.com/docs/installation/)!
@@ -30,7 +31,7 @@ Now, you need to install the [`Tailwind CSS IntelliSense`](https://marketplace.v
 ],
 ```
 
-# Usage
+# Basic Usage
 ```tsx
 import { tf } from "tailwind-factory";
 
@@ -109,6 +110,13 @@ export const Header = Container.extends(`
   }
 });
 ```
+
+# Classes Priority
+1. Inline Classes
+2. Factory Variants
+3. Factory Styles
+4. Extended Factory Variants
+5. Extended Factory Styles
 
 ## Snippets
 Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
