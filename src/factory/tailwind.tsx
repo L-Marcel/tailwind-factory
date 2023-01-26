@@ -10,7 +10,7 @@ type VariantStyles = {
 
 export function removeWhiteSpaceInClasses(classes: string) {
   const whitespace = /(\r|\t)/g;
-  const lineBreak = /(\n)/g;
+  const lineBreak = /(\n| )/g;
   let formattedClasses = classes;
 
   if (whitespace.test(formattedClasses)) {
@@ -26,6 +26,7 @@ export function removeWhiteSpaceInClasses(classes: string) {
           return !!rawClass && rawClass !== "\n";
         })
         .map((rawClass) => {
+          //yes, is necessary...
           return rawClass.trim();
         })
         .join(" ");
