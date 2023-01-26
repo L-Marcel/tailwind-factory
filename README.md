@@ -95,16 +95,16 @@ export const Header = Container.extends(`
       light: `bg-white text-zinc-800`
     },
     border: {
-      enabled: `border-b-4 border-zinc-600`,
-      disabled: `text-6xl`
+      true: `border-b-4 border-zinc-600`,
+      false: ``
     },
     size: {
       sm: `h-[20%]`
     }
   },
   defaultVariants: {
-    theme: "light",
-    border: "enabled",
+    //theme: "light", is not necessary
+    border: true, //can be a string
     size: "sm"
   }
 });
@@ -118,7 +118,7 @@ Tailwind Factory has an official extension that accompanies some snippets. See i
 - [x] Add a method to extends a factory component
 - [x] Tailwind intellisense support
 - [x] Snippets
-- [ ] Improve default variants types' check
+- [X] Improve default variants types' check
 - [ ] Add all tests
 - [ ] Add interpolated variants
 - [ ] Add `as` property in factory components

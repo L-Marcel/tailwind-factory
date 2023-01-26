@@ -97,16 +97,16 @@ export const Header = Container.extends(`
       light: `bg-white text-zinc-800`
     },
     border: {
-      enabled: `border-b-4 border-zinc-600`,
-      disabled: `text-6xl`
+      true: `border-b-4 border-zinc-600`,
+      false: ``
     },
     size: {
       sm: `h-[20%]`
     }
   },
   defaultVariants: {
-    theme: "light",
-    border: "enabled",
+    //theme: "light", is not necessary
+    border: true, //can be a string
     size: "sm"
   }
 });</code></pre>
@@ -122,8 +122,8 @@ Tailwind Factory Extension</a></p>
       <li id="checked"><p>Criar um componente;</p></li>
       <li id="checked"><p>Adicionar um método para estender um componente;</p></li>
       <li id="checked"><p>Suporte para o Tailwind intellisense;</p></li>
-      <li id="unchecked"><p>Snippets;</p></li>
-      <li id="unchecked"><p>Melhorar a checagem da tipagem das variantes padrões;</p></li>
+      <li id="checked"><p>Snippets;</p></li>
+      <li id="checked"><p>Melhorar a checagem da tipagem das variantes padrões;</p></li>
       <li id="unchecked"><p>Adicionar todos os testes;</p></li>
       <li id="unchecked"><p>Adicionar variantes interpoladas;</p></li>
       <li id="unchecked"><p>Adicionar propriedade 'as' nos componentes;</p></li>

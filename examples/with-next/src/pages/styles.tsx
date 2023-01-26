@@ -35,17 +35,16 @@ export const Header = Container.extends(`
       light: `bg-white text-zinc-800`
     },
     border: {
-      enabled: `border-b-4 border-zinc-600`,
-      disabled: `text-6xl`
+      true: `border-b-4 border-zinc-600`,
+      false: ``
     },
     size: {
       sm: `h-[20%]`
     }
   },
   defaultVariants: {
-    theme: "light",
-    border: "enabled",
-    size: "sm"
+    border: true,
+    size: "sm",
   }
 });
 

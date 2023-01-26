@@ -4,8 +4,11 @@ import { ComponentProps, createElement, JSXElementConstructor } from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { uniteProperties } from "./utils/uniteProperties";
 
+type BooleanString = "true" | "false" | "yes" | "no";
+type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
+
 export type FactoryExtractKeys<V> = {
-  [Key in keyof V]?: keyof V[Key];
+  [Key in keyof V]?: ValueType<keyof V[Key]>;
 };
 
 export type FactoryExtractRequiredKeysAndValues<V> = {
@@ -124,7 +127,9 @@ export function tf<
     type NewVariants = NewVariantsUnion extends infer U ? FactoryExtractKeys<U> : any;
 
     type NewAllVariants = NewDefaultStyleVariants extends infer C
-      ? Partial<NewVariants> & Required<Omit<NewVariants, keyof C>>
+      ? DefaultStyleVariants extends infer O
+        ? Partial<NewVariants> & Required<Omit<NewVariants, keyof (O & C)>>
+        : Partial<NewVariants> & Required<Omit<NewVariants, keyof C>>
       : NewVariants;
 
     type ExtendedProps = Props & NewAllVariants;
@@ -144,12 +149,11 @@ export function tf<
         variants: NewAllVariants;
       };
 
-      console.log(definedVariants, props);
       const { elementProps, variants } = Object.entries(props).reduce(
         (prev, [key, value]) => {
           if (definedVariants.includes(key)) {
             Object.assign(prev.variants as any, {
-              [key]: value,
+              [key]: String(value),
             });
           } else {
             Object.assign(prev.elementProps as any, {

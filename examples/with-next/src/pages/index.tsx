@@ -6,7 +6,7 @@ export default function Home() {
 
   return (
     <Container theme={isBlueTheme? "light":"dark"}>
-      <Header theme={isBlueTheme? "light":"dark"}>
+      <Header border={true}>
         <Title>Tailwind Factory is crazy!</Title>
       </Header>
       <Section>
