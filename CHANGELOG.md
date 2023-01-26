@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.1.8
+
+### Patch Changes
+
+- Removing bug when putting spaces between classes
+
 ## 1.1.7
 
 ### Patch Changes
