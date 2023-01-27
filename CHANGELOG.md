@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.2.0
+
+### Minor Changes
+
+- Improving extended function and types, updating readme and removing error in snippets
+
 ## 1.1.10
 
 ### Patch Changes

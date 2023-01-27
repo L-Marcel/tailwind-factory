@@ -1,5 +1,5 @@
 type VariantProps = {
-  [key: string]: string;
+  [key: string]: string | number | boolean;
 };
 
 type VariantStyles = {
@@ -47,7 +47,22 @@ export function getStyledElementClassName<V, S>(
   const dynamicStyles = variantStyles as VariantStyles;
 
   const _variantStyles = Object.entries(dynamicStyles).map(([key, values]) => {
-    const variantStyle = values[props[key]];
+    const params = Object.getOwnPropertyNames(values);
+    let value = props[key];
+
+    if (
+      (params.includes("true") && Number(value) === 1) ||
+      (params.includes("false") && Number(value) === 0)
+    ) {
+      value = Boolean(value);
+    } else if (
+      (params.includes("1") && Boolean(value) === true) ||
+      (params.includes("0") && Boolean(value) === false)
+    ) {
+      value = Number(value);
+    }
+
+    const variantStyle = values[String(value)];
     return removeWhiteSpaceInClasses(variantStyle);
   });
 

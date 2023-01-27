@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { ComponentProps, createElement, JSXElementConstructor } from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { uniteProperties } from "./utils/uniteProperties";
@@ -110,12 +109,14 @@ export function tf<
   }
 
   function extendsElement<
+    NewType extends FactoryElement | null,
     NewStyleVariants,
     NewDefaultStyleVariants,
     NewDefaultStyleVariantsScheme extends FactoryExtractKeys<
       FactoryExtractRequiredKeysAndValues<StyleVariants> & NewStyleVariants
     >
   >(
+    newElement?: NewType,
     newStyles = "",
     newConfig: StyledElementOptions<
       NewStyleVariants & FactoryExtractKeysAndValues<StyleVariants>,
@@ -123,6 +124,8 @@ export function tf<
       NewDefaultStyleVariantsScheme
     > = {}
   ) {
+    type NewProps = NewType extends FactoryElement ? ComponentProps<NewType> : Props;
+
     type NewVariantsUnion = StyleVariants & NewStyleVariants;
     type NewVariants = NewVariantsUnion extends infer U ? FactoryExtractKeys<U> : any;
 
@@ -131,8 +134,6 @@ export function tf<
         ? Partial<NewVariants> & Required<Omit<NewVariants, keyof (O & C)>>
         : Partial<NewVariants> & Required<Omit<NewVariants, keyof C>>
       : NewVariants;
-
-    type ExtendedProps = Props & NewAllVariants;
 
     const extendedConfig = uniteProperties(config, newConfig);
 
@@ -143,7 +144,7 @@ export function tf<
         }, [] as string[])
       : [];
 
-    function CreatedExtendedElement(props: ExtendedProps) {
+    function CreatedExtendedElement(props: NewProps & NewAllVariants) {
       type ElementProperties = {
         elementProps: Props;
         variants: NewAllVariants;
@@ -184,7 +185,7 @@ export function tf<
         : "";
 
       return createElement(
-        element,
+        newElement ?? element,
         {
           ...elementProps,
           className: elementClassName + classNameInProps,

@@ -161,9 +161,12 @@ describe("[Main] Tailwind Factory", () => {
       }
     );
 
-    const Description = Text.extends(`
+    const Description = Text.extends(
+      null,
+      `
       first-line:text-green-200
-    `);
+    `
+    );
 
     render(<Description data-testid="description">Example</Description>);
 
@@ -198,6 +201,7 @@ describe("[Main] Tailwind Factory", () => {
     );
 
     const Hero = Container.extends(
+      null,
       `
       mt-5
     `,
@@ -299,5 +303,77 @@ describe("[Main] Tailwind Factory", () => {
     expect(header.tagName).toBe("HEADER");
     expect(header).toContainHTML("<nav><ul><li>Home</li><li>Profile</li></ul></nav>");
     expect(header.className).toBe("mx-3 my-2 bg-zinc-800");
+  });
+
+  it("Should be able to extends another element", () => {
+    const Title = tf(
+      "h1",
+      `
+      text-red-300
+    `,
+      {
+        variants: {
+          size: {
+            sm: `
+            text-sm
+          `,
+            md: `
+            text-md
+          `,
+          },
+        },
+      }
+    );
+
+    const Subtitle = Title.extends(null, "", {
+      variants: {
+        size: {
+          sm: `
+            text-base
+          `,
+        },
+      },
+    });
+
+    const JsxDescription = ({
+      className,
+      content,
+    }: {
+      className?: string;
+      content: string;
+    }) => {
+      return (
+        <div>
+          <p data-testid="description" className={className}>
+            {content}
+          </p>
+        </div>
+      );
+    };
+
+    const Description = Subtitle.extends(JsxDescription);
+
+    render(
+      <>
+        <Title size="sm" data-testid="title" />
+        <Subtitle size="sm" data-testid="subtitle">
+          Text Example
+        </Subtitle>
+        <Description size="md" content="Example of description" />
+      </>
+    );
+
+    const title = screen.getByTestId("title");
+    const subtitle = screen.getByTestId("subtitle");
+    const description = screen.getByTestId("description");
+
+    expect(title.tagName).toBe("H1");
+    expect(title.className).toBe("text-red-300 text-sm");
+
+    expect(subtitle.tagName).toBe("H1");
+    expect(subtitle.className).toBe("text-red-300 text-base");
+
+    expect(description.tagName).toBe("P");
+    expect(description.className).toBe("text-red-300 text-md");
   });
 });
