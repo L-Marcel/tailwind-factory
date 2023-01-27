@@ -111,8 +111,7 @@ export const Header = Container.extends(
 `, {
   variants: {
     theme: {
-      dark: `bg-zinc-900 text-zinc-100`,
-      light: `bg-white text-zinc-800`
+      dark: `bg-zinc-800`,
     },
     border: {
       true: `border-b-4 border-zinc-600`,
@@ -134,7 +133,9 @@ You can replace the null value with another component:
 ```tsx
 //Example extending another component
 export const Header = Container.extends(
-  AnotherComponent, //Will inherit the properties of AnotherComponent and variants of Container
+  //Will inherit the properties of AnotherComponent 
+  // and variants of Container
+  AnotherComponent, 
 `
   flex
   justify-center
@@ -206,4 +207,20 @@ export const NewComponent = Parent.extends(ParentComponent, `
 ```
 
 # Roadmap
-- No new goals at the moment
+No new goals at the moment
+
+- [X] ~~Add interpolated variants~~
+  - I found that what I wanted was redundant...
+
+- [X] ~~Add as property in factory components~~
+  - I even managed to do it fighting with TypeScript. But it has two very bad TypeScript limitations. When passing Generics in JSX constructors, the autocomplete of the properties keeps suggesting possible values of the Generic;
+
+  - The second problem is that when calling the type in another type, the default value of Generic changed to any. (JSX with Generic is really hard).
+
+- [X] ~~Separate factory components extends~~
+  - I thought a lot about memory, but anyway I would have to pass a property inside the component to retrieve the variants. Of course, the function is heavier because it takes these values ​​inside it. But I ended up finding it easier and faster to use the current approach.
+
+I found that this is possible:
+```tsx
+<Example<"div"> onClick={() => { ... }}/>
+```
