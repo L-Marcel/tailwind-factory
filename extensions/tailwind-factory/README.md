@@ -24,7 +24,7 @@ export const NewComponent = tf("div", `
 
 `tfe`: Create a new extended factory component
 ```tsx
-export const NewComponent = Parent.extends(ParentComponent`
+export const NewComponent = Parent.extends(ParentComponent, `
   
 `, {
   variants: {},
