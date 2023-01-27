@@ -172,7 +172,7 @@ Note: Classes are formatted before being passed to components. Reducing the numb
 # Snippets
 Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
 ## List of Snippets:
-Documented version: `0.0.9`
+Documented version: `0.1.0`
 
 `tfi`: Import Tailwind Factory and create a new factory component
 ```tsx
