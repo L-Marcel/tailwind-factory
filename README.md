@@ -207,20 +207,22 @@ export const NewComponent = Parent.extends(ParentComponent, `
 ```
 
 # Roadmap
-No new goals at the moment
+- [] Deep classes
 
-- [X] ~~Add interpolated variants~~
-  - I found that what I wanted was redundant...
-
-- [X] ~~Add as property in factory components~~
-  - I even managed to do it fighting with TypeScript. But it has two very bad TypeScript limitations. When passing Generics in JSX constructors, the autocomplete of the properties keeps suggesting possible values of the Generic;
-
-  - The second problem is that when calling the type in another type, the default value of Generic changed to any. (JSX with Generic is really hard).
-
-- [X] ~~Separate factory components extends~~
-  - I thought a lot about memory, but anyway I would have to pass a property inside the component to retrieve the variants. Of course, the function is heavier because it takes these values ​​inside it. But I ended up finding it easier and faster to use the current approach.
-
-I found that this is possible:
+Spoiler:
 ```tsx
-<Example<"div"> onClick={() => { ... }}/>
+const Container = tf(
+  "div",
+  `
+  text-red-300
+
+  @h2 {
+    text-6xl
+  }
+
+  @> h2 {
+    text-red-300
+  }
+`
+);
 ```
