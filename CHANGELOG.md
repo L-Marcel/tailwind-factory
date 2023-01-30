@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.3.4
+
+### Patch Changes
+
+- Fixing summary
+
 ## 1.3.3
 
 ### Patch Changes

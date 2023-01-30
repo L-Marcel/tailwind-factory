@@ -6,7 +6,7 @@ A lib to create and extends React components defining variants like Stitches usi
 2. [Basic Usage](#basic-usage)
    1. [Custom components](#custom-components)
 3. [Heritage](#heritage)
-4. [Deep Classes](#experimental-deep-classes)
+4. [[Experimental] Deep Classes](#experimental-deep-classes)
    1. [Available syntaxes](#available-syntaxes)
    2. [Unavailable syntaxes](#unavailable-syntaxes)
    3. [Using with variants](#using-with-variants)
