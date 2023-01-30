@@ -37,7 +37,7 @@ export class Post {
     let withArrow = false;
     let isInsideBlock = false;
     const result = mapOfClasses.reduce(
-      (prev, cur) => {
+      (prev, cur, index, list) => {
         const [isStillInsideBlock, currentLayer] = checkLayer(isInsideBlock, layer, cur);
         isInsideBlock = isStillInsideBlock;
         layer = currentLayer;
@@ -59,10 +59,13 @@ export class Post {
         const startWithHashTag = cur.startsWith("#");
 
         commaDetected = hasComma;
+        const nextElementIsKey =
+          (index < list.length - 1 && list[index + 1] === "{") || hasComma;
 
         if (
           !canBeABlock &&
           !canBeABlock &&
+          nextElementIsKey &&
           (isIntrinsicElement(possibleElement) || startWithDot || startWithHashTag)
         ) {
           blockContent = [];
@@ -112,7 +115,7 @@ export class Post {
           return prev;
         }
 
-        if (!canBeABlock && !isInsideBlock && cur !== "}") {
+        if (!canBeABlock && !isInsideBlock && cur !== "}" && !nextElementIsKey) {
           mainClasses.push(cur);
         }
 
@@ -148,6 +151,13 @@ export class Post {
     const listOfChildren = haveMoreThanOneChildren ? [...children] : [children];
 
     for (const c in listOfChildren) {
+      if (
+        typeof listOfChildren[c] === "string" ||
+        typeof listOfChildren[c] === "number"
+      ) {
+        continue;
+      }
+
       let currentChildren = { ...listOfChildren[c] };
       let definedInlineClassNames = currentChildren.props?.className ?? "";
       const firstClasses: string[] = [];
@@ -287,15 +297,31 @@ export class Post {
     return hasTheSameType || hasTheSameClassType || hasTheSameIdType;
   }
 
-  static children(children?: ChildrenType | ChildrenType[], classes = "") {
+  static children(children?: ChildrenType[], classes = "") {
     const { children: mappedClasses, elementClassNames } = this.getMapOfClasses(
       [],
       classes
     );
 
-    const newChildren = children
-      ? this.applyMappedClasses(children, mappedClasses)
-      : children;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let newChildren: any[] = [];
+
+    if (children) {
+      for (const c in children) {
+        const currentChildren = children[c];
+
+        if (typeof currentChildren === "string") {
+          newChildren.push(currentChildren);
+        } else if (currentChildren) {
+          newChildren = [
+            ...newChildren,
+            ...this.applyMappedClasses(currentChildren, mappedClasses),
+          ];
+        } else {
+          newChildren.push(currentChildren);
+        }
+      }
+    }
 
     return {
       newClassNames: elementClassNames,

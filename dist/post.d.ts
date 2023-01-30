@@ -10,9 +10,9 @@ declare class Post {
     private static getMapOfClasses;
     private static applyMappedClasses;
     private static isTheSameType;
-    static children(children?: ChildrenType | ChildrenType[], classes?: string): {
+    static children(children?: ChildrenType[], classes?: string): {
         newClassNames: string;
-        newChildren: ChildrenType[] | undefined;
+        newChildren: any[];
     };
 }
 

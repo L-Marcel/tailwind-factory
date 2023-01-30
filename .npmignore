@@ -19,3 +19,4 @@ extensions
 setupTests.ts
 .vscode
 coverage
+example

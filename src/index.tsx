@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentProps, createElement, JSXElementConstructor } from "react";
+import React, { ComponentProps, createElement, JSXElementConstructor } from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { uniteProperties } from "./utils/uniteProperties";
 import { Post } from "./post";
+import { parseToChildren } from "./utils/parseToChildren";
 
 type BooleanString = "true" | "false";
 type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
@@ -72,6 +73,10 @@ export function tf<
             [key]: value,
           });
         } else {
+          if (key === "children") {
+            value = parseToChildren(value);
+          }
+
           Object.assign(prev.elementProps as any, {
             [key]: value,
           });
@@ -104,6 +109,7 @@ export function tf<
 
     if (className.includes("{") && className.includes("}")) {
       const { newChildren, newClassNames } = Post.children(children, className);
+
       children = newChildren;
       className = newClassNames;
     }
@@ -167,6 +173,10 @@ export function tf<
               [key]: String(value),
             });
           } else {
+            if (key === "children") {
+              value = parseToChildren(value);
+            }
+
             Object.assign(prev.elementProps as any, {
               [key]: value,
             });
@@ -203,19 +213,13 @@ export function tf<
         className = newClassNames;
       }
 
-      children = Array.isArray(children) ? children : [children];
-
       return createElement(
         newElement ?? element,
         {
           ...elementProps,
           className,
         },
-        <>
-          {...children.map((child: any, index: number) => {
-            return <>{child}</>;
-          })}
-        </>
+        children
       ) as JSX.Element;
     }
 

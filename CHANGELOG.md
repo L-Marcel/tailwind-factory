@@ -1,5 +1,53 @@
 # tailwind-factory
 
+## 1.5.2
+
+### Patch Changes
+
+- Updating readme
+
+## 1.5.1
+
+### Patch Changes
+
+- Updating readme
+
+## 1.5.0
+
+### Minor Changes
+
+- Fixing bug on render children and enabling deep classes
+
+## 1.4.0
+
+### Minor Changes
+
+- Fixing bug on render children
+
+## 1.3.9
+
+### Patch Changes
+
+- Fixing bug with classNames
+
+## 1.3.8
+
+### Patch Changes
+
+- Generating build
+
+## 1.3.7
+
+### Patch Changes
+
+- Disabling deep classes completely
+
+## 1.3.6
+
+### Patch Changes
+
+- Disabling deep classes temporary
+
 ## 1.3.5
 
 ### Patch Changes

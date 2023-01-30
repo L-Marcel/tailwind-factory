@@ -13,7 +13,8 @@ A lib to create and extends React components defining variants like Stitches usi
 5. [How it works](#how-it-works)
 6. [Classes Priority](#classes-priority)
 7. [Snippets](#snippets)
-8. [Roadmap](#roadmap)
+8. [Bug Fix](#bug-fix)
+9. [Roadmap](#roadmap)
 
 # Installation
 To install Tailwind Factory you need to run in your project:
@@ -165,7 +166,6 @@ The idea was to make it closer to the __`'as'`__ property provided in some libra
 I'm still wondering if the best way is to keep the extends function together with the components. If you have a problem with this or an idea, you can create an Issue.
 
 # [Experimental] Deep Classes
-
 In some cases, to avoid creating __`multiple components`__ you can use a syntax similar to __`CSS`__:
 ```tsx
 //Deep classes example
@@ -417,6 +417,10 @@ export const NewComponent = Parent.extends(ParentComponent, `
   defaultVariants: {}
 });
 ```
+# Bug Fix
+First, sorry for the inconvenience.
+
+There was a bug that I hadn't noticed that affected the rendering of elements that had a string as a child. It was happening because React passed the element's children as an object, and back in the tests that didn't happen with strings! I discovered, then, the existence of a function that converts the children to the expected format, the: `React.Children.toArray`.
 
 # Roadmap
 - Nothing here.
