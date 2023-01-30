@@ -104,7 +104,7 @@ export const Title = tf(JSXTitle, `
 ```
 
 # Heritage
-Components receive a function called extends which can be called by passing or not a new component. The first parameter is precisely this new type of component. If null, it will inherit the extended component. Otherwise, it will inherit all properties and variants of the new component.
+Components receive a function called __`extends`__ which can be called by passing or not a new component. The first parameter is precisely this new type of component. If __`null`__, it will __`inherit`__ the extended component. Otherwise, it will __`inherit`__ all properties and variants of the new component.
 ```tsx
 //Example extending the styles
 //Note: all factory components have a `extends` function
@@ -136,7 +136,7 @@ export const Header = Container.extends(
 });
 ```
 
-You can replace the null value with another component:
+You can replace the null value with __`another component`__:
 ```tsx
 //Example extending another component
 export const Header = Container.extends(
@@ -158,13 +158,13 @@ export const Header = Container.extends(
 });
 ```
 
-The idea was to make it closer to the 'as' property provided in some libraries. I won't go into details, but I failed to obtain this result and this was my way of mimicking this property.
+The idea was to make it closer to the __`'as'`__ property provided in some libraries. I won't go into details, but I failed to obtain this result and this was my way of __`mimicking`__ this property.
 
 I'm still wondering if the best way is to keep the extends function together with the components. If you have a problem with this or an idea, you can create an Issue.
 
 # [Experimental] Deep Classes
 
-In some cases, to avoid creating multiple components you can use a syntax similar to CSS:
+In some cases, to avoid creating __`multiple components`__ you can use a syntax similar to __`CSS`__:
 ```tsx
 //Deep classes example
 const Container = tf(
@@ -231,7 +231,7 @@ Example output:
 ```
 
 ### Available syntaxes
-To inject by `tag`:
+To inject by __`tag`__:
 ```scss
 div {
   bg-red-500
@@ -242,7 +242,7 @@ div {
 }
 ```
 
-To inject by `class`:
+To inject by __`class`__:
 ```scss
 .hero {
   bg-red-500
@@ -252,8 +252,9 @@ To inject by `class`:
   }
 }
 ```
+On inject by clas __`expected classes`__ are __`saved`__, but are sent to the beginning of the class list. It is understood, in this case, that the __`expected classes`__ cannot overlap with other classes and variants of Tailwind Factory.
 
-To inject by `id`:
+To inject by __`id`__:
 ```scss
 #hero {
   bg-red-500
@@ -264,7 +265,7 @@ To inject by `id`:
 }
 ```
 
-To inject into `multiple`:
+To inject into __`multiple`__:
 ```scss
 #hero, section, header, .title  {
   bg-red-500
@@ -275,7 +276,7 @@ To inject into `multiple`:
 }
 ```
 
-To inject only in the `first group` of `children` inside the component (support `multiple` syntax):
+To inject only in the __`first group`__ of __`children`__ inside the component (support __`multiple`__ syntax):
 ```scss
 > div {
   bg-red-500
@@ -291,7 +292,7 @@ To inject only in the `first group` of `children` inside the component (support 
 ```
 
 ### Unavailable syntaxes
-First, this `deep class` approach is not the same as defining classes in a typical `style file`! Some things like checking states like the `hover` is not supported:
+First, this __`deep class`__ approach is not the same as defining classes in a typical __`style file`__! Some things like checking states is not supported. Example with __`:hover`__:
 ```scss
 //not work!
 div:hover {
@@ -301,7 +302,7 @@ div:hover {
 }
 ```
 
-This happens because `Tailwind Factory` only works with `class management`! You can get around this by defining your classes in a `styling file`. In some cases the Tailwind is the sufficient:
+This happens because __`Tailwind Factory`__ only works with __`class management`__! You can get around this by defining your classes in a __`styling file`__. In some cases the Tailwind is the sufficient:
 ```scss
 //With Tailwind (you can use the common CSS too)
 .custom-class:hover {
@@ -320,7 +321,7 @@ div {
 ```
 
 ### Using with variants
-The `variants` support `deep classes`:
+The __`variants`__ support __`deep classes`__:
 ```tsx
 const Container = tf(
   "div",
@@ -352,7 +353,7 @@ const Container = tf(
 });
 ```
 
-You can `extends` too:
+You can __`extends`__ too:
 ```tsx
 const Hero = Container.extends(null, `
   h1 {
@@ -362,7 +363,7 @@ const Hero = Container.extends(null, `
 ```
 
 # How it works
-Tailwind Factory just arranges the classes within the variants according to the properties passed for the component. Tailwind does the rest, so I think you'll have no problem using other forms of styling based on class definitions. Like traditional CSS, Sass, or CSS Modules.
+Tailwind Factory just __`arranges`__ the classes within the variants according to the properties passed for the component. Tailwind does the rest, so I think you'll have no problem using other forms of styling based on __`class`__ definitions. Like traditional __`CSS`__, __`Sass`__, or __`CSS Modules`__.
 
 Come to think of it, maybe the name should be Style Factory or Class Factory. But now it's too late... I will keep the name.
 
@@ -374,13 +375,16 @@ Note: Classes are formatted before being passed to components. Reducing the numb
 3. Extended Factory Variants
 4. Factory Styles
 5. Extended Factory Styles
+6. Inline Saved Classes 
+   - Inline Classes used in Deep Classes
 
 # Snippets
 Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
-## List of Snippets:
-Documented version: `0.1.0`
 
-`tfi`: Import Tailwind Factory and create a new factory component
+## List of Snippets:
+Documented version: __`0.1.0`__
+
+__`tfi`__: Import Tailwind Factory and create a new factory component
 ```tsx
 import { tf } from "tailwind-factory";
 
@@ -392,7 +396,7 @@ export const Container = tf("div", `
 });
 ```
 
-`tfc`: Create a new factory component
+__`tfc`__: Create a new factory component
 ```tsx
 export const NewComponent = tf("div", `
   
@@ -402,7 +406,7 @@ export const NewComponent = tf("div", `
 });
 ```
 
-`tfe`: Create a new extended factory component
+__`tfe`__: Create a new extended factory component
 ```tsx
 export const NewComponent = Parent.extends(ParentComponent, `
   
