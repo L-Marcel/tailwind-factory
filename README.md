@@ -3,11 +3,16 @@ A lib to create and extends React components defining variants like Stitches usi
 # Summary
 1. [Installation](#installation)
 2. [Basic Usage](#basic-usage)
+  1. [Custom components](#custom-components)
 3. [Heritage](#heritage)
-4. [How it works](#how-it-works)
-5. [Classes Priority](#classes-priority)
-6. [Snippets](#snippets)
-7. [Roadmap](#roadmap)
+4. [Deep Classes](#experimental-deep-classes)
+  1. [Available syntaxes](#available-syntaxes)
+  2. [Unavailable syntaxes](#unavailable-syntaxes)
+  3. [Using with variants](#using-with-variants)
+5. [How it works](#how-it-works)
+6. [Classes Priority](#classes-priority)
+7. [Snippets](#snippets)
+8. [Roadmap](#roadmap)
 
 # Installation
 First, you need to install and configure [`Tailwind`](https://tailwindcss.com/docs/installation/)!
@@ -67,12 +72,14 @@ export const Container = tf("div", `
 });
 ```
 
+Use case:
 ```tsx
 <Container centralized>
   <p>Now you can use it as you wish</p>
 </Container>
 ```
 
+### Custom components
 Tailwind Factory also support custom components:
 ```tsx
 //Example using a custom JSX component
@@ -155,6 +162,205 @@ The idea was to make it closer to the 'as' property provided in some libraries. 
 
 I'm still wondering if the best way is to keep the extends function together with the components. If you have a problem with this or an idea, you can create an Issue.
 
+# [Experimental] Deep Classes
+
+In some cases, to avoid creating multiple components you can use a syntax similar to CSS:
+```tsx
+//Deep classes example
+const Container = tf(
+  "div",
+  `
+  bg-lime-200
+  w-4
+
+  h2 {
+    italic
+  }
+
+  div {
+    h-3
+  }
+
+  > div {
+    flex
+    flex-col
+    bg-blue-200
+    > h2 {
+      font-bold
+    }
+
+    h2 {
+      text-6xl
+    }
+  }
+
+  > h2, h1, p {
+    text-red-400
+  }
+`);
+```
+
+Example of component structure:
+```tsx
+<Container>
+  <h1>Red Title</h1>
+  <h2>Red</h2>
+  <p>Red Text</p>
+  <div>
+    <h2>Normal</h2>
+    <div className="hover:bg-red-300">
+      <h2>Normal</h2>
+    </div>
+  </div>
+</Container>
+```
+
+Example output:
+```html
+<div class="bg-lime-200 w-4">
+  <h1 class="text-red-400">Red Title</h1>
+  <h2 class="italic text-red-400">Red</h2>
+  <p class="text-red-400">Red Text</p>
+  <div class="h-3 flex flex-col bg-blue-200">
+    <h2 class="italic font-bold text-6xl">Normal</h2>
+    <div class="h-3 hover:bg-red-300">
+      <h2 class="italic text-6xl">Normal</h2>
+    </div>
+  </div>
+</div>
+```
+
+### Available syntaxes
+To inject by `tag`:
+```scss
+div {
+  bg-red-500
+
+  h1 {
+    text-gray-200
+  }
+}
+```
+
+To inject by `class`:
+```scss
+.hero {
+  bg-red-500
+
+  h1 {
+    text-gray-200
+  }
+}
+```
+
+To inject by `id`:
+```scss
+#hero {
+  bg-red-500
+
+  h1 {
+    text-gray-200
+  }
+}
+```
+
+To inject into `multiple`:
+```scss
+#hero, section, header, .title  {
+  bg-red-500
+
+  h1 {
+    text-gray-200
+  }
+}
+```
+
+To inject only in the `first group` of `children` inside the component (support `multiple` syntax):
+```scss
+> div {
+  bg-red-500
+
+  h1 {
+    text-gray-200
+  }
+
+  > .main, input {
+    rounded-md
+  }
+}
+```
+
+### Unavailable syntaxes
+First, this `deep class` approach is not the same as defining classes in a typical `style file`! Some things like checking states like the `hover` is not supported:
+```scss
+//not work!
+div:hover {
+  h2 {
+    text-red-500
+  }
+}
+```
+
+This happens because `Tailwind Factory` only works with `class management`! You can get around this by defining your classes in a `styling file`. In some cases the Tailwind is the sufficient:
+```scss
+//With Tailwind (you can use the common CSS too)
+.custom-class:hover {
+  h2 {
+    @apply
+      text-red-500;
+  }
+}
+```
+```scss
+//work!
+div {
+  hover:bg-gray-500
+  custom-class
+}
+```
+
+### Using with variants
+The `variants` support `deep classes`:
+```tsx
+const Container = tf(
+  "div",
+  `
+  bg-lime-200
+  w-4
+`, {
+  variants: {
+    italic: {
+      true: `
+        h1, h2, h3 {
+          italic
+        }
+
+        a {
+          no-underline
+        }
+      `,
+      false: `
+        h2 {
+          underline
+        }
+      `
+    }
+  },
+  defaultVariants: {
+    italic: false
+  }
+});
+```
+
+You can `extends` too:
+```tsx
+const Hero = Container.extends(null, `
+  h1 {
+    text-9xl
+  }
+`);
+```
+
 # How it works
 Tailwind Factory just arranges the classes within the variants according to the properties passed for the component. Tailwind does the rest, so I think you'll have no problem using other forms of styling based on class definitions. Like traditional CSS, Sass, or CSS Modules.
 
@@ -207,22 +413,4 @@ export const NewComponent = Parent.extends(ParentComponent, `
 ```
 
 # Roadmap
-- [] Deep classes
-
-Spoiler:
-```tsx
-const Container = tf(
-  "div",
-  `
-  text-red-300
-
-  h2 {
-    text-6xl
-  }
-
-  > h2 {
-    text-red-300
-  }
-`
-);
-```
+- Nothing here.

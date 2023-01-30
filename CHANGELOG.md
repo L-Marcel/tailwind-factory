@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.3.0
+
+### Minor Changes
+
+- Adding experimental deep classes
+
 ## 1.2.4
 
 ### Patch Changes

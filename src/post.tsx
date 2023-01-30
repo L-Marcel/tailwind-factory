@@ -1,30 +1,36 @@
 import { removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { checkLayer } from "./utils/checkLayer";
 import { isIntrinsicElement } from "./utils/isIntrinsicElement";
+import { stringToArray } from "./utils/stringToArray";
 
 type ChildrenType = {
   type: string;
   props: {
     children?: ChildrenType | ChildrenType[];
     className?: string;
+    id?: string;
   };
 };
 
 type MappedClasses = {
-  type?: string;
+  type?: string[];
   elementClassNames: string;
   withArrow: boolean;
   children: MappedClasses[];
 };
 
 export class Post {
-  static getMapOfClasses(type = "", classes: string, haveArrow = false) {
-    const haveSpace = / /g.test(classes);
-    const mapOfClasses = haveSpace ? classes?.split(" ") : classes ? [classes] : [];
-
+  private static getMapOfClasses(
+    type: string[] = [],
+    classes: string,
+    haveArrow = false
+  ) {
+    const mapOfClasses = stringToArray(classes);
     const mainClasses: string[] = [];
 
     let layer = 0;
+    let blockType: string[] = [];
+    let commaDetected = false;
     let blockContent: string[] = [];
     let childrenIndex = -1;
     let canBeABlock = false;
@@ -46,18 +52,37 @@ export class Post {
           prev.children[childrenIndex].elementClassNames = blockContent.join(" ");
         }
 
-        if (!canBeABlock && !canBeABlock && isIntrinsicElement(cur)) {
-          blockContent = [];
-          childrenIndex++;
-          canBeABlock = true;
-          withArrow = false;
+        const hasComma = cur.endsWith(",");
+        const possibleElement = hasComma ? cur.replace(",", "") : cur;
 
-          prev.children.push({
-            type: cur,
-            children: [],
-            withArrow: false,
-            elementClassNames: "",
-          });
+        const startWithDot = cur.startsWith(".");
+        const startWithHashTag = cur.startsWith("#");
+
+        commaDetected = hasComma;
+
+        if (
+          !canBeABlock &&
+          !canBeABlock &&
+          (isIntrinsicElement(possibleElement) || startWithDot || startWithHashTag)
+        ) {
+          blockContent = [];
+
+          if (!commaDetected) {
+            childrenIndex++;
+            canBeABlock = true;
+            withArrow = false;
+
+            prev.children.push({
+              type: [...blockType, cur],
+              children: [],
+              withArrow: false,
+              elementClassNames: "",
+            });
+
+            blockType = [];
+          } else {
+            blockType.push(possibleElement);
+          }
 
           return prev;
         } else if (!canBeABlock && !canBeABlock && cur === ">") {
@@ -69,14 +94,20 @@ export class Post {
         }
 
         if (canBeABlock && withArrow && !isInsideBlock) {
-          childrenIndex++;
+          if (!commaDetected) {
+            childrenIndex++;
 
-          prev.children.push({
-            type: cur,
-            withArrow: true,
-            children: [],
-            elementClassNames: "",
-          });
+            prev.children.push({
+              type: [...blockType, cur],
+              withArrow: true,
+              children: [],
+              elementClassNames: "",
+            });
+
+            blockType = [];
+          } else {
+            blockType.push(possibleElement);
+          }
 
           return prev;
         }
@@ -109,7 +140,7 @@ export class Post {
     return result;
   }
 
-  static applyMappedClasses(
+  private static applyMappedClasses(
     children: ChildrenType | ChildrenType[],
     mappedClasses: MappedClasses[]
   ) {
@@ -118,7 +149,11 @@ export class Post {
 
     for (const c in listOfChildren) {
       let currentChildren = { ...listOfChildren[c] };
-      const definedInlineClassNames = currentChildren.props?.className;
+      let definedInlineClassNames = currentChildren.props?.className ?? "";
+      const firstClasses: string[] = [];
+
+      const mapOfDefinedId = stringToArray(currentChildren.props?.id);
+      const mapOfDefinedInlineClassNames = stringToArray(definedInlineClassNames);
 
       currentChildren.props = {
         ...currentChildren.props,
@@ -127,7 +162,20 @@ export class Post {
 
       for (const m in mappedClasses) {
         const currentClass = mappedClasses[m];
-        const isTheSameType = currentChildren.type === currentClass.type;
+
+        const isTheSameType = this.isTheSameType(
+          currentClass,
+          currentChildren?.type,
+          mapOfDefinedInlineClassNames,
+          mapOfDefinedId,
+          (foundClass) => {
+            if (definedInlineClassNames.includes(foundClass)) {
+              definedInlineClassNames = definedInlineClassNames.replace(foundClass, "");
+              firstClasses.push(foundClass);
+            }
+          }
+        );
+
         const newChildren = currentChildren;
 
         if (isTheSameType) {
@@ -154,14 +202,26 @@ export class Post {
       const newMappedClasses = haveChildren
         ? mappedClasses
             .filter((mappedClass) => {
-              const mapHaveTheSameType = mappedClass.type === newChildren.type;
-              return !mappedClass.withArrow || mapHaveTheSameType;
+              const isTheSameType = this.isTheSameType(
+                mappedClass,
+                newChildren?.type,
+                mapOfDefinedInlineClassNames,
+                mapOfDefinedId
+              );
+
+              return !mappedClass.withArrow || isTheSameType;
             })
             .reduce((prev, mappedClass) => {
-              const mapHaveTheSameType = mappedClass.type === newChildren.type;
+              const isTheSameType = this.isTheSameType(
+                mappedClass,
+                newChildren?.type,
+                mapOfDefinedInlineClassNames,
+                mapOfDefinedId
+              );
+
               const withArrow = mappedClass.withArrow;
 
-              if (mapHaveTheSameType && withArrow) {
+              if (isTheSameType && withArrow) {
                 prev = [...prev, ...mappedClass.children];
               } else {
                 prev.push(mappedClass);
@@ -182,10 +242,16 @@ export class Post {
           )}`
         : "";
 
+      const newFirstClasses = `${firstClasses.join(" ")}${
+        firstClasses.length >= 1 && (classNamesInProps || newDefinedInlineClassNames)
+          ? " "
+          : ""
+      }`;
+
       newChildren.props = {
         ...newChildren.props,
         children: newChildrenInProps,
-        className: classNamesInProps + newDefinedInlineClassNames,
+        className: newFirstClasses + classNamesInProps + newDefinedInlineClassNames,
       };
 
       listOfChildren[c] = newChildren;
@@ -195,9 +261,35 @@ export class Post {
     return listOfChildren;
   }
 
+  private static isTheSameType(
+    mappedClass: MappedClasses,
+    childrenType: string,
+    classes: string[],
+    ids: string[],
+    onMatchClassType?: (foundClass: string) => void
+  ) {
+    const hasTheSameType = mappedClass.type?.includes(childrenType);
+
+    const hasTheSameClassType = classes.some((definedClass) => {
+      const hasTheSameClass = mappedClass.type?.includes("." + definedClass);
+
+      if (hasTheSameClass) {
+        onMatchClassType && onMatchClassType(definedClass);
+      }
+
+      return hasTheSameClass;
+    });
+
+    const hasTheSameIdType = ids.some((definedId) => {
+      return mappedClass.type?.includes("#" + definedId);
+    });
+
+    return hasTheSameType || hasTheSameClassType || hasTheSameIdType;
+  }
+
   static children(children?: ChildrenType | ChildrenType[], classes = "") {
     const { children: mappedClasses, elementClassNames } = this.getMapOfClasses(
-      "",
+      [],
       classes
     );
 
@@ -211,23 +303,3 @@ export class Post {
     };
   }
 }
-
-// {
-//   elementClassNames: 'bg-lime-200 w-4',
-//   children: [
-//     {
-//       elementClassNames: 'flex flex-col bg-blue-200',
-//       children: [Array],
-//       withArrow: false,
-//       type: 'div'
-//     },
-//     {
-//       elementClassNames: 'text-red-400',
-//       children: [],
-//       withArrow: false,
-//       type: 'h2'
-//     }
-//   ],
-//   withArrow: false,
-//   type: ''
-// }
