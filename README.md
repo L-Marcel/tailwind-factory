@@ -2,6 +2,7 @@ A lib to create and extends React components defining variants like Stitches usi
 
 # Summary
 1. [Installation](#installation)
+   1. [Tailwind Configuration](#tailwind-configuration)
 2. [Basic Usage](#basic-usage)
    1. [Custom components](#custom-components)
 3. [Heritage](#heritage)
@@ -15,8 +16,6 @@ A lib to create and extends React components defining variants like Stitches usi
 8. [Roadmap](#roadmap)
 
 # Installation
-First, you need to install and configure [`Tailwind`](https://tailwindcss.com/docs/installation/)!
-
 To install Tailwind Factory you need to run in your project:
 ```
 //Using pnpm
@@ -29,7 +28,10 @@ npm install tailwind-factory
 yarn add tailwind-factory
 ```
 
-Now, you need to install the [`Tailwind CSS IntelliSense`](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss/) and add the following configuration:
+### Tailwind Configuration
+If you want to use with Tailwind you need to install and configure [`Tailwind`](https://tailwindcss.com/docs/installation/) before!
+
+To use [`Tailwind CSS IntelliSense`](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss/) you need to add the following configuration in your User Settings:
 ```js
 //Tailwind IntelliSense Regex
 "tailwindCSS.experimental.classRegex": [

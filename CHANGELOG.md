@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.3.3
+
+### Patch Changes
+
+- Separating Tailwind configuration from installation
+
 ## 1.3.2
 
 ### Patch Changes
