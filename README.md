@@ -254,7 +254,7 @@ To inject by __`class`__:
   }
 }
 ```
-On inject by clas __`expected classes`__ are __`saved`__, but are sent to the beginning of the class list. It is understood, in this case, that the __`expected classes`__ cannot overlap with other classes and variants of Tailwind Factory.
+On inject by class __`expected classes`__ are __`saved`__, but are sent to the beginning of the class list. It is understood, in this case, that the __`expected classes`__ cannot overlap with other classes and variants of Tailwind Factory.
 
 To inject by __`id`__:
 ```scss
