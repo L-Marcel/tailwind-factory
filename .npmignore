@@ -14,9 +14,9 @@ examples
 tsconfig.json
 l-marcel.config.json
 .github
-extensions
+extension
 .ignore
 setupTests.ts
 .vscode
 coverage
-example
+web

@@ -1,3 +1,5 @@
+![image info](./web/public/logo.png)
+
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 
 # Summary
