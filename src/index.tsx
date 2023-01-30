@@ -203,13 +203,19 @@ export function tf<
         className = newClassNames;
       }
 
+      children = Array.isArray(children) ? children : [children];
+
       return createElement(
         newElement ?? element,
         {
           ...elementProps,
           className,
         },
-        children
+        <>
+          {...children.map((child: any, index: number) => {
+            return <>{child}</>;
+          })}
+        </>
       ) as JSX.Element;
     }
 
