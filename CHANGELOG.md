@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.2.4
+
+### Patch Changes
+
+- Changing roadmap
+
 ## 1.2.3
 
 ### Patch Changes

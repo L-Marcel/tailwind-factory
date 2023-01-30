@@ -216,11 +216,11 @@ const Container = tf(
   `
   text-red-300
 
-  @h2 {
+  h2 {
     text-6xl
   }
 
-  @> h2 {
+  > h2 {
     text-red-300
   }
 `

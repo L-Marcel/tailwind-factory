@@ -2,6 +2,7 @@
 import { ComponentProps, createElement, JSXElementConstructor } from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { uniteProperties } from "./utils/uniteProperties";
+import { Post } from "./post";
 
 type BooleanString = "true" | "false";
 type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
@@ -98,13 +99,22 @@ export function tf<
         )}`
       : "";
 
+    let className = elementClassName + classNameInProps;
+    let children = elementProps?.children;
+
+    if (className.includes("{") && className.includes("}")) {
+      const { newChildren, newClassNames } = Post.children(children, className);
+      children = newChildren;
+      className = newClassNames;
+    }
+
     return createElement(
       element,
       {
         ...elementProps,
-        className: elementClassName + classNameInProps,
+        className,
       },
-      elementProps?.children
+      children
     ) as JSX.Element;
   }
 
@@ -184,13 +194,22 @@ export function tf<
           )}`
         : "";
 
+      let className = elementClassName + classNameInProps;
+      let children = elementProps?.children;
+
+      if (className.includes("{") && className.includes("}")) {
+        const { newChildren, newClassNames } = Post.children(children, className);
+        children = newChildren;
+        className = newClassNames;
+      }
+
       return createElement(
         newElement ?? element,
         {
           ...elementProps,
-          className: elementClassName + classNameInProps,
+          className,
         },
-        elementProps?.children
+        children
       ) as JSX.Element;
     }
 
