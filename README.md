@@ -1,4 +1,5 @@
-![image info](./web/public/logo.png)
+
+[![image info](./web/public/logo.png)](https://github.com/l-marcel/tailwind-factory)
 
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 

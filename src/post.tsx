@@ -234,7 +234,7 @@ export class Post {
               if (isTheSameType && withArrow) {
                 prev = [...prev, ...mappedClass.children];
               } else {
-                prev.push(mappedClass);
+                prev = [...prev, mappedClass, ...mappedClass.children];
               }
 
               return prev;
@@ -313,10 +313,8 @@ export class Post {
         if (typeof currentChildren === "string") {
           newChildren.push(currentChildren);
         } else if (currentChildren) {
-          newChildren = [
-            ...newChildren,
-            ...this.applyMappedClasses(currentChildren, mappedClasses),
-          ];
+          const result = this.applyMappedClasses(currentChildren, mappedClasses);
+          newChildren = [...newChildren, ...result];
         } else {
           newChildren.push(currentChildren);
         }

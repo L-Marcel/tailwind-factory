@@ -1,5 +1,17 @@
 # tailwind-factory
 
+## 1.5.4
+
+### Patch Changes
+
+- Fixing error on pass mapped classes
+
+## 1.5.3
+
+### Patch Changes
+
+- Adding logo
+
 ## 1.5.2
 
 ### Patch Changes
