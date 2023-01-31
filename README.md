@@ -307,10 +307,12 @@ div:hover {
   }
 }
 ```
+This happens because __`Tailwind Factory`__ only works with __`class management`__! You can get around this by defining your classes in a __`styling file`__.
 
 ### Tailwind Group
-This happens because __`Tailwind Factory`__ only works with __`class management`__! You can get around this by defining your classes in a __`styling file`__. In some cases, a __`group`__ in Tailwind is the sufficient:
+In some cases, a __`group`__ in Tailwind is the sufficient to set up a __`hover`__:
 ```scss
+//work!
 div {
   group
   hover:bg-gray-500

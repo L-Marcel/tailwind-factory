@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.5.7
+
+### Patch Changes
+
+- Updating readme
+
 ## 1.5.6
 
 ### Patch Changes
