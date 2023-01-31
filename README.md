@@ -18,7 +18,7 @@ A lib to create and extends React components defining variants like Stitches usi
 6. [Classes Priority](#classes-priority)
 7. [Snippets](#snippets)
 8. [Bug Fix](#bug-fix)
-9. [Roadmap](#roadmap)
+9. [Roadmap](#roadmap) - big news!
 
 # Installation
 To install Tailwind Factory you need to run in your project:
@@ -442,4 +442,6 @@ First, sorry for the inconvenience.
 There was a bug that I hadn't noticed that affected the rendering of elements that had a string as a child. It was happening because React passed the element's children as an object, and back in the tests that didn't happen with strings! I discovered, then, the existence of a function that converts the children to the expected format, the: `React.Children.toArray`.
 
 # Roadmap
-- Nothing here.
+- Generate style files to provide further support and optimization. Unfortunately I will have to change a lot of things, but this may be essential so that I can expand the functionality of Deep Classes.
+
+  I will try to maintain the independence of tailwind and will not change the way other functionality not linked to Deep Classes works. It will take a lot longer to develop, so be patient!
