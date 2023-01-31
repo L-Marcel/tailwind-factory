@@ -442,6 +442,8 @@ First, sorry for the inconvenience.
 There was a bug that I hadn't noticed that affected the rendering of elements that had a string as a child. It was happening because React passed the element's children as an object, and back in the tests that didn't happen with strings! I discovered, then, the existence of a function that converts the children to the expected format, the: `React.Children.toArray`.
 
 # Roadmap
-- Generate style files to provide further support and optimization. Unfortunately I will have to change a lot of things, but this may be essential so that I can expand the functionality of Deep Classes.
+- Generate styles to provide further support and optimization (with support for SSR). 
+
+  Unfortunately I will have to change a lot of things about Deep Classes, but this may be essential so that I can expand the functionality of Deep Classes.
 
   I will try to maintain the independence of tailwind and will not change the way other functionality not linked to Deep Classes works. It will take a lot longer to develop, so be patient!

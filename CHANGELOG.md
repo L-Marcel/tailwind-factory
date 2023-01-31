@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.5.10
+
+### Patch Changes
+
+- Updating roadmap
+
 ## 1.5.9
 
 ### Patch Changes
