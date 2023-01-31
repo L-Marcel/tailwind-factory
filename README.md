@@ -12,7 +12,8 @@ A lib to create and extends React components defining variants like Stitches usi
 4. [[Experimental] Deep Classes](#experimental-deep-classes)
    1. [Available syntaxes](#available-syntaxes)
    2. [Unavailable syntaxes](#unavailable-syntaxes)
-   3. [Using with variants](#using-with-variants)
+   3. [Tailwind Group](#tailwind-group)
+   4. [Using with variants](#using-with-variants)
 5. [How it works](#how-it-works)
 6. [Classes Priority](#classes-priority)
 7. [Snippets](#snippets)
@@ -307,8 +308,21 @@ div:hover {
 }
 ```
 
-This happens because __`Tailwind Factory`__ only works with __`class management`__! You can get around this by defining your classes in a __`styling file`__. In some cases the Tailwind is the sufficient:
+### Tailwind Group
+This happens because __`Tailwind Factory`__ only works with __`class management`__! You can get around this by defining your classes in a __`styling file`__. In some cases, a __`group`__ in Tailwind is the sufficient:
 ```scss
+div {
+  group
+  hover:bg-gray-500
+  h2 {
+    group-hover:text-red-500
+  }
+}
+```
+
+In other cases you may prefer to use external classes:
+```scss
+//style.scss
 //With Tailwind (you can use the common CSS too)
 .custom-class:hover {
   h2 {
@@ -318,7 +332,7 @@ This happens because __`Tailwind Factory`__ only works with __`class management`
 }
 ```
 ```scss
-//work!
+//work too!
 div {
   hover:bg-gray-500
   custom-class

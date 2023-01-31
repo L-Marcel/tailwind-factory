@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.5.6
+
+### Patch Changes
+
+- Adding a method to use hover
+
 ## 1.5.5
 
 ### Patch Changes
