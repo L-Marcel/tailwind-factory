@@ -6,7 +6,7 @@ type ChildrenType = {
         id?: string;
     };
 };
-declare class Post {
+export declare class Post {
     private static getMapOfClasses;
     private static applyMappedClasses;
     private static isTheSameType;
@@ -15,5 +15,5 @@ declare class Post {
         newChildren: any[];
     };
 }
-
-export { Post };
+export {};
+//# sourceMappingURL=post.d.ts.map

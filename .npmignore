@@ -20,3 +20,4 @@ setupTests.ts
 .vscode
 coverage
 web
+.babelrc.json

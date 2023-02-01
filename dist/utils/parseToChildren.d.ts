@@ -1,3 +1,2 @@
-declare function parseToChildren(value: any): any[];
-
-export { parseToChildren };
+export declare function parseToChildren(value: any): any[];
+//# sourceMappingURL=parseToChildren.d.ts.map
