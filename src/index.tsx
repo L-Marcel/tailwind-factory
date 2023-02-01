@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { ComponentProps, createElement, JSXElementConstructor } from "react";
+import { ComponentProps, createElement, JSXElementConstructor } from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { uniteProperties } from "./utils/uniteProperties";
 import { Post } from "./post";
@@ -27,6 +27,7 @@ export type FactoryExtractKeysAndValues<V> = {
 export type StyledElementOptions<V, D, O> = {
   variants?: V;
   defaultVariants?: D & Partial<O>;
+  mode?: "legacy";
 };
 
 export type FactoryElement = keyof JSX.IntrinsicElements | JSXElementConstructor<any>;
@@ -232,3 +233,5 @@ export function tf<
     extends: extendsElement,
   });
 }
+
+export { removeWhiteSpaceInClasses };

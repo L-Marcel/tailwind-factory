@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 1.5.12
+
+### Patch Changes
+
+- Reseting build
+
 ## 1.5.11
 
 ### Patch Changes
