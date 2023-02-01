@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { ComponentProps, createElement, JSXElementConstructor } from "react";
+import { ComponentProps, createElement, JSXElementConstructor } from "react";
 import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/tailwind";
 import { uniteProperties } from "./utils/uniteProperties";
 import { Post } from "./post";
@@ -232,3 +232,5 @@ export function tf<
     extends: extendsElement,
   });
 }
+
+export { removeWhiteSpaceInClasses };
