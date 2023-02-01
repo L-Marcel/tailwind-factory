@@ -1,5 +1,7 @@
 import tf from "tailwind-factory/macro";
 export default function Home() {
+  //run -> pnpm link ../dist
+
   //I'm studying...
   //This is my first macro!!!
   tf(
