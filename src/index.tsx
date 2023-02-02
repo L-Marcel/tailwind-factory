@@ -32,6 +32,10 @@ export type StyledElementOptions<V, D, O> = {
 
 export type FactoryElement = keyof JSX.IntrinsicElements | JSXElementConstructor<any>;
 
+export type FactoryStyles = {
+  [key: string]: number | string | FactoryStyles;
+};
+
 export function tf<
   Type extends FactoryElement,
   StyleVariants,
@@ -39,7 +43,7 @@ export function tf<
   DefaultStyleVariantsScheme extends FactoryExtractKeys<StyleVariants>
 >(
   element: Type,
-  styles = "",
+  styles: FactoryStyles | string = "",
   config: StyledElementOptions<
     StyleVariants,
     DefaultStyleVariants,
@@ -47,13 +51,10 @@ export function tf<
   > = {}
 ) {
   type Props = ComponentProps<Type>;
-
   type Variants = StyleVariants extends infer U ? FactoryExtractKeys<U> : any;
-
   type AllVariants = DefaultStyleVariants extends infer C
     ? Partial<Variants> & Required<Omit<Variants, keyof C>>
     : Variants;
-
   const definedVariants = config?.variants
     ? Object.entries(config?.variants).reduce((prev, [key]) => {
         prev.push(key);
@@ -93,8 +94,15 @@ export function tf<
       } as ElementProperties
     );
 
+    //temporary
+    const styleClasses = typeof styles === "string" ? styles : "";
+
+    if (typeof styles !== "string") {
+      console.log("styles: ", styles);
+    }
+
     const elementClassName = getStyledElementClassName(
-      styles,
+      styleClasses,
       variants,
       config?.variants || {}
     );

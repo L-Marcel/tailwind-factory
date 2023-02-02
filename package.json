@@ -16,7 +16,7 @@
   "scripts": {
     "test:e2e": "playwright test",
     "test": "jest --runInBand --watch --collect-coverage",
-    "dev:js": "babel src/** -d dist -x \".js,.ts,.tsx,.jsx\" -w --minified",
+    "dev:js": "babel src/** -d dist -x \".ts,.tsx\" -w",
     "dev:types": "tsc --emitDeclarationOnly -w",
     "set:changes": "changeset",
     "set:version": "changeset version",
@@ -28,6 +28,8 @@
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
+    "@babel/plugin-syntax-typescript": "^7.20.0",
+    "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@changesets/cli": "^2.26.0",
@@ -41,6 +43,7 @@
     "@types/babel__core": "^7.20.0",
     "@types/jest": "^29.2.6",
     "@types/node": "^18.11.18",
+    "@types/preval.macro": "^3.0.0",
     "@types/react": "^18.0.27",
     "@types/testing-library__jest-dom": "^5.14.5",
     "autoprefixer": "^10.4.13",
@@ -51,11 +54,11 @@
     "next": "^13.1.6",
     "node": "^19.4.0",
     "postcss": "^8.4.21",
+    "preval.macro": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.2.4",
     "ts-jest": "^29.0.5",
-    "typescript": "^4.9.4",
-    "@babel/preset-env": "^7.20.2"
+    "typescript": "^4.9.4"
   }
 }
