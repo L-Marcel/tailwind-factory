@@ -1,6 +1,6 @@
 [
   {
-    "reference": "factory__a7b785b0a531",
+    "reference": "factory__5ab4679d5fb7",
     "classes": "bg-blue-200",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
     "css": ".bg-blue-200 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254 / var(--tw-bg-opacity))\n}",

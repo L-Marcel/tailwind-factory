@@ -1,7 +1,11 @@
-module.exports = function (api) {
-  api.cache(false);
-  return {
-    presets: ["next/babel"],
-    plugins: ["tailwind-factory/plugin"],
-  };
+module.exports = {
+  presets: ["next/babel"],
+  plugins: [
+    [
+      "tailwind-factory/plugin",
+      {
+        preset: "next", //default: react
+      },
+    ],
+  ],
 };

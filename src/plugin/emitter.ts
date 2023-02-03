@@ -6,6 +6,7 @@ import { generateId } from "../utils/generateId";
 import postcss from "postcss";
 import tailwind from "tailwindcss";
 import path from "node:path";
+import { Logs } from "./logs";
 
 type ProcessDataParams = {
   filename: string;
@@ -217,24 +218,24 @@ export class StyleEmitter extends EventEmitter {
     if(path && finalStyle) {
       writeFile(path, finalStyle, (err) => {
         if(err) {
-          console.log("factory - unable to update styles");
+          Logs.error("Unable to update styles");
         }
 
-        console.log("factory - styles updated!");
+        Logs.info("styles updated");
 
         this.emit("createCache", JSON.stringify(this.styles, null, 2));
       });
     } else if(path) {
-      console.log("factory - no deep classes detected");
+      Logs.warning("No deep classes detected, skipping loading.");
     } else {
-      console.log("factory - styles path not defined");
+      Logs.error("Styles path not defined");
     }
   }
 
   writeCache(cache: string) {
     writeFile(cachePath, cache, (err) => {
       if(err) {
-        console.log("factory - unable to create cache");
+        Logs.error("Unable to create cache");
       }
 
       this.getCache();
@@ -250,7 +251,7 @@ emitter.on("createCache", async function(cache) {
   if(!cachePathAlreadyExists) {
     mkdir(cacheFolderPath, {}, (err) => {
       if(err) {
-        console.log("factory - unable to create cache folder");
+        Logs.error("Unable to create cache folder");
       } else {
         this.writeCache(cache);
       }

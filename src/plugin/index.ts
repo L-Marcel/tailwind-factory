@@ -1,12 +1,16 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import babel, { NodePath, PluginObj, types } from "@babel/core";
+import babel, { PluginObj, types } from "@babel/core";
 import { removeWhiteSpaceInClasses } from "../factory/tailwind";
 import { emitter } from "./emitter";
 import path from "node:path";
+import { Logs } from "./logs";
 
-type PluginType = {
+export type PluginPreset = "react" | "next";
+
+export type PluginType = {
+  preset?: PluginPreset;
   styles?: {
     path?: string;
   }
@@ -16,6 +20,7 @@ const defaultStylesPath = path.resolve(__dirname, "styles.css");
 
 export default function({ types: t }: typeof babel): PluginObj {
   let imported = false;
+  
   return {
     name: "tailwind-factory",
     visitor: {
@@ -44,15 +49,16 @@ export default function({ types: t }: typeof babel): PluginObj {
             const classes = removeWhiteSpaceInClasses(quasis.value.raw);
       
             if(classes) {
-              const filename = state.filename ?? "";
- 
-              const { reference, state: styleState } = emitter.register(filename, classes);
-
-              const wasUpdated = styleState === "updated";
-
               const config: PluginType = state.opts;
               const stylePath = config?.styles?.path ?? defaultStylesPath;
+              const preset = config?.preset ?? "react";
 
+              Logs.changePreset(preset);
+
+              const filename = state.filename ?? "";
+              const { reference, state: styleState } = emitter.register(filename, classes);
+              const wasUpdated = styleState === "updated";
+              
               if(!wasUpdated) {
                 emitter.emit("process", {
                   classes,
