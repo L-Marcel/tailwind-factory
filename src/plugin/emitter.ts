@@ -14,6 +14,12 @@ type ProcessDataParams = {
   stylePath?: string;
 };
 
+type CheckCacheParams = {
+  filename: string;
+  reference: string;
+  stylePath?: string;
+};
+
 type Style = {
   state: "cached" | "updated" | "loading";
   filename: string;
@@ -50,9 +56,7 @@ export class StyleEmitter extends EventEmitter {
   private files: string[] = [];
   private styles: Style[] = [];
 
-  constructor() {
-    super();
-
+  private getCache() {
     try {
       const rawCachedStyles = readFileSync(cachePath).toString();
       const cachedStyles: Style[] = JSON.parse(rawCachedStyles) ?? [];
@@ -69,6 +73,11 @@ export class StyleEmitter extends EventEmitter {
     } catch(_) {
       this.styles = [];
     }
+  }
+
+  constructor() {
+    super();
+    this.getCache();
   }
 
   private getStyle(classes: string) {
@@ -113,7 +122,7 @@ export class StyleEmitter extends EventEmitter {
     }
   }
 
-  private forceUpdateState(filename: string, reference: string) {
+  forceUpdateState(filename: string, reference: string) {
     const index = this.getStyleIndexByReference(filename, reference);
 
     if(index !== -1) {
@@ -150,7 +159,7 @@ export class StyleEmitter extends EventEmitter {
 
       return {
         reference: style.reference,
-        state: style.state
+        state: "updated"
       };
     } else {
       const id = generateId();
@@ -186,7 +195,7 @@ export class StyleEmitter extends EventEmitter {
   }
 
   private deleteUnnecessaryCachedStyles() {
-    this.styles.filter((style) => { return style.state !== "cached"; });
+    this.styles = this.styles.filter((style) => { return style.state !== "cached"; });
   }
 
   private getFormattedFinalStyles() {
@@ -208,26 +217,27 @@ export class StyleEmitter extends EventEmitter {
     if(path && finalStyle) {
       writeFile(path, finalStyle, (err) => {
         if(err) {
-          console.log("[Factory] Unable to update styles");
+          console.log("factory - unable to update styles");
         }
 
-        console.log("[Factory] Styles updated!");
+        console.log("factory - styles updated!");
 
         this.emit("createCache", JSON.stringify(this.styles, null, 2));
       });
     } else if(path) {
-      console.log("[Factory] No deep classes detected");
+      console.log("factory - no deep classes detected");
     } else {
-      console.log("[Factory] Styles path not defined");
+      console.log("factory - styles path not defined");
     }
   }
 
   writeCache(cache: string) {
     writeFile(cachePath, cache, (err) => {
       if(err) {
-        console.log(err);
-        console.log("[Factory] Unable to create cache");
+        console.log("factory - unable to create cache");
       }
+
+      this.getCache();
     });
   }
 }
@@ -240,7 +250,7 @@ emitter.on("createCache", async function(cache) {
   if(!cachePathAlreadyExists) {
     mkdir(cacheFolderPath, {}, (err) => {
       if(err) {
-        console.log("[Factory] Unable to create cache folder");
+        console.log("factory - unable to create cache folder");
       } else {
         this.writeCache(cache);
       }
