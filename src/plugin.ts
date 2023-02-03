@@ -6,12 +6,24 @@ import postcss from "postcss";
 import tailwind from "tailwindcss";
 import fs from "fs";
 import { removeWhiteSpaceInClasses } from "./factory/tailwind";
+import { EventEmitter } from "node:events";
 
 type PluginType = {
   styles?: {
     path?: string;
   }
 };
+
+type StyleRegister = {
+  filename: string;
+  classes: string[];
+};
+
+const emitter = new EventEmitter();
+
+emitter.on("register", (register: StyleRegister) => {
+  console.log(register);
+});
 
 export default function({ types: t }: typeof babel): PluginObj {
   let imported = false;
