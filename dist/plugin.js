@@ -30608,12 +30608,12 @@ var import_node_path = __toESM(require("path"));
 // src/plugin/logs.ts
 var import_kleur = __toESM(require("kleur"));
 var Logs = class {
-  static info(message, ...rest) {
+  static log(color, message, ...rest) {
     const runningInSSR = this.preset === "next";
     const alreadyPrinted = this.printedMessages.includes(message);
     const isSpecialMessage = this.specialMessages.includes(message);
     if (!runningInSSR || !alreadyPrinted) {
-      console.log(`${import_kleur.default.blue("style")} - ${message}`, ...rest);
+      console.log(`${import_kleur.default[color]("style")} - ${message}`, ...rest);
       this.printedMessages.push(message);
     } else if (isSpecialMessage) {
       this.printedMessages = this.printedMessages.filter((printedMessage) => {
@@ -30621,17 +30621,14 @@ var Logs = class {
       });
     }
   }
+  static info(message, ...rest) {
+    this.log("blue", message, ...rest);
+  }
   static error(message, ...rest) {
-    if (!this.printedMessages.includes(message)) {
-      console.log(`${import_kleur.default.red("style")} - ${message}`, ...rest);
-      this.printedMessages.push(message);
-    }
+    this.log("red", message, ...rest);
   }
   static warning(message, ...rest) {
-    if (!this.printedMessages.includes(message)) {
-      console.log(`${import_kleur.default.yellow("style ")} - ${message}`, ...rest);
-      this.printedMessages.push(message);
-    }
+    this.log("yellow", message, ...rest);
   }
   static changePreset(preset) {
     this.preset = preset;
@@ -30650,6 +30647,7 @@ var StyleEmitter = class extends import_node_events.EventEmitter {
     this._on = super.on;
     this._emit = super.emit;
     this.files = [];
+    this.cachedStyles = [];
     this.styles = [];
     this.getCache();
   }
@@ -30664,8 +30662,9 @@ var StyleEmitter = class extends import_node_events.EventEmitter {
       const rawCachedStyles = (0, import_node_fs.readFileSync)(cachePath).toString();
       const cachedStyles = JSON.parse(rawCachedStyles) ?? [];
       if (Array.isArray(cachedStyles)) {
-        this.styles = cachedStyles.map((cachedStyle) => {
-          this.registerFile(cachedStyle.filename);
+        this.styles = [];
+        this.files = [];
+        this.cachedStyles = cachedStyles.map((cachedStyle) => {
           return {
             ...cachedStyle,
             state: "cached"
@@ -30674,12 +30673,20 @@ var StyleEmitter = class extends import_node_events.EventEmitter {
       }
     } catch (_) {
       this.styles = [];
+      this.files = [];
+      this.cachedStyles = [];
     }
   }
-  getStyle(classes) {
-    return this.styles.find((style) => {
+  getRegisteredStyleUsingCache(classes) {
+    const styles = this.styles.find((style) => {
       return style.classes === classes;
     });
+    if (!styles) {
+      return this.cachedStyles.find((style) => {
+        return style.classes === classes;
+      });
+    }
+    return styles;
   }
   getStyleIndexByReference(filename, reference) {
     return this.styles.findIndex((style) => {
@@ -30691,16 +30698,16 @@ var StyleEmitter = class extends import_node_events.EventEmitter {
       return style.filename === filename;
     });
   }
-  registerStyle({ reference, classes, filename }) {
+  registerStyle({ reference, classes, filename }, css = "", state = "loading") {
     this.styles.push({
       reference,
       classes,
       filename,
-      css: "",
-      state: "loading"
+      css,
+      state
     });
   }
-  updateStyle({ reference, filename, css }, stylePath) {
+  updateStyle({ reference, filename, css }, stylePath2) {
     const index = this.getStyleIndexByReference(filename, reference);
     if (index !== -1) {
       this.styles[index] = {
@@ -30708,16 +30715,7 @@ var StyleEmitter = class extends import_node_events.EventEmitter {
         css,
         state: "updated"
       };
-      this.checkStyles(stylePath);
-    }
-  }
-  forceUpdateState(filename, reference) {
-    const index = this.getStyleIndexByReference(filename, reference);
-    if (index !== -1) {
-      this.styles[index] = {
-        ...this.styles[index],
-        state: "updated"
-      };
+      this.checkStyles(stylePath2);
     }
   }
   getFile(filename) {
@@ -30732,11 +30730,20 @@ var StyleEmitter = class extends import_node_events.EventEmitter {
     }
   }
   register(filename, classes) {
-    const style = this.getStyle(classes);
+    const style = this.getRegisteredStyleUsingCache(classes);
     if (style) {
       const wasCached = style.state === "cached";
       if (wasCached) {
-        this.forceUpdateState(filename, style.reference);
+        this.registerFile(filename);
+        this.registerStyle(
+          {
+            reference: style.reference,
+            classes: style.classes,
+            filename: style.filename
+          },
+          style.css,
+          "updated"
+        );
       }
       return {
         reference: style.reference,
@@ -30762,28 +30769,25 @@ var StyleEmitter = class extends import_node_events.EventEmitter {
       const styles = this.getStyleByFile(file);
       const allStylesWereLoaded = styles.every((style) => {
         const state = style.state;
-        return state !== "loading";
+        return state === "updated";
       });
       return allStylesWereLoaded;
     });
     return allStylesInFilesWereLoaded;
-  }
-  deleteUnnecessaryCachedStyles() {
-    this.styles = this.styles.filter((style) => {
-      return style.state !== "cached";
-    });
   }
   getFormattedFinalStyles() {
     return this.styles.map((style) => {
       return style.css;
     }).join(" ");
   }
-  checkStyles(stylesPath = "") {
+  checkStyles(stylePath2 = "") {
     const stylesWereUpdated = this.stylesWereUpdated();
     if (stylesWereUpdated) {
-      this.deleteUnnecessaryCachedStyles();
+      Logs.error(`When it returns from the cache it understands that it has already loaded everything because it is not asynchronous.
+
+With that he keeps calling the function several times, I'll review that`);
       const finalStyles = this.getFormattedFinalStyles();
-      this.putStyles(finalStyles, stylesPath);
+      this.putStyles(finalStyles, stylePath2);
     }
   }
   putStyles(finalStyle, path3) {
@@ -30824,26 +30828,28 @@ emitter.on("createCache", async function(cache) {
   }
   this.writeCache(cache);
 });
-emitter.on("process", async function({ classes, stylePath, filename, reference }) {
-  const res = await (0, import_postcss.default)((0, import_tailwindcss.default)({
-    corePlugins: {
-      preflight: false
-    },
-    content: [
-      {
-        raw: classes
-      }
-    ]
-  })).process("@tailwind utilities;", {
+emitter.on("process", async function({ classes, stylePath: stylePath2, filename, reference }) {
+  const res = await (0, import_postcss.default)(
+    (0, import_tailwindcss.default)({
+      corePlugins: {
+        preflight: false
+      },
+      content: [
+        {
+          raw: classes
+        }
+      ]
+    })
+  ).process("@tailwind utilities;", {
     from: void 0
   });
   const css = res.css;
-  this.updateStyle({ reference, filename, css }, stylePath);
+  this.updateStyle({ reference, filename, css }, stylePath2);
 });
 
 // src/plugin/index.ts
 var import_node_path2 = __toESM(require("path"));
-var defaultStylesPath = import_node_path2.default.resolve(__dirname, "styles.css");
+var stylePath = import_node_path2.default.resolve(__dirname, "styles.css");
 function plugin_default({ types: t }) {
   let imported = false;
   return {
@@ -30864,7 +30870,7 @@ function plugin_default({ types: t }) {
             const classes = removeWhiteSpaceInClasses(quasis.value.raw);
             if (classes) {
               const config = state.opts;
-              const stylePath = config?.styles?.path ?? defaultStylesPath;
+              stylePath = config?.styles?.path ?? stylePath;
               const preset = config?.preset ?? "react";
               Logs.changePreset(preset);
               const filename = state.filename ?? "";

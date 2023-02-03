@@ -7,3 +7,23 @@ export const Container = tf(
 `,
   {}
 );
+
+export const ContainerB = tf(
+  "div",
+  `
+  bg-blue-200
+  text-left
+  red
+`,
+  {}
+);
+
+export const ContainerC = tf(
+  "div",
+  `
+  bg-blue-200
+  text-left
+  red
+`,
+  {}
+);

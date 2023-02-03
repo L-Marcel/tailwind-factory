@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { EventEmitter } from "node:events";
 import { writeFile, readFileSync, existsSync, mkdir } from "node:fs";
 import { generateId } from "../utils/generateId";
@@ -12,12 +11,6 @@ type ProcessDataParams = {
   filename: string;
   reference: string;
   classes: string;
-  stylePath?: string;
-};
-
-type CheckCacheParams = {
-  filename: string;
-  reference: string;
   stylePath?: string;
 };
 
@@ -55,6 +48,7 @@ export class StyleEmitter extends EventEmitter {
   }
 
   private files: string[] = [];
+  private cachedStyles: Style[] = [];
   private styles: Style[] = [];
 
   private getCache() {
@@ -62,17 +56,20 @@ export class StyleEmitter extends EventEmitter {
       const rawCachedStyles = readFileSync(cachePath).toString();
       const cachedStyles: Style[] = JSON.parse(rawCachedStyles) ?? [];
 
-      if(Array.isArray(cachedStyles)) {
-        this.styles = cachedStyles.map((cachedStyle) => {
-          this.registerFile(cachedStyle.filename);
+      if (Array.isArray(cachedStyles)) {
+        this.styles = [];
+        this.files = [];
+        this.cachedStyles = cachedStyles.map((cachedStyle) => {
           return {
             ...cachedStyle,
-            state: "cached"
+            state: "cached",
           };
         });
       }
-    } catch(_) {
+    } catch (_) {
       this.styles = [];
+      this.files = [];
+      this.cachedStyles = [];
     }
   }
 
@@ -81,61 +78,65 @@ export class StyleEmitter extends EventEmitter {
     this.getCache();
   }
 
-  private getStyle(classes: string) {
-    return this.styles.find((style) => { 
-      return style.classes === classes; 
+  private getRegisteredStyleUsingCache(classes: string) {
+    const styles = this.styles.find((style) => {
+      return style.classes === classes;
     });
+
+    if (!styles) {
+      return this.cachedStyles.find((style) => {
+        return style.classes === classes;
+      });
+    }
+
+    return styles;
   }
 
   private getStyleIndexByReference(filename: string, reference: string) {
-    return this.styles.findIndex((style) => { 
-      return style.filename === filename && style.reference === reference; 
+    return this.styles.findIndex((style) => {
+      return style.filename === filename && style.reference === reference;
     });
   }
 
   private getStyleByFile(filename: string) {
-    return this.styles.filter((style) => { 
-      return style.filename === filename; 
+    return this.styles.filter((style) => {
+      return style.filename === filename;
     });
   }
 
-  private registerStyle({ reference, classes, filename }: Omit<Style, "css" | "state">) {
+  private registerStyle(
+    { reference, classes, filename }: Omit<Style, "css" | "state">,
+    css = "",
+    state: "loading" | "updated" = "loading"
+  ) {
     this.styles.push({
       reference,
       classes,
       filename,
-      css: "",
-      state: "loading"
+      css,
+      state,
     });
   }
 
-  updateStyle({ reference, filename, css }: Omit<Style, "classes" | "state">, stylePath?: string) {
+  updateStyle(
+    { reference, filename, css }: Omit<Style, "classes" | "state">,
+    stylePath?: string
+  ) {
     const index = this.getStyleIndexByReference(filename, reference);
 
-    if(index !== -1) {
+    if (index !== -1) {
       this.styles[index] = {
         ...this.styles[index],
         css,
-        state: "updated"
+        state: "updated",
       };
 
       this.checkStyles(stylePath);
     }
   }
 
-  forceUpdateState(filename: string, reference: string) {
-    const index = this.getStyleIndexByReference(filename, reference);
-
-    if(index !== -1) {
-      this.styles[index] = {
-        ...this.styles[index],
-        state: "updated"
-      };
-    }
-  }
-
   private getFile(filename: string) {
-    return this.files.find((file) => { 
+    return this.files.find((file) => {
       return file === filename;
     });
   }
@@ -143,24 +144,33 @@ export class StyleEmitter extends EventEmitter {
   private registerFile(filename: string) {
     const file = this.getFile(filename);
 
-    if(!file) {
+    if (!file) {
       this.files.push(filename);
     }
   }
 
   register(filename: string, classes: string): RegisterStyleResponse {
-    const style = this.getStyle(classes);
+    const style = this.getRegisteredStyleUsingCache(classes);
 
-    if(style) {
+    if (style) {
       const wasCached = style.state === "cached";
 
-      if(wasCached) {
-        this.forceUpdateState(filename, style.reference);
+      if (wasCached) {
+        this.registerFile(filename);
+        this.registerStyle(
+          {
+            reference: style.reference,
+            classes: style.classes,
+            filename: style.filename,
+          },
+          style.css,
+          "updated"
+        );
       }
 
       return {
         reference: style.reference,
-        state: "updated"
+        state: "updated",
       };
     } else {
       const id = generateId();
@@ -170,12 +180,12 @@ export class StyleEmitter extends EventEmitter {
       this.registerStyle({
         reference,
         classes,
-        filename
+        filename,
       });
 
       return {
         reference: reference,
-        state: "loading"
+        state: "loading",
       };
     }
   }
@@ -186,38 +196,40 @@ export class StyleEmitter extends EventEmitter {
 
       const allStylesWereLoaded = styles.every((style) => {
         const state = style.state;
-        return state !== "loading";
+        return state === "updated";
       });
 
       return allStylesWereLoaded;
     });
-    
+
     return allStylesInFilesWereLoaded;
   }
 
-  private deleteUnnecessaryCachedStyles() {
-    this.styles = this.styles.filter((style) => { return style.state !== "cached"; });
-  }
-
   private getFormattedFinalStyles() {
-    return this.styles.map((style) => { return style.css; }).join(" ");
+    return this.styles
+      .map((style) => {
+        return style.css;
+      })
+      .join(" ");
   }
 
-  checkStyles(stylesPath = "") {
+  checkStyles(stylePath = "") {
     const stylesWereUpdated = this.stylesWereUpdated();
 
     if (stylesWereUpdated) {
-      this.deleteUnnecessaryCachedStyles();
-      
+      Logs.error(`When it returns from the cache it understands that it has already loaded everything because it is not asynchronous.
+
+With that he keeps calling the function several times, I'll review that`);
+
       const finalStyles = this.getFormattedFinalStyles();
-      this.putStyles(finalStyles, stylesPath);
+      this.putStyles(finalStyles, stylePath);
     }
   }
 
   private putStyles(finalStyle: string, path: string) {
-    if(path && finalStyle) {
+    if (path && finalStyle) {
       writeFile(path, finalStyle, (err) => {
-        if(err) {
+        if (err) {
           Logs.error("Unable to update styles");
         }
 
@@ -225,7 +237,7 @@ export class StyleEmitter extends EventEmitter {
 
         this.emit("createCache", JSON.stringify(this.styles, null, 2));
       });
-    } else if(path) {
+    } else if (path) {
       Logs.warning("No deep classes detected, skipping loading.");
     } else {
       Logs.error("Styles path not defined");
@@ -234,7 +246,7 @@ export class StyleEmitter extends EventEmitter {
 
   writeCache(cache: string) {
     writeFile(cachePath, cache, (err) => {
-      if(err) {
+      if (err) {
         Logs.error("Unable to create cache");
       }
 
@@ -245,34 +257,36 @@ export class StyleEmitter extends EventEmitter {
 
 const emitter = new StyleEmitter();
 
-emitter.on("createCache", async function(cache) {
+emitter.on("createCache", async function (cache) {
   const cachePathAlreadyExists = existsSync(cacheFolderPath);
-  
-  if(!cachePathAlreadyExists) {
+
+  if (!cachePathAlreadyExists) {
     mkdir(cacheFolderPath, {}, (err) => {
-      if(err) {
+      if (err) {
         Logs.error("Unable to create cache folder");
       } else {
         this.writeCache(cache);
       }
     });
   }
-    
+
   this.writeCache(cache);
 });
 
-emitter.on("process", async function({ classes, stylePath, filename, reference }) {
-  const res = await postcss(tailwind({
-    corePlugins: {
-      preflight: false
-    },
-    content: [
-      {
-        raw: classes
-      }
-    ],
-  })).process("@tailwind utilities;", {
-    from: undefined
+emitter.on("process", async function ({ classes, stylePath, filename, reference }) {
+  const res = await postcss(
+    tailwind({
+      corePlugins: {
+        preflight: false,
+      },
+      content: [
+        {
+          raw: classes,
+        },
+      ],
+    })
+  ).process("@tailwind utilities;", {
+    from: undefined,
   });
 
   const css = res.css;

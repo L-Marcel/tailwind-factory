@@ -18,10 +18,10 @@ specifiers:
   jest: ^29.3.1
   jest-environment-jsdom: ^29.4.1
   kleur: ^4.1.5
-  nanoid: ^4.0.0
   next: ^13.1.6
   node: ^19.4.0
   postcss: ^8.4.21
+  prettier: ^2.8.3
   react: ^18.2.0
   react-dom: ^18.2.0
   tailwindcss: ^3.2.4
@@ -31,7 +31,6 @@ specifiers:
 
 dependencies:
   kleur: 4.1.5
-  nanoid: 4.0.0
   postcss: 8.4.21
 
 devDependencies:
@@ -53,6 +52,7 @@ devDependencies:
   jest-environment-jsdom: 29.4.1
   next: 13.1.6_pjwopsidmaokadturxaafygjp4
   node: 19.4.0
+  prettier: 2.8.3
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   tailwindcss: 3.2.4_postcss@8.4.21
@@ -4460,12 +4460,6 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-
-  /nanoid/4.0.0:
-    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
-    engines: {node: ^14 || ^16 || >=18}
-    hasBin: true
-    dev: false
 
   /natural-compare-lite/1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}

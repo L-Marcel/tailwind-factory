@@ -16,7 +16,7 @@ export type PluginType = {
   }
 };
 
-const defaultStylesPath = path.resolve(__dirname, "styles.css");
+let stylePath = path.resolve(__dirname, "styles.css");
 
 export default function({ types: t }: typeof babel): PluginObj {
   let imported = false;
@@ -45,12 +45,13 @@ export default function({ types: t }: typeof babel): PluginObj {
           callee.name === "tf"
         ) {
           if(methodArguments.length >= 2 && t.isTemplateLiteral(methodArguments[1])) {
+ 
             const quasis = methodArguments[1].quasis[0];
             const classes = removeWhiteSpaceInClasses(quasis.value.raw);
       
             if(classes) {
               const config: PluginType = state.opts;
-              const stylePath = config?.styles?.path ?? defaultStylesPath;
+              stylePath = config?.styles?.path ?? stylePath;
               const preset = config?.preset ?? "react";
 
               Logs.changePreset(preset);
