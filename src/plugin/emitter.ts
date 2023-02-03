@@ -47,6 +47,7 @@ export class StyleEmitter extends EventEmitter {
     return this._emit(eventName, options);
   }
 
+  private loadedFiles: string[] = [];
   private files: string[] = [];
   private cachedStyles: Style[] = [];
   private styles: Style[] = [];
@@ -59,6 +60,7 @@ export class StyleEmitter extends EventEmitter {
       if (Array.isArray(cachedStyles)) {
         this.styles = [];
         this.files = [];
+        this.loadedFiles = [];
         this.cachedStyles = cachedStyles.map((cachedStyle) => {
           return {
             ...cachedStyle,
@@ -69,6 +71,7 @@ export class StyleEmitter extends EventEmitter {
     } catch (_) {
       this.styles = [];
       this.files = [];
+      this.loadedFiles = [];
       this.cachedStyles = [];
     }
   }
@@ -141,6 +144,25 @@ export class StyleEmitter extends EventEmitter {
     });
   }
 
+  setLoadedFile(filename: string, stylePath?: string) {
+    const file = this.getFile(filename);
+
+    if (file) {
+      this.loadedFiles.push(filename);
+      this.checkStyles(stylePath);
+    }
+  }
+
+  clearLoadedFile(filename: string) {
+    const file = this.getFile(filename);
+
+    if (file) {
+      this.loadedFiles = this.loadedFiles.filter((file) => {
+        return file !== filename;
+      });
+    }
+  }
+
   private registerFile(filename: string) {
     const file = this.getFile(filename);
 
@@ -199,7 +221,7 @@ export class StyleEmitter extends EventEmitter {
         return state === "updated";
       });
 
-      return allStylesWereLoaded;
+      return allStylesWereLoaded && this.loadedFiles.includes(file);
     });
 
     return allStylesInFilesWereLoaded;
@@ -217,10 +239,6 @@ export class StyleEmitter extends EventEmitter {
     const stylesWereUpdated = this.stylesWereUpdated();
 
     if (stylesWereUpdated) {
-      Logs.error(`When it returns from the cache it understands that it has already loaded everything because it is not asynchronous.
-
-With that he keeps calling the function several times, I'll review that`);
-
       const finalStyles = this.getFormattedFinalStyles();
       this.putStyles(finalStyles, stylePath);
     }
@@ -233,7 +251,7 @@ With that he keeps calling the function several times, I'll review that`);
           Logs.error("Unable to update styles");
         }
 
-        Logs.info("styles updated");
+        Logs.info("new not cached styles updated and cached");
 
         this.emit("createCache", JSON.stringify(this.styles, null, 2));
       });

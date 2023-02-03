@@ -23,6 +23,20 @@ export default function({ types: t }: typeof babel): PluginObj {
   
   return {
     name: "tailwind-factory",
+    pre: (state) => {
+      const filename = state.opts.filename ?? "";
+      emitter.clearLoadedFile(filename);
+    },
+    post: (state) => {
+      if(imported) {
+        const filename = state.opts.filename ?? "";
+        
+        //temporary
+        setTimeout(() => {
+          emitter.setLoadedFile(filename, stylePath);
+        }, 1000);
+      }
+    },
     visitor: {
       ImportDeclaration(path) {
         const source = path.node.source.value;

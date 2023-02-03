@@ -1,13 +1,20 @@
 [
   {
-    "reference": "factory__abdbbd50b9d3",
+    "reference": "factory__b11c573f7ef6",
+    "classes": "bg-slate-50",
+    "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\another.ts",
+    "css": ".bg-slate-50 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(248 250 252 / var(--tw-bg-opacity))\n}",
+    "state": "updated"
+  },
+  {
+    "reference": "factory__0d4441c9d5df",
     "classes": "bg-blue-200",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
     "css": ".bg-blue-200 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254 / var(--tw-bg-opacity))\n}",
     "state": "updated"
   },
   {
-    "reference": "factory__a93eef281b54",
+    "reference": "factory__d0d1bfbcd719",
     "classes": "bg-blue-200 text-left red",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
     "css": ".bg-blue-200 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254 / var(--tw-bg-opacity))\n}\n.text-left {\n    text-align: left\n}",

@@ -6,7 +6,7 @@ type LogsColors = "blue" | "red" | "yellow";
 export class Logs {
   private static preset: PluginPreset = "react";
   static printedMessages: string[] = [];
-  static specialMessages: string[] = ["styles updated"];
+  static specialMessages: string[] = ["new not cached styles updated and cached"];
 
   private static log(color: LogsColors, message: string, ...rest: any[]) {
     const runningInSSR = this.preset === "next";

@@ -27,3 +27,13 @@ export const ContainerC = tf(
 `,
   {}
 );
+
+export const ContainerD = tf(
+  "div",
+  `
+  bg-blue-200
+  text-left
+  red
+`,
+  {}
+);
