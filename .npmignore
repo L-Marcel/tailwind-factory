@@ -21,3 +21,5 @@ setupTests.ts
 coverage
 web
 .babelrc.json
+tsup.config.ts
+dist/cache

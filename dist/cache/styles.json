@@ -1,0 +1,9 @@
+[
+  {
+    "reference": "factory__12b0b246abdb",
+    "classes": "hover:text-red-500 md:flex first-letter:rounded-none placeholder:text-red-200 after:text-sm checked:text-md bg-blue-200 test custom-css",
+    "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
+    "css": ".bg-blue-200 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254 / var(--tw-bg-opacity))\n}\n.first-letter\\:rounded-none::first-letter {\n    border-radius: 0px\n}\n.placeholder\\:text-red-200::placeholder {\n    --tw-text-opacity: 1;\n    color: rgb(254 202 202 / var(--tw-text-opacity))\n}\n.after\\:text-sm::after {\n    content: var(--tw-content);\n    font-size: 0.875rem;\n    line-height: 1.25rem\n}\n.hover\\:text-red-500:hover {\n    --tw-text-opacity: 1;\n    color: rgb(239 68 68 / var(--tw-text-opacity))\n}\n@media (min-width: 768px) {\n    .md\\:flex {\n        display: flex\n    }\n}",
+    "state": "updated"
+  }
+]
