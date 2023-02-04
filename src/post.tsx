@@ -64,7 +64,7 @@ export class Post {
 
         if (
           !canBeABlock &&
-          !canBeABlock &&
+          !isInsideBlock &&
           nextElementIsKey &&
           (isIntrinsicElement(possibleElement) || startWithDot || startWithHashTag)
         ) {
@@ -88,7 +88,7 @@ export class Post {
           }
 
           return prev;
-        } else if (!canBeABlock && !canBeABlock && cur === ">") {
+        } else if (!canBeABlock && !isInsideBlock && cur === ">") {
           blockContent = [];
           canBeABlock = true;
           withArrow = true;

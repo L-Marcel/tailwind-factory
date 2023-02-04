@@ -1,21 +1,16 @@
-.text-clip {
-    text-overflow: clip
+.factory__671ad341aec8 {
+  --tw-text-opacity: 1;
+  color: rgb(254 202 202/var(--tw-text-opacity));
 }
-.bg-blue-200 {
+@media (min-width: 640px) {
+  .factory__671ad341aec8 {
     --tw-bg-opacity: 1;
-    background-color: rgb(191 219 254 / var(--tw-bg-opacity))
+    background-color: rgb(191 219 254/var(--tw-bg-opacity));
+  }
 }
-.text-left {
-    text-align: left
-}
-.bg-blue-200 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(191 219 254 / var(--tw-bg-opacity))
-}
-.bg-slate-600 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(71 85 105 / var(--tw-bg-opacity))
-}
-.text-left {
-    text-align: left
+@media (min-width: 768px) {
+  .factory__671ad341aec8:hover {
+    --tw-text-opacity: 1;
+    color: rgb(254 202 202/var(--tw-text-opacity));
+  }
 }

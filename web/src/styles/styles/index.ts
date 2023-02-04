@@ -4,31 +4,12 @@ export const Container = tf(
   "div",
   `
   bg-blue-200
-  text-clip
-  text-left
-  red
-`,
-  {}
-);
 
-export const ContainerB = tf(
-  "div",
-  `
-  bg-blue-200
-  text-clip
-  text-left
-  red
-`,
-  {}
-);
-
-export const ContainerC = tf(
-  "div",
-  `
-  bg-blue-200
-  text
-  text
-  red
+  div {
+    text-red-200
+    sm:bg-blue-200
+    hover:md:text-red-200
+  }
 `,
   {}
 );

@@ -8,6 +8,7 @@ import path from "node:path";
 
 import { StyleController } from "./controller";
 import { Logs } from "./logs";
+import { StyleFactory } from "./factory";
 
 export type PluginPreset = "react";
 
@@ -65,29 +66,17 @@ export default function({ types: t }: typeof babel): PluginObj {
           if(methodArguments.length >= 2 && t.isTemplateLiteral(methodArguments[1])) {
             const quasis = methodArguments[1].quasis[0];
             const classes = removeWhiteSpaceInClasses(quasis.value.raw);
-      
-            if(classes) {
-              const config: PluginType = state.opts;
-              stylePath = config?.styles?.path ?? stylePath;
-              //const preset = config?.preset ?? "react";
 
-              const filename = state.filename ?? "";
-              const { reference, state: styleState } = emitter.register(filename, classes);
-              const wasUpdated = styleState === "updated";
+            const config: PluginType = state.opts;
+            const filename = state.filename ?? "";
 
-              if(!wasUpdated) {
-                emitter.emit("process", {
-                  classes,
-                  filename,
-                  reference,
-                  stylePath
-                });
-              } else {
-                StyleController.keepCacheCycle(filename);
-                emitter.checkStyles(stylePath);
-              }
-              
-              quasis.value.raw = reference;
+            stylePath = config?.styles?.path ?? stylePath;
+
+            const separatedClasses = StyleFactory.separateClasses(classes);
+            const finalClasses = StyleFactory.formateStyleClasses(separatedClasses, filename, stylePath);
+
+            if(finalClasses) {
+              quasis.value.raw = finalClasses;
             }
           }
         }

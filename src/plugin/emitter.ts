@@ -4,11 +4,20 @@ import { generateId } from "../utils/generateId";
 import postcss from "postcss";
 import tailwind from "tailwindcss";
 import { StyleController } from "./controller";
+import { DeepStyleClass, StyleFactory } from "./factory";
+import { getTailwindClasses } from "../utils/getTailwindClasses";
 
-type ProcessDataParams = {
+export type ProcessDataParams = {
   filename: string;
   reference: string;
   classes: string;
+  stylePath?: string;
+};
+
+export type ProcessDeepClassesParams = {
+  filename: string;
+  reference: string;
+  deepClass: DeepStyleClass;
   stylePath?: string;
 };
 
@@ -24,7 +33,7 @@ type CreateStyleParams = {
 };
 
 type Event = {
-  process(this: StyleEmitter, data: ProcessDataParams): void;
+  process(this: StyleEmitter, data: ProcessDeepClassesParams): void;
   create(this: StyleEmitter, data: CreateStyleParams): void;
 };
 
@@ -263,24 +272,13 @@ emitter.on("create", async function ({ filename, path, styles }) {
   });
 });
 
-emitter.on("process", async function ({ classes, stylePath, filename, reference }) {
+emitter.on("process", async function ({ deepClass, stylePath, filename, reference }) {
   StyleController.keepCacheCycle(filename);
-  const res = await postcss(
-    tailwind({
-      corePlugins: {
-        preflight: false,
-      },
-      content: [
-        {
-          raw: classes,
-        },
-      ],
-    })
-  ).process("@tailwind utilities;", {
-    from: undefined,
-  });
 
-  const css = res.css;
+  const css = await StyleFactory.generateClassTree(deepClass, {
+    reference,
+    main: true,
+  });
 
   this.updateStyle({ reference, filename, css }, stylePath);
 });

@@ -111,10 +111,14 @@ export class StyleController {
   }
 
   static getFormattedCache() {
-    const rawCachedStyles = readFileSync(StyleController.cachePath).toString();
-    const cachedStyles: FactoryPlugin.Style[] = JSON.parse(rawCachedStyles) ?? [];
+    try {
+      const rawCachedStyles = readFileSync(StyleController.cachePath).toString();
+      const cachedStyles: FactoryPlugin.Style[] = JSON.parse(rawCachedStyles) ?? [];
 
-    return cachedStyles;
+      return cachedStyles;
+    } catch (_) {
+      return [];
+    }
   }
 
   static startCacheCycle(filename: string) {
