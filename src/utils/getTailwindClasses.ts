@@ -10,8 +10,8 @@ function generateTailwindStylesFile(components: DeepReference[] = []) {
   }
 
   const componentsCss = components
-    .map(({ reference, css }) => {
-      return `.${reference}\n{${css}\n}`;
+    .map(({ css }) => {
+      return css;
     })
     .join("\n");
 
@@ -20,6 +20,10 @@ function generateTailwindStylesFile(components: DeepReference[] = []) {
 @tailwind components;
 @layer components {
   ${componentsCss}
+
+  .red {
+    color: red;
+  }
 }
   `;
 }

@@ -277,7 +277,6 @@ emitter.on("process", async function ({ deepClass, stylePath, filename, referenc
 
   const css = await StyleFactory.generateClassTree(deepClass, {
     reference,
-    main: true,
   });
 
   this.updateStyle({ reference, filename, css }, stylePath);

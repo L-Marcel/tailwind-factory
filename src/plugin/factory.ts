@@ -1,21 +1,21 @@
 import { checkLayer } from "../utils/checkLayer";
-import { generateId } from "../utils/generateId";
 import { getTailwindClasses } from "../utils/getTailwindClasses";
 import { isIntrinsicElement } from "../utils/isIntrinsicElement";
 import { stringToArray } from "../utils/stringToArray";
 import { StyleController } from "./controller";
 import { ProcessDeepClassesParams, emitter } from "./emitter";
 import sass from "sass";
+import { generateId } from "../utils/generateId";
 
 export type DeepReference = {
   css: string;
   reference: string;
+  identifier: string;
 };
 
 type GenerateClassTreeOptions = {
   reference: string;
   identifier?: string;
-  main: boolean;
 };
 
 export type DeepStyleClass = {
@@ -155,7 +155,7 @@ export class StyleFactory {
 
   static async generateClassTree(
     deepClass: DeepStyleClass,
-    { reference, identifier, main }: GenerateClassTreeOptions
+    { reference, identifier }: GenerateClassTreeOptions
   ) {
     const classes: string[] = [];
     const components: DeepReference[] = [];
@@ -169,22 +169,26 @@ export class StyleFactory {
         continue;
       }
 
+      const id = generateId();
+      const componentReference = `deep_${id}`;
+
       const css = await StyleFactory.generateClassTree(currentClass, {
-        main: false,
-        reference,
+        reference: componentReference,
         identifier: currentClass.identifier,
       });
 
-      classes.push(currentClass.identifier);
+      classes.push(componentReference);
       components.push({
-        reference: currentClass.identifier,
+        reference: componentReference,
+        identifier: currentClass.identifier,
         css,
       });
     }
 
+    const rawClasses = classes.join(" ");
     const res = await getTailwindClasses(
       `
-      ${deepClass.rawClasses}
+      ${rawClasses}
     `,
       components
     );
@@ -200,23 +204,33 @@ export class StyleFactory {
           ? styleClass.replace(/:/g, "\\:")
           : styleClass;
 
+        const component = components.find((component) => {
+          return component.reference === formattedStyleClass;
+        });
+
         const classIsDetected = formattedTailwindCss.includes(formattedStyleClass);
         const haveDot = formattedStyleClass.startsWith(".");
 
+        const classReferAComponent = component && classIsDetected;
+        const fromClass = `${haveDot ? "" : "."}${formattedStyleClass}`;
+        const toReplace = "&";
+
+        if (classReferAComponent) {
+          return;
+        }
+
         formattedTailwindCss = classIsDetected
-          ? formattedTailwindCss.replace(
-              `${haveDot ? "" : "."}${formattedStyleClass}`,
-              "&"
-            )
+          ? formattedTailwindCss.replace(fromClass, toReplace)
           : formattedTailwindCss;
       }
     });
 
+    const blockReference = identifier ?? `.${reference}`;
+
     const compiledCss = sass.compileString(
-      `${main ? `.${reference}` : identifier} {\n${formattedTailwindCss}\n}`
+      `${blockReference} {\n${formattedTailwindCss}\n}`
     );
 
-    console.log(`${main ? `.${reference}` : identifier} {\n${formattedTailwindCss}\n}`);
     return compiledCss.css;
   }
 }
