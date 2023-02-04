@@ -56,10 +56,19 @@ export class StyleFactory {
       }
 
       const hasComma = cur.endsWith(",");
-      const specialCharacters = [".", "#", "*", ":", "&"];
+      const haveBrackets = cur.includes("[") && cur.includes("]");
+
+      const elementWihoutBrackets = haveBrackets ? cur.split("[")[0] : cur;
+      const posibleElement = hasComma
+        ? elementWihoutBrackets.replace(",", "")
+        : elementWihoutBrackets;
+
+      const specialCharacters = [".", "#", "*", ":", "&", ">"];
+      const specialDeclarationsCharacters = ["&", ">"];
       const specialOperators = ["+", ">"];
 
       const isAnOperator = specialOperators.includes(cur);
+      const isASpecialDeclarationCharacter = specialDeclarationsCharacters.includes(cur);
 
       const startWithSpecialCharacter = specialCharacters.some((specialCharacter) => {
         return cur.startsWith(specialCharacter);
@@ -68,15 +77,27 @@ export class StyleFactory {
       const nextElementIsKey =
         (index < list.length - 1 && list[index + 1] === "{") || hasComma;
 
+      const nextElementIsAnOperator =
+        index < list.length - 1 && specialOperators.includes(list[index + 1]);
+
       if (
         !canBeABlock &&
-        nextElementIsKey &&
-        (isIntrinsicElement(cur) || startWithSpecialCharacter)
+        (nextElementIsKey || nextElementIsAnOperator || isASpecialDeclarationCharacter) &&
+        (isIntrinsicElement(posibleElement) || startWithSpecialCharacter)
       ) {
         blockContent = [];
         canBeABlock = true;
-        blockType = [cur];
 
+        if (nextElementIsAnOperator) {
+          const nextElement = list[index + 1];
+          const nextElementIsAnArrow = nextElement === ">";
+
+          if (cur === "&" && nextElementIsAnArrow) {
+            return prev;
+          }
+        }
+
+        blockType = [cur];
         return prev;
       } else if (canBeABlock && !isInsideBlock && (nextElementIsKey || isAnOperator)) {
         blockType.push(cur);
