@@ -1,1 +1,1 @@
-export class StylesFactory {}
+export class StyleFactory {}

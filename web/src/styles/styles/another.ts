@@ -3,7 +3,8 @@ import { tf } from "tailwind-factory";
 export const ContainerD = tf(
   "div",
   `
-  bg-slate-50
+  bg-slate-600
+  text-left
 `,
   {}
 );

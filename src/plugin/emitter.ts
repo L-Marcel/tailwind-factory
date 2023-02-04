@@ -1,11 +1,9 @@
 import { EventEmitter } from "node:events";
-import { writeFile, readFileSync, existsSync, mkdir } from "node:fs";
 import { generateId } from "../utils/generateId";
 
 import postcss from "postcss";
 import tailwind from "tailwindcss";
-import path from "node:path";
-import { Logs } from "./logs";
+import { StyleController } from "./controller";
 
 type ProcessDataParams = {
   filename: string;
@@ -14,26 +12,21 @@ type ProcessDataParams = {
   stylePath?: string;
 };
 
-type Style = {
-  state: "cached" | "updated" | "loading";
-  filename: string;
+type RegisterStyleResponse = {
+  state: FactoryPlugin.Style["state"];
   reference: string;
-  classes: string;
-  css: string;
 };
 
-type RegisterStyleResponse = {
-  state: Style["state"];
-  reference: string;
+type CreateStyleParams = {
+  filename: string;
+  styles: FactoryPlugin.Style[];
+  path: string;
 };
 
 type Event = {
   process(this: StyleEmitter, data: ProcessDataParams): void;
-  createCache(this: StyleEmitter, cache: string): void;
+  create(this: StyleEmitter, data: CreateStyleParams): void;
 };
-
-const cacheFolderPath = path.resolve(__dirname, "cache");
-const cachePath = path.resolve(__dirname, "cache", "styles.json");
 
 export class StyleEmitter extends EventEmitter {
   private _on = super.on;
@@ -49,18 +42,42 @@ export class StyleEmitter extends EventEmitter {
 
   private loadedFiles: string[] = [];
   private files: string[] = [];
-  private cachedStyles: Style[] = [];
-  private styles: Style[] = [];
+  private cachedStyles: FactoryPlugin.Style[] = [];
+  private styles: FactoryPlugin.Style[] = [];
 
-  private getCache() {
+  private reset(filename?: string, error = false) {
+    if (filename) {
+      this.styles = this.styles.filter((style) => {
+        return style.filename !== filename;
+      });
+
+      this.files = this.files.filter((file) => {
+        return file !== filename;
+      });
+
+      this.loadedFiles = this.loadedFiles.filter((loadedFile) => {
+        return loadedFile !== filename;
+      });
+
+      this.cachedStyles = this.cachedStyles.filter((cachedStyle) => {
+        return cachedStyle.filename !== filename || !error;
+      });
+
+      return;
+    }
+
+    this.styles = [];
+    this.files = [];
+    this.loadedFiles = [];
+    this.cachedStyles = [];
+  }
+
+  getCache(filename?: string) {
     try {
-      const rawCachedStyles = readFileSync(cachePath).toString();
-      const cachedStyles: Style[] = JSON.parse(rawCachedStyles) ?? [];
+      const cachedStyles = StyleController.getFormattedCache();
 
       if (Array.isArray(cachedStyles)) {
-        this.styles = [];
-        this.files = [];
-        this.loadedFiles = [];
+        this.reset(filename);
         this.cachedStyles = cachedStyles.map((cachedStyle) => {
           return {
             ...cachedStyle,
@@ -69,10 +86,7 @@ export class StyleEmitter extends EventEmitter {
         });
       }
     } catch (_) {
-      this.styles = [];
-      this.files = [];
-      this.loadedFiles = [];
-      this.cachedStyles = [];
+      this.reset(filename, true);
     }
   }
 
@@ -81,14 +95,14 @@ export class StyleEmitter extends EventEmitter {
     this.getCache();
   }
 
-  private getRegisteredStyleUsingCache(classes: string) {
+  private getRegisteredStyleUsingCache(filename: string, classes: string) {
     const styles = this.styles.find((style) => {
       return style.classes === classes;
     });
 
     if (!styles) {
       return this.cachedStyles.find((style) => {
-        return style.classes === classes;
+        return style.classes === classes && style.filename == filename;
       });
     }
 
@@ -108,7 +122,7 @@ export class StyleEmitter extends EventEmitter {
   }
 
   private registerStyle(
-    { reference, classes, filename }: Omit<Style, "css" | "state">,
+    { reference, classes, filename }: Omit<FactoryPlugin.Style, "css" | "state">,
     css = "",
     state: "loading" | "updated" = "loading"
   ) {
@@ -122,12 +136,14 @@ export class StyleEmitter extends EventEmitter {
   }
 
   updateStyle(
-    { reference, filename, css }: Omit<Style, "classes" | "state">,
+    { reference, filename, css }: Omit<FactoryPlugin.Style, "classes" | "state">,
     stylePath?: string
   ) {
     const index = this.getStyleIndexByReference(filename, reference);
 
     if (index !== -1) {
+      StyleController.keepCacheCycle(filename);
+
       this.styles[index] = {
         ...this.styles[index],
         css,
@@ -172,7 +188,7 @@ export class StyleEmitter extends EventEmitter {
   }
 
   register(filename: string, classes: string): RegisterStyleResponse {
-    const style = this.getRegisteredStyleUsingCache(classes);
+    const style = this.getRegisteredStyleUsingCache(filename, classes);
 
     if (style) {
       const wasCached = style.state === "cached";
@@ -183,7 +199,7 @@ export class StyleEmitter extends EventEmitter {
           {
             reference: style.reference,
             classes: style.classes,
-            filename: style.filename,
+            filename,
           },
           style.css,
           "updated"
@@ -212,8 +228,8 @@ export class StyleEmitter extends EventEmitter {
     }
   }
 
-  private stylesWereUpdated() {
-    const allStylesInFilesWereLoaded = this.files.every((file) => {
+  checkStyles(stylePath = "") {
+    this.files = this.files.reduce((prev, file) => {
       const styles = this.getStyleByFile(file);
 
       const allStylesWereLoaded = styles.every((style) => {
@@ -221,77 +237,34 @@ export class StyleEmitter extends EventEmitter {
         return state === "updated";
       });
 
-      return allStylesWereLoaded && this.loadedFiles.includes(file);
-    });
+      const processWasFinished = allStylesWereLoaded && this.loadedFiles.includes(file);
 
-    return allStylesInFilesWereLoaded;
-  }
-
-  private getFormattedFinalStyles() {
-    return this.styles
-      .map((style) => {
-        return style.css;
-      })
-      .join(" ");
-  }
-
-  checkStyles(stylePath = "") {
-    const stylesWereUpdated = this.stylesWereUpdated();
-
-    if (stylesWereUpdated) {
-      const finalStyles = this.getFormattedFinalStyles();
-      this.putStyles(finalStyles, stylePath);
-    }
-  }
-
-  private putStyles(finalStyle: string, path: string) {
-    if (path && finalStyle) {
-      writeFile(path, finalStyle, (err) => {
-        if (err) {
-          Logs.error("Unable to update styles");
-        }
-
-        Logs.info("new not cached styles updated and cached");
-
-        this.emit("createCache", JSON.stringify(this.styles, null, 2));
-      });
-    } else if (path) {
-      Logs.warning("No deep classes detected, skipping loading.");
-    } else {
-      Logs.error("Styles path not defined");
-    }
-  }
-
-  writeCache(cache: string) {
-    writeFile(cachePath, cache, (err) => {
-      if (err) {
-        Logs.error("Unable to create cache");
+      if (!processWasFinished) {
+        prev.push(file);
+        return prev;
       }
 
-      this.getCache();
-    });
+      this.emit("create", {
+        filename: file,
+        styles,
+        path: stylePath,
+      });
+
+      return prev;
+    }, [] as string[]);
   }
 }
 
 const emitter = new StyleEmitter();
 
-emitter.on("createCache", async function (cache) {
-  const cachePathAlreadyExists = existsSync(cacheFolderPath);
-
-  if (!cachePathAlreadyExists) {
-    mkdir(cacheFolderPath, {}, (err) => {
-      if (err) {
-        Logs.error("Unable to create cache folder");
-      } else {
-        this.writeCache(cache);
-      }
-    });
-  }
-
-  this.writeCache(cache);
+emitter.on("create", async function ({ filename, path, styles }) {
+  StyleController.write(path, filename, styles, () => {
+    this.getCache(filename);
+  });
 });
 
 emitter.on("process", async function ({ classes, stylePath, filename, reference }) {
+  StyleController.keepCacheCycle(filename);
   const res = await postcss(
     tailwind({
       corePlugins: {

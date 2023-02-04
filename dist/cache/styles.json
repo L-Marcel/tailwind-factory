@@ -1,23 +1,23 @@
 [
   {
-    "reference": "factory__b11c573f7ef6",
-    "classes": "bg-slate-50",
-    "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\another.ts",
-    "css": ".bg-slate-50 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(248 250 252 / var(--tw-bg-opacity))\n}",
+    "reference": "factory__ac923c8a74b8",
+    "classes": "bg-blue-200 text-clip text-left red",
+    "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
+    "css": ".text-clip {\n    text-overflow: clip\n}\n.bg-blue-200 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254 / var(--tw-bg-opacity))\n}\n.text-left {\n    text-align: left\n}",
     "state": "updated"
   },
   {
-    "reference": "factory__0d4441c9d5df",
-    "classes": "bg-blue-200",
+    "reference": "factory__9331092b880f",
+    "classes": "bg-blue-200 text text red",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
     "css": ".bg-blue-200 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254 / var(--tw-bg-opacity))\n}",
     "state": "updated"
   },
   {
-    "reference": "factory__d0d1bfbcd719",
-    "classes": "bg-blue-200 text-left red",
-    "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
-    "css": ".bg-blue-200 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254 / var(--tw-bg-opacity))\n}\n.text-left {\n    text-align: left\n}",
+    "reference": "factory__102ae2558ccb",
+    "classes": "bg-slate-600 text-left",
+    "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\another.ts",
+    "css": ".bg-slate-600 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(71 85 105 / var(--tw-bg-opacity))\n}\n.text-left {\n    text-align: left\n}",
     "state": "updated"
   }
 ]
