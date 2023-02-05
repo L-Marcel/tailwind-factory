@@ -1,9 +1,6 @@
-import { Container } from "@/styles/styles";
+import { Container } from "@/styles";
+import Image from "next/image";
 
 export default function Home() {
-  return (
-    <>
-      <Container />
-    </>
-  );
+  return <Container></Container>;
 }

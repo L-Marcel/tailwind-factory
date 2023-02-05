@@ -15,10 +15,12 @@ export type PluginType = {
   preset?: PluginPreset;
   styles?: {
     path?: string;
+    config?: string;
   };
 };
 
 let stylePath = path.resolve(__dirname, "styles.css");
+let configPath = "../../tailwind.config.js";
 
 export default function ({ types: t }: typeof babel): PluginObj {
   let imported = false;
@@ -51,7 +53,6 @@ export default function ({ types: t }: typeof babel): PluginObj {
       },
       CallExpression(path, state) {
         const callee = path.node.callee;
-
         const methodArguments = path.node.arguments as [
           any,
           types.TemplateLiteral,
@@ -69,6 +70,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
           const filename = state.filename ?? "";
 
           stylePath = config?.styles?.path ?? stylePath;
+          configPath = config?.styles?.config ?? configPath;
 
           if (methodArguments.length >= 2 && t.isTemplateLiteral(methodArguments[1])) {
             const quasis = methodArguments[1].quasis[0];
@@ -82,6 +84,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
                 identifier: "",
               },
               filename,
+              configPath,
               stylePath
             );
 
@@ -138,6 +141,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
                             identifier: "",
                           },
                           filename,
+                          configPath,
                           stylePath,
                           baseReference
                         );

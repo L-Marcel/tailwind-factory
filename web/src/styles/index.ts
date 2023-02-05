@@ -1,16 +1,16 @@
 import { tf } from "tailwind-factory";
 
+//No utility classes were detected in your source
 export const Container = tf(
   "div",
   `
-  text-red-200
-  
   ~ h1 {
     text-xl
   }
   
   div {
-    sm:bg-blue-200
+    sm:bg-test-500
+    text-test-500
 
     ~ h2 {
       text-red-200

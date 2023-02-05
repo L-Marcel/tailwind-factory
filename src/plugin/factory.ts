@@ -16,6 +16,7 @@ export type DeepReference = {
 type GenerateClassTreeOptions = {
   reference: string;
   identifier?: string;
+  configPath?: string;
 };
 
 export type DeepStyleClass = {
@@ -122,7 +123,12 @@ export class StyleFactory {
   }
 
   private static processStyles(
-    { filename, deepClass, stylePath }: Omit<ProcessDeepClassesParams, "reference">,
+    {
+      filename,
+      deepClass,
+      stylePath,
+      configPath,
+    }: Omit<ProcessDeepClassesParams, "reference">,
     _reference?: string
   ) {
     const { reference, state: styleState } = emitter.register(
@@ -137,6 +143,7 @@ export class StyleFactory {
       emitter.emit("process", {
         deepClass,
         filename,
+        configPath,
         reference,
         stylePath,
       });
@@ -151,6 +158,7 @@ export class StyleFactory {
   static formateStyleClasses(
     deepStyleClass: DeepStyleClass,
     filename: string,
+    configPath: string,
     stylePath: string,
     _reference?: string
   ) {
@@ -159,6 +167,7 @@ export class StyleFactory {
         deepClass: deepStyleClass,
         filename,
         stylePath,
+        configPath,
       },
       _reference
     );
@@ -207,7 +216,7 @@ export class StyleFactory {
 
   static async generateClassTree(
     deepClass: DeepStyleClass,
-    { reference, identifier }: GenerateClassTreeOptions
+    { reference, identifier, configPath }: GenerateClassTreeOptions
   ) {
     const classes: string[] = [];
     const components: DeepReference[] = [];
@@ -225,6 +234,7 @@ export class StyleFactory {
       const componentReference = `deep_${id}`;
 
       const css = await StyleFactory.generateClassTree(currentClass, {
+        configPath,
         reference: componentReference,
         identifier: currentClass.identifier,
       });
@@ -242,7 +252,8 @@ export class StyleFactory {
       `
       ${rawClasses}
     `,
-      components
+      components,
+      configPath
     );
 
     let formattedTailwindCss = res.css;

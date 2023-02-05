@@ -5,6 +5,7 @@ type PluginType = {
     preset?: PluginPreset;
     styles?: {
         path?: string;
+        config?: string;
     };
 };
 declare function export_default({ types: t }: typeof babel): PluginObj;

@@ -1,6 +1,8 @@
 import postcss from "postcss";
-import tailwind from "tailwindcss";
+import tailwind, { Config } from "tailwindcss";
 import { DeepReference } from "../plugin/factory";
+import { FactoryConfig } from "../plugin/config";
+import { Logs } from "../plugin/logs";
 
 function generateTailwindStylesFile(components: DeepReference[] = []) {
   const haveComponents = components.length >= 1;
@@ -27,21 +29,40 @@ function generateTailwindStylesFile(components: DeepReference[] = []) {
   `;
 }
 
-export async function getTailwindClasses(raw: string, components: DeepReference[] = []) {
-  const result = await postcss(
-    tailwind({
+export async function getTailwindClasses(
+  raw: string,
+  components: DeepReference[] = [],
+  configPath?: string
+) {
+  let tailwindConfig: Config = {
+    corePlugins: {
+      preflight: false,
+    },
+    content: [
+      {
+        raw,
+      },
+    ],
+  };
+
+  if (configPath) {
+    const config = await FactoryConfig.getTailwindConfig(configPath);
+    tailwindConfig = {
+      ...config,
+      ...tailwindConfig,
+
       corePlugins: {
         preflight: false,
       },
-      content: [
-        {
-          raw,
-        },
-      ],
-    })
-  ).process(generateTailwindStylesFile(components), {
-    from: undefined,
-  });
+    };
+  }
+
+  const result = await postcss(tailwind(tailwindConfig)).process(
+    generateTailwindStylesFile(components),
+    {
+      from: undefined,
+    }
+  );
 
   return result;
 }

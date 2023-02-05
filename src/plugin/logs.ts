@@ -10,19 +10,19 @@ export class Logs {
 
     if (!alreadyPrinted) {
       console.log(`${kleur[color]("style")} - ${message}`, ...rest);
-      this.printedMessages.push(message);
+      Logs.printedMessages.push(message);
     }
   }
 
   static info(message: string, ...rest: any[]) {
-    this.log("blue", message, ...rest);
+    Logs.log("blue", message, ...rest);
   }
 
   static error(message: string, ...rest: any[]) {
-    this.log("red", message, ...rest);
+    Logs.log("red", message, ...rest);
   }
 
   static warning(message: string, ...rest: any[]) {
-    this.log("yellow", message, ...rest);
+    Logs.log("yellow", message, ...rest);
   }
 }

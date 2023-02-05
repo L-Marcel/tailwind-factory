@@ -19,6 +19,7 @@ export type ProcessDeepClassesParams = {
   reference: string;
   deepClass: DeepStyleClass;
   stylePath?: string;
+  configPath?: string;
 };
 
 type RegisterStyleResponse = {
@@ -276,14 +277,18 @@ emitter.on("create", async function ({ filename, path, styles }) {
   });
 });
 
-emitter.on("process", async function ({ deepClass, stylePath, filename, reference }) {
-  StyleController.keepCacheCycle(filename);
+emitter.on(
+  "process",
+  async function ({ deepClass, stylePath, filename, reference, configPath }) {
+    StyleController.keepCacheCycle(filename);
 
-  const css = await StyleFactory.generateClassTree(deepClass, {
-    reference,
-  });
+    const css = await StyleFactory.generateClassTree(deepClass, {
+      reference,
+      configPath,
+    });
 
-  this.updateStyle({ reference, filename, css }, stylePath);
-});
+    this.updateStyle({ reference, filename, css }, stylePath);
+  }
+);
 
 export { emitter };

@@ -6,7 +6,9 @@ module.exports = (api) => {
       [
         "tailwind-factory/plugin",
         {
-          preset: "next", //default: react
+          styles: {
+            config: "../web/tailwind.config.js",
+          },
         },
       ],
     ],

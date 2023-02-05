@@ -27,14 +27,10 @@ export type FactoryExtractKeysAndValues<V> = {
 export type StyledElementOptions<V, D, O> = {
   variants?: V;
   defaultVariants?: D & Partial<O>;
-  mode?: "legacy";
+  mode?: "plugin" | "legacy";
 };
 
 export type FactoryElement = keyof JSX.IntrinsicElements | JSXElementConstructor<any>;
-
-export type FactoryStyles = {
-  [key: string]: number | string | FactoryStyles;
-};
 
 export function tf<
   Type extends FactoryElement,
@@ -43,7 +39,7 @@ export function tf<
   DefaultStyleVariantsScheme extends FactoryExtractKeys<StyleVariants>
 >(
   element: Type,
-  styles: FactoryStyles | string = "",
+  styles = "",
   config: StyledElementOptions<
     StyleVariants,
     DefaultStyleVariants,
@@ -94,15 +90,8 @@ export function tf<
       } as ElementProperties
     );
 
-    //temporary
-    const styleClasses = typeof styles === "string" ? styles : "";
-
-    if (typeof styles !== "string") {
-      console.log("styles: ", styles);
-    }
-
     const elementClassName = getStyledElementClassName(
-      styleClasses,
+      styles,
       variants,
       config?.variants || {}
     );
@@ -116,7 +105,10 @@ export function tf<
     let className = elementClassName + classNameInProps;
     let children = elementProps?.children;
 
-    if (className.includes("{") && className.includes("}")) {
+    const mode = config?.mode ?? "plugin";
+    const modeIsLegacy = mode === "legacy";
+
+    if (modeIsLegacy && className.includes("{") && className.includes("}")) {
       const { newChildren, newClassNames } = Post.children(children, className);
 
       children = newChildren;
@@ -216,7 +208,10 @@ export function tf<
       let className = elementClassName + classNameInProps;
       let children = elementProps?.children;
 
-      if (className.includes("{") && className.includes("}")) {
+      const mode = newConfig?.mode ?? "plugin";
+      const modeIsLegacy = mode === "legacy";
+
+      if (modeIsLegacy && className.includes("{") && className.includes("}")) {
         const { newChildren, newClassNames } = Post.children(children, className);
         children = newChildren;
         className = newClassNames;
