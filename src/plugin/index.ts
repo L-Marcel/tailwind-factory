@@ -73,10 +73,14 @@ export default function({ types: t }: typeof babel): PluginObj {
             stylePath = config?.styles?.path ?? stylePath;
 
             const separatedClasses = StyleFactory.separateClasses(classes);
-            const finalClasses = StyleFactory.formateStyleClasses(separatedClasses, filename, stylePath);
+            const finalClass = StyleFactory.formateStyleClasses({
+              rawClasses: classes,
+              classes: separatedClasses,
+              identifier: "",
+            }, filename, stylePath);
 
-            if(finalClasses) {
-              quasis.value.raw = finalClasses;
+            if(finalClass) {
+              quasis.value.raw = finalClass;
             }
           }
         }

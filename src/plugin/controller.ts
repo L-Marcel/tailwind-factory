@@ -98,7 +98,9 @@ export class StyleController {
     StyleController.filesInQueue = [];
     StyleController.writeCache(usedCachedStyles, () => {
       Logs.info("styles stored in cache");
-      Logs.printedMessages = [];
+      setTimeout(() => {
+        Logs.printedMessages = [];
+      }, 1200);
     });
   }
 

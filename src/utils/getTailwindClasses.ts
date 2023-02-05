@@ -6,7 +6,10 @@ function generateTailwindStylesFile(components: DeepReference[] = []) {
   const haveComponents = components.length >= 1;
 
   if (!haveComponents) {
-    return "@tailwind utilities;";
+    return `
+@tailwind utilities;
+@tailwind components;
+    `;
   }
 
   const componentsCss = components
@@ -20,16 +23,12 @@ function generateTailwindStylesFile(components: DeepReference[] = []) {
 @tailwind components;
 @layer components {
   ${componentsCss}
-
-  .red {
-    color: red;
-  }
 }
   `;
 }
 
 export async function getTailwindClasses(raw: string, components: DeepReference[] = []) {
-  return await postcss(
+  const result = await postcss(
     tailwind({
       corePlugins: {
         preflight: false,
@@ -43,4 +42,6 @@ export async function getTailwindClasses(raw: string, components: DeepReference[
   ).process(generateTailwindStylesFile(components), {
     from: undefined,
   });
+
+  return result;
 }

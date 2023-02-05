@@ -63,9 +63,9 @@ export class StyleFactory {
         ? elementWihoutBrackets.replace(",", "")
         : elementWihoutBrackets;
 
-      const specialCharacters = [".", "#", "*", ":", "&", ">"];
-      const specialDeclarationsCharacters = ["&", ">"];
-      const specialOperators = ["+", ">"];
+      const specialOperators = ["+", ">", "~"];
+      const specialDeclarationsCharacters = ["&", ...specialOperators];
+      const specialCharacters = [".", "#", "*", ":", ...specialDeclarationsCharacters];
 
       const isAnOperator = specialOperators.includes(cur);
       const isASpecialDeclarationCharacter = specialDeclarationsCharacters.includes(cur);
@@ -149,29 +149,56 @@ export class StyleFactory {
   }
 
   static formateStyleClasses(
-    styleClasses: StyleClass[],
+    deepStyleClass: DeepStyleClass,
     filename: string,
     stylePath: string
   ) {
-    return styleClasses
-      .reduce((prev, styleClass) => {
-        const isString = typeof styleClass === "string";
+    const reference = StyleFactory.processStyles({
+      deepClass: deepStyleClass,
+      filename,
+      stylePath,
+    });
 
-        if (isString) {
-          prev.push(styleClass);
-          return prev;
-        }
+    return reference;
+  }
 
-        const reference = StyleFactory.processStyles({
-          deepClass: styleClass,
-          filename,
-          stylePath,
-        });
+  static addReferenceBeforeOperator(css: string, operator: string) {
+    const id = generateId();
+    const temporaryReference = `.__prevent_deprecation_${id}`;
 
-        prev.push(reference);
-        return prev;
-      }, [] as string[])
-      .join(" ");
+    if (!css.includes("{")) {
+      return {
+        css,
+        temporaryReference,
+      };
+    }
+
+    const [declaration, ...rest] = css.split("{");
+
+    const operatorRegex = new RegExp(operator, "g");
+
+    const newDeclaration = declaration.replace(
+      operatorRegex,
+      `${temporaryReference} ${operator}`
+    );
+
+    const newCss = [newDeclaration, ...rest].join("{");
+
+    return {
+      css: newCss,
+      temporaryReference,
+    };
+  }
+
+  static removeReferenceBeforeOperator(css: string, reference: string, operator: string) {
+    if (!css.includes(reference)) {
+      return css;
+    }
+
+    const referenceRegex = new RegExp(`${reference} ${operator}`, "g");
+    const newCss = css.replace(referenceRegex, operator);
+
+    return newCss;
   }
 
   static async generateClassTree(
@@ -247,6 +274,28 @@ export class StyleFactory {
     });
 
     const blockReference = identifier ?? `.${reference}`;
+
+    const specialOperators = ["+", "~", ">"];
+    const specialOperator = specialOperators.find((operator) => {
+      return blockReference.startsWith(operator);
+    });
+
+    if (specialOperator) {
+      const { css: newCss, temporaryReference } = StyleFactory.addReferenceBeforeOperator(
+        `${blockReference} {\n${formattedTailwindCss}\n}`,
+        specialOperator
+      );
+
+      const compiledCss = sass.compileString(newCss);
+
+      const finalCss = StyleFactory.removeReferenceBeforeOperator(
+        compiledCss.css,
+        temporaryReference,
+        specialOperator
+      );
+
+      return finalCss;
+    }
 
     const compiledCss = sass.compileString(
       `${blockReference} {\n${formattedTailwindCss}\n}`

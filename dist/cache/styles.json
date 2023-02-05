@@ -1,9 +1,9 @@
 [
   {
-    "reference": "factory__d323d782d6f4",
-    "classes": "sm:bg-blue-200 > h1 { text-xl } p { text-sm span, strong { text-yellow-300 } }",
+    "reference": "factory__15a389051b1a",
+    "classes": "text-red-200 ~ h1 { text-xl } div { sm:bg-blue-200 ~ h2 { text-red-200 } > h1, > h2 { text-xl } p { text-lg span, strong { text-yellow-300 } } }",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\styles\\index.ts",
-    "css": ".factory__d323d782d6f4 > h1 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n.factory__d323d782d6f4 p {\n  font-size: 0.875rem;\n  line-height: 1.25rem;\n}\n.factory__d323d782d6f4 p span, .factory__d323d782d6f4 p strong {\n  --tw-text-opacity: 1;\n  color: rgb(253 224 71/var(--tw-text-opacity));\n}\n@media (min-width: 640px) {\n  .factory__d323d782d6f4 {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254/var(--tw-bg-opacity));\n  }\n}",
+    "css": ".factory__15a389051b1a {\n  --tw-text-opacity: 1;\n  color: rgb(254 202 202/var(--tw-text-opacity));\n}\n.factory__15a389051b1a ~ h1 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n.factory__15a389051b1a div ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(254 202 202/var(--tw-text-opacity));\n}\n.factory__15a389051b1a div > h1, .factory__15a389051b1a div > h2 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n.factory__15a389051b1a div p {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n}\n.factory__15a389051b1a div p span, .factory__15a389051b1a div p strong {\n  --tw-text-opacity: 1;\n  color: rgb(253 224 71/var(--tw-text-opacity));\n}\n@media (min-width: 640px) {\n  .factory__15a389051b1a div {\n    --tw-bg-opacity: 1;\n    background-color: rgb(191 219 254/var(--tw-bg-opacity));\n  }\n}",
     "state": "updated"
   }
 ]
