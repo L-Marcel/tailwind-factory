@@ -121,14 +121,14 @@ export class StyleFactory {
     return result;
   }
 
-  private static processStyles({
-    filename,
-    deepClass,
-    stylePath,
-  }: Omit<ProcessDeepClassesParams, "reference">) {
+  private static processStyles(
+    { filename, deepClass, stylePath }: Omit<ProcessDeepClassesParams, "reference">,
+    _reference?: string
+  ) {
     const { reference, state: styleState } = emitter.register(
       filename,
-      deepClass.rawClasses
+      deepClass.rawClasses,
+      _reference
     );
 
     const wasUpdated = styleState === "updated";
@@ -151,13 +151,17 @@ export class StyleFactory {
   static formateStyleClasses(
     deepStyleClass: DeepStyleClass,
     filename: string,
-    stylePath: string
+    stylePath: string,
+    _reference?: string
   ) {
-    const reference = StyleFactory.processStyles({
-      deepClass: deepStyleClass,
-      filename,
-      stylePath,
-    });
+    const reference = StyleFactory.processStyles(
+      {
+        deepClass: deepStyleClass,
+        filename,
+        stylePath,
+      },
+      _reference
+    );
 
     return reference;
   }

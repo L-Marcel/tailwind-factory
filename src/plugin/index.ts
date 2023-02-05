@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import babel, { PluginObj, types } from "@babel/core";
@@ -16,14 +15,14 @@ export type PluginType = {
   preset?: PluginPreset;
   styles?: {
     path?: string;
-  }
+  };
 };
 
 let stylePath = path.resolve(__dirname, "styles.css");
 
-export default function({ types: t }: typeof babel): PluginObj {
+export default function ({ types: t }: typeof babel): PluginObj {
   let imported = false;
-  
+
   return {
     name: "tailwind-factory",
     pre: (state) => {
@@ -37,7 +36,7 @@ export default function({ types: t }: typeof babel): PluginObj {
       emitter.clearLoadedFile(filename);
     },
     post: (state) => {
-      if(imported) {
+      if (imported) {
         const filename = state.opts.filename ?? "";
         emitter.setLoadedFile(filename, stylePath);
       }
@@ -45,46 +44,120 @@ export default function({ types: t }: typeof babel): PluginObj {
     visitor: {
       ImportDeclaration(path) {
         const source = path.node.source.value;
-        
-        if(!imported && source === "tailwind-factory") {
+
+        if (!imported && source === "tailwind-factory") {
           imported = true;
         }
       },
       CallExpression(path, state) {
         const callee = path.node.callee;
-       
+
         const methodArguments = path.node.arguments as [
           any,
           types.TemplateLiteral,
-          any
+          types.ObjectExpression
         ];
 
         if (
-          imported && (callee.type === "Identifier" || callee.type === "V8IntrinsicIdentifier") && 
+          imported &&
+          (callee.type === "Identifier" || callee.type === "V8IntrinsicIdentifier") &&
           callee.name === "tf"
         ) {
-          if(methodArguments.length >= 2 && t.isTemplateLiteral(methodArguments[1])) {
+          let componentReference = "";
+
+          const config: PluginType = state.opts;
+          const filename = state.filename ?? "";
+
+          stylePath = config?.styles?.path ?? stylePath;
+
+          if (methodArguments.length >= 2 && t.isTemplateLiteral(methodArguments[1])) {
             const quasis = methodArguments[1].quasis[0];
             const classes = removeWhiteSpaceInClasses(quasis.value.raw);
 
-            const config: PluginType = state.opts;
-            const filename = state.filename ?? "";
-
-            stylePath = config?.styles?.path ?? stylePath;
-
             const separatedClasses = StyleFactory.separateClasses(classes);
-            const finalClass = StyleFactory.formateStyleClasses({
-              rawClasses: classes,
-              classes: separatedClasses,
-              identifier: "",
-            }, filename, stylePath);
+            const finalClass = StyleFactory.formateStyleClasses(
+              {
+                rawClasses: classes,
+                classes: separatedClasses,
+                identifier: "",
+              },
+              filename,
+              stylePath
+            );
 
-            if(finalClass) {
-              quasis.value.raw = finalClass;
-            }
+            componentReference = finalClass;
+            quasis.value.raw = finalClass;
+          }
+
+          if (methodArguments.length >= 3 && t.isObjectExpression(methodArguments[2])) {
+            const optionsProperties = methodArguments[2].properties;
+
+            optionsProperties.forEach((property) => {
+              if (
+                t.isObjectProperty(property) &&
+                t.isIdentifier(property?.key) &&
+                property?.key?.name === "variants" &&
+                t.isObjectExpression(property?.value)
+              ) {
+                const variants = property.value.properties;
+
+                variants.forEach((variant) => {
+                  if (
+                    t.isObjectProperty(variant) &&
+                    t.isIdentifier(variant?.key) &&
+                    variant?.key?.name &&
+                    t.isObjectExpression(variant?.value)
+                  ) {
+                    const name = variant.key.name;
+                    const values = variant.value.properties;
+
+                    values.forEach((value) => {
+                      if (
+                        t.isObjectProperty(value) &&
+                        t.isIdentifier(value?.key) &&
+                        value?.key?.name
+                      ) {
+                        const key = value?.key.name;
+                        const baseReference = `${componentReference}_${name}_${key}`;
+
+                        let valueRaw = "";
+
+                        if (t.isTemplateLiteral(value?.value)) {
+                          valueRaw = value?.value.quasis[0].value.raw;
+                        } else if (t.isStringLiteral(value?.value)) {
+                          valueRaw = value?.value.value;
+                        }
+
+                        const classes = removeWhiteSpaceInClasses(valueRaw);
+
+                        const separatedClasses = StyleFactory.separateClasses(classes);
+                        const finalVariantClass = StyleFactory.formateStyleClasses(
+                          {
+                            rawClasses: classes,
+                            classes: separatedClasses,
+                            identifier: "",
+                          },
+                          filename,
+                          stylePath,
+                          baseReference
+                        );
+
+                        if (t.isTemplateLiteral(value?.value)) {
+                          const quasis = value?.value.quasis[0];
+                          quasis.value.raw = finalVariantClass;
+                        } else if (t.isStringLiteral(value?.value)) {
+                          const _variant = value?.value;
+                          _variant.value = finalVariantClass;
+                        }
+                      }
+                    });
+                  }
+                });
+              }
+            });
           }
         }
       },
-    }
+    },
   };
 }

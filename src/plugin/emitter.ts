@@ -196,7 +196,11 @@ export class StyleEmitter extends EventEmitter {
     }
   }
 
-  register(filename: string, classes: string): RegisterStyleResponse {
+  register(
+    filename: string,
+    classes: string,
+    _reference?: string
+  ): RegisterStyleResponse {
     const style = this.getRegisteredStyleUsingCache(filename, classes);
 
     if (style) {
@@ -221,7 +225,7 @@ export class StyleEmitter extends EventEmitter {
       };
     } else {
       const id = generateId();
-      const reference = `factory__${id}`;
+      const reference = _reference ?? `factory__${id}`;
 
       this.registerFile(filename);
       this.registerStyle({
