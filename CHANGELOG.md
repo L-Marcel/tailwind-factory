@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.0.0
+
+### Major Changes
+
+- adding custom plugin, improving deep classes and adding logs
+
 ## 1.5.12
 
 ### Patch Changes

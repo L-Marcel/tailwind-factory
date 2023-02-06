@@ -3,6 +3,9 @@
 
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 
+# WARNING
+Download the alpha version at your own risk, it is still undocumented and has changed a lot. I'm making it available to perform tests in the production environment.
+
 # Summary
 1. [Installation](#installation)
    1. [Tailwind Configuration](#tailwind-configuration)
@@ -437,4 +440,7 @@ export const NewComponent = Parent.extends(ParentComponent, `
 ```
 
 # Roadmap
-I'm trying to create a macro in the "macro" branch to improve the application. I don't know if I'll make it, but I'm studying.
+- [ ] Finish plugin
+  - Full deep classes support 
+- [ ] Release 2.0.0 version
+- [ ] Add custom colors in extension

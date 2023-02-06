@@ -1,6 +1,6 @@
 {
   "name": "tailwind-factory",
-  "version": "1.5.12",
+  "version": "2.0.0",
   "description": "A lib to create and extends React components like stitches using Tailwind classes!",
   "keywords": [
     "tailwind",
@@ -19,6 +19,7 @@
     "build": "tsup --minify",
     "set:changes": "changeset",
     "set:version": "changeset version",
+    "set:alpha:version": "changeset version --pre-release=alpha",
     "set:publish": "changeset publish"
   },
   "author": "Lucas Marcel Silva de Brito <lmgh1312@gmail.com> (https://github.com/l-marcel)",

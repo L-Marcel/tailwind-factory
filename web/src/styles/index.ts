@@ -8,7 +8,7 @@ export const Container = tf(
   flex-col
   items-center
   w-screen
-  h-full
+  h-screen
   overflow-hidden
   pt-10
   bg-slate-800
@@ -16,7 +16,9 @@ export const Container = tf(
   {
     variants: {
       theme: {
-        dark: ``,
+        dark: `
+          
+        `,
         light: ``,
       },
     },

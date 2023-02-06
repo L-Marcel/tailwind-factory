@@ -1,9 +1,9 @@
 [
   {
-    "reference": "factory__434f2468b819",
-    "classes": "flex flex-col items-center w-screen h-full overflow-hidden pt-10 bg-slate-800",
+    "reference": "factory__790b496cb4cd",
+    "classes": "flex flex-col items-center w-screen h-screen overflow-hidden pt-10 bg-slate-800",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\index.ts",
-    "css": ".factory__434f2468b819 {\n  display: flex;\n}\n.factory__434f2468b819 {\n  height: 100%;\n}\n.factory__434f2468b819 {\n  width: 100vw;\n}\n.factory__434f2468b819 {\n  flex-direction: column;\n}\n.factory__434f2468b819 {\n  align-items: center;\n}\n.factory__434f2468b819 {\n  overflow: hidden;\n}\n.factory__434f2468b819 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(30 41 59/var(--tw-bg-opacity));\n}\n.factory__434f2468b819 {\n  padding-top: 2.5rem;\n}",
+    "css": ".factory__790b496cb4cd {\n  display: flex;\n}\n.factory__790b496cb4cd {\n  height: 100vh;\n}\n.factory__790b496cb4cd {\n  width: 100vw;\n}\n.factory__790b496cb4cd {\n  flex-direction: column;\n}\n.factory__790b496cb4cd {\n  align-items: center;\n}\n.factory__790b496cb4cd {\n  overflow: hidden;\n}\n.factory__790b496cb4cd {\n  --tw-bg-opacity: 1;\n  background-color: rgb(30 41 59/var(--tw-bg-opacity));\n}\n.factory__790b496cb4cd {\n  padding-top: 2.5rem;\n}",
     "state": "updated"
   },
   {
