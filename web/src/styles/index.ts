@@ -7,25 +7,17 @@ export const Container = tf(
   ~ h1 {
     text-xl
   }
-  
+
   div {
     sm:bg-test-500
     text-test-500
 
     ~ h2 {
-      text-red-200
+      text-gray-700
     }
     
     > h1, > h2 {
       text-xl
-    }
-
-    p {
-      text-lg
-
-      span, strong {
-        text-yellow-300
-      }
     }
   }
 `,

@@ -1,23 +1,23 @@
 [
   {
-    "reference": "factory__ac05ae8426be",
-    "classes": "~ h1 { text-xl } div { sm:bg-test-500 text-test-500 ~ h2 { text-red-200 } > h1, > h2 { text-xl } p { text-lg span, strong { text-yellow-300 } } }",
+    "reference": "factory__c570ea56a4be",
+    "classes": "~ h1 { text-xl } div { sm:bg-test-500 text-test-500 ~ h2 { text-gray-700 } > h1, > h2 { text-xl } }",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\index.ts",
-    "css": ".factory__ac05ae8426be ~ h1 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n.factory__ac05ae8426be div {\n  --tw-text-opacity: 1;\n  color: rgb(255 0 0/var(--tw-text-opacity));\n}\n.factory__ac05ae8426be div ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(254 202 202/var(--tw-text-opacity));\n}\n.factory__ac05ae8426be div > h1, .factory__ac05ae8426be div > h2 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n.factory__ac05ae8426be div p {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n}\n.factory__ac05ae8426be div p span, .factory__ac05ae8426be div p strong {\n  --tw-text-opacity: 1;\n  color: rgb(253 224 71/var(--tw-text-opacity));\n}\n@media (min-width: 640px) {\n  .factory__ac05ae8426be div {\n    --tw-bg-opacity: 1;\n    background-color: rgb(255 0 0/var(--tw-bg-opacity));\n  }\n}",
+    "css": ".factory__c570ea56a4be ~ h1 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n.factory__c570ea56a4be div {\n  --tw-text-opacity: 1;\n  color: rgb(255 0 0/var(--tw-text-opacity));\n}\n.factory__c570ea56a4be div ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(55 65 81/var(--tw-text-opacity));\n}\n.factory__c570ea56a4be div > h1, .factory__c570ea56a4be div > h2 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n@media (min-width: 640px) {\n  .factory__c570ea56a4be div {\n    --tw-bg-opacity: 1;\n    background-color: rgb(255 0 0/var(--tw-bg-opacity));\n  }\n}",
     "state": "updated"
   },
   {
-    "reference": "factory__ffb9f761a785_theme_dark",
+    "reference": "factory__1a4de3e25bbb_theme_dark",
     "classes": "~ h2 { text-red-500 } p { text-lg span, strong { text-blue-600 } }",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\index.ts",
-    "css": ".factory__ffb9f761a785_theme_dark ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(239 68 68/var(--tw-text-opacity));\n}\n.factory__ffb9f761a785_theme_dark p {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n}\n.factory__ffb9f761a785_theme_dark p span, .factory__ffb9f761a785_theme_dark p strong {\n  --tw-text-opacity: 1;\n  color: rgb(37 99 235/var(--tw-text-opacity));\n}",
+    "css": ".factory__1a4de3e25bbb_theme_dark ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(239 68 68/var(--tw-text-opacity));\n}\n.factory__1a4de3e25bbb_theme_dark p {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n}\n.factory__1a4de3e25bbb_theme_dark p span, .factory__1a4de3e25bbb_theme_dark p strong {\n  --tw-text-opacity: 1;\n  color: rgb(37 99 235/var(--tw-text-opacity));\n}",
     "state": "updated"
   },
   {
-    "reference": "factory__ffb9f761a785_theme_light",
+    "reference": "factory__1a4de3e25bbb_theme_light",
     "classes": "~ h2 { text-red-400 }",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\index.ts",
-    "css": ".factory__ffb9f761a785_theme_light ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(248 113 113/var(--tw-text-opacity));\n}",
+    "css": ".factory__1a4de3e25bbb_theme_light ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(248 113 113/var(--tw-text-opacity));\n}",
     "state": "updated"
   }
 ]

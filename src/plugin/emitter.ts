@@ -1,24 +1,21 @@
 import { EventEmitter } from "node:events";
 import { generateId } from "../utils/generateId";
-
-import postcss from "postcss";
-import tailwind from "tailwindcss";
 import { StyleController } from "./controller";
 import { DeepStyleClass, StyleFactory } from "./factory";
-import { getTailwindClasses } from "../utils/getTailwindClasses";
 
 export type ProcessDataParams = {
   filename: string;
   reference: string;
   classes: string;
-  stylePath?: string;
+  outputStylePath?: string;
 };
 
 export type ProcessDeepClassesParams = {
   filename: string;
   reference: string;
   deepClass: DeepStyleClass;
-  stylePath?: string;
+  outputStylePath?: string;
+  inputStylePath?: string;
   configPath?: string;
 };
 
@@ -147,7 +144,7 @@ export class StyleEmitter extends EventEmitter {
 
   updateStyle(
     { reference, filename, css }: Omit<FactoryPlugin.Style, "classes" | "state">,
-    stylePath?: string
+    outputStylePath?: string
   ) {
     const index = this.getStyleIndexByReference(filename, reference);
 
@@ -160,7 +157,7 @@ export class StyleEmitter extends EventEmitter {
         state: "updated",
       };
 
-      this.checkStyles(stylePath);
+      this.checkStyles(outputStylePath);
     }
   }
 
@@ -170,12 +167,12 @@ export class StyleEmitter extends EventEmitter {
     });
   }
 
-  setLoadedFile(filename: string, stylePath?: string) {
+  setLoadedFile(filename: string, outputStylePath?: string) {
     const file = this.getFile(filename);
 
     if (file) {
       this.loadedFiles.push(filename);
-      this.checkStyles(stylePath);
+      this.checkStyles(outputStylePath);
     }
   }
 
@@ -242,7 +239,7 @@ export class StyleEmitter extends EventEmitter {
     }
   }
 
-  checkStyles(stylePath = "") {
+  checkStyles(outputStylePath = "") {
     this.files = this.files.reduce((prev, file) => {
       const styles = this.getStyleByFile(file);
 
@@ -261,7 +258,7 @@ export class StyleEmitter extends EventEmitter {
       this.emit("create", {
         filename: file,
         styles,
-        path: stylePath,
+        path: outputStylePath,
       });
 
       return prev;
@@ -279,15 +276,23 @@ emitter.on("create", async function ({ filename, path, styles }) {
 
 emitter.on(
   "process",
-  async function ({ deepClass, stylePath, filename, reference, configPath }) {
+  async function ({
+    deepClass,
+    outputStylePath,
+    inputStylePath,
+    filename,
+    reference,
+    configPath,
+  }) {
     StyleController.keepCacheCycle(filename);
 
     const css = await StyleFactory.generateClassTree(deepClass, {
       reference,
       configPath,
+      inputStylePath,
     });
 
-    this.updateStyle({ reference, filename, css }, stylePath);
+    this.updateStyle({ reference, filename, css }, outputStylePath);
   }
 );
 

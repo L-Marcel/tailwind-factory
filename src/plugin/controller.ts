@@ -160,6 +160,7 @@ export class StyleController {
           return;
         }
 
+        console.warn = Logs.restoreExpectedWarnings();
         this.writeCache(StyleController.styles, callback);
       });
     } else if (!path) {

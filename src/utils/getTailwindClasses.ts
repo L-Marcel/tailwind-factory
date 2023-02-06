@@ -2,7 +2,13 @@ import postcss from "postcss";
 import tailwind, { Config } from "tailwindcss";
 import { DeepReference } from "../plugin/factory";
 import { FactoryConfig } from "../plugin/config";
-import { Logs } from "../plugin/logs";
+import sass from "sass";
+
+type TailwindGenerateClassesParams = {
+  components: DeepReference[];
+  inputStylePath?: string;
+  configPath?: string;
+};
 
 function generateTailwindStylesFile(components: DeepReference[] = []) {
   const haveComponents = components.length >= 1;
@@ -31,8 +37,7 @@ function generateTailwindStylesFile(components: DeepReference[] = []) {
 
 export async function getTailwindClasses(
   raw: string,
-  components: DeepReference[] = [],
-  configPath?: string
+  { components, inputStylePath, configPath }: TailwindGenerateClassesParams
 ) {
   let tailwindConfig: Config = {
     corePlugins: {
@@ -44,6 +49,11 @@ export async function getTailwindClasses(
       },
     ],
   };
+
+  if (inputStylePath) {
+    const sassResult = sass.compile(inputStylePath);
+    //console.log(sassResult);
+  }
 
   if (configPath) {
     const config = await FactoryConfig.getTailwindConfig(configPath);

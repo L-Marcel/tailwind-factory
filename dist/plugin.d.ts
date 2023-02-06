@@ -4,7 +4,8 @@ type PluginPreset = "react";
 type PluginType = {
     preset?: PluginPreset;
     styles?: {
-        path?: string;
+        outputPath?: string;
+        inputPath?: string;
         config?: string;
     };
 };

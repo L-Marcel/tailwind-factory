@@ -17,6 +17,7 @@ type GenerateClassTreeOptions = {
   reference: string;
   identifier?: string;
   configPath?: string;
+  inputStylePath?: string;
 };
 
 export type DeepStyleClass = {
@@ -126,7 +127,8 @@ export class StyleFactory {
     {
       filename,
       deepClass,
-      stylePath,
+      outputStylePath,
+      inputStylePath,
       configPath,
     }: Omit<ProcessDeepClassesParams, "reference">,
     _reference?: string
@@ -145,11 +147,12 @@ export class StyleFactory {
         filename,
         configPath,
         reference,
-        stylePath,
+        outputStylePath,
+        inputStylePath,
       });
     } else {
       StyleController.keepCacheCycle(filename);
-      emitter.checkStyles(stylePath);
+      emitter.checkStyles(outputStylePath);
     }
 
     return reference;
@@ -159,14 +162,16 @@ export class StyleFactory {
     deepStyleClass: DeepStyleClass,
     filename: string,
     configPath: string,
-    stylePath: string,
+    outputStylePath: string,
+    inputStylePath: string,
     _reference?: string
   ) {
     const reference = StyleFactory.processStyles(
       {
         deepClass: deepStyleClass,
         filename,
-        stylePath,
+        outputStylePath,
+        inputStylePath,
         configPath,
       },
       _reference
@@ -216,7 +221,7 @@ export class StyleFactory {
 
   static async generateClassTree(
     deepClass: DeepStyleClass,
-    { reference, identifier, configPath }: GenerateClassTreeOptions
+    { reference, identifier, configPath, inputStylePath }: GenerateClassTreeOptions
   ) {
     const classes: string[] = [];
     const components: DeepReference[] = [];
@@ -237,6 +242,7 @@ export class StyleFactory {
         configPath,
         reference: componentReference,
         identifier: currentClass.identifier,
+        inputStylePath,
       });
 
       classes.push(componentReference);
@@ -248,12 +254,16 @@ export class StyleFactory {
     }
 
     const rawClasses = classes.join(" ");
+
     const res = await getTailwindClasses(
       `
       ${rawClasses}
     `,
-      components,
-      configPath
+      {
+        components,
+        configPath,
+        inputStylePath,
+      }
     );
 
     let formattedTailwindCss = res.css;

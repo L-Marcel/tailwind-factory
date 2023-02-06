@@ -1,5 +1,5 @@
 module.exports = (api) => {
-  api.cache(true);
+  api.cache(false);
   return {
     presets: ["next/babel"],
     plugins: [
@@ -8,6 +8,7 @@ module.exports = (api) => {
         {
           styles: {
             config: "../web/tailwind.config.js",
+            inputPath: "../web/src/styles/global.css",
           },
         },
       ],
