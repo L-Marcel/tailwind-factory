@@ -6,6 +6,8 @@ A lib to create and extends React components defining variants like Stitches usi
 # WARNING
 Sorry version number, got a big error uploading the prerelease. I'm creating a plugin for this application. It was inexperience.
 
+Download the alpha version at your own risk, it is still undocumented and has changed a lot. I'm making it available to perform tests in the production environment.
+
 # Summary
 1. [Installation](#installation)
    1. [Tailwind Configuration](#tailwind-configuration)
@@ -444,5 +446,5 @@ First, I repeat: sorry version number, got a big error uploading the prerelease.
 
 - [ ] Finish plugin
   - Full deep classes support 
-- [ ] Release 2.0.0 version
+- [ ] Release 2.3.0 version
 - [ ] Add custom colors in extensio
