@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.0.2
+
+### Patch Changes
+
+- updating warning
+
 ## 1.5.13
 
 ### Patch Changes

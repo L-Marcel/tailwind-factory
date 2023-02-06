@@ -3,6 +3,9 @@
 
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 
+# WARNING
+Sorry version number, got a big error uploading the prerelease. I'm creating a plugin for this application.
+
 # Summary
 1. [Installation](#installation)
    1. [Tailwind Configuration](#tailwind-configuration)
@@ -17,7 +20,7 @@ A lib to create and extends React components defining variants like Stitches usi
 5. [How it works](#how-it-works)
 6. [Classes Priority](#classes-priority)
 7. [Snippets](#snippets)
-9. [Roadmap](#roadmap)
+9. [Roadmap](#roadmap) - updated
 
 # Installation
 To install Tailwind Factory you need to run in your project:
@@ -437,4 +440,6 @@ export const NewComponent = Parent.extends(ParentComponent, `
 ```
 
 # Roadmap
+First, sorry version number, got a big error uploading the prerelease.
+
 I'm trying to create a macro in the "macro" branch to improve the application. I don't know if I'll make it, but I'm studying.
