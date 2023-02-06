@@ -8,6 +8,9 @@ export const Container = tf(
     text-base
   }
 
+  scrollbar-thin
+  scrollbar-track-red-50
+
   div {
     sm:bg-test-500
     text-test-700

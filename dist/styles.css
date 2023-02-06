@@ -1,17 +1,73 @@
-.factory__fdec05c89cfd ~ h1 {
+.factory__101f7bc3da75 {
+  --scrollbar-track: initial;
+  --scrollbar-thumb: initial;
+  --scrollbar-corner: initial;
+  --scrollbar-track-hover: var(--scrollbar-track);
+  --scrollbar-thumb-hover: var(--scrollbar-thumb);
+  --scrollbar-corner-hover: var(--scrollbar-corner);
+  --scrollbar-track-active: var(--scrollbar-track-hover);
+  --scrollbar-thumb-active: var(--scrollbar-thumb-hover);
+  --scrollbar-corner-active: var(--scrollbar-corner-hover);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  overflow: overlay;
+}
+.factory__101f7bc3da75 .scrollbar-thin.overflow-x-hidden {
+  overflow-x: hidden;
+}
+.factory__101f7bc3da75 .scrollbar-thin.overflow-y-hidden {
+  overflow-y: hidden;
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-corner {
+  background-color: var(--scrollbar-corner);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-track:hover {
+  background-color: var(--scrollbar-track-hover);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-corner:hover {
+  background-color: var(--scrollbar-corner-hover);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-track:active {
+  background-color: var(--scrollbar-track-active);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-thumb-active);
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-corner:active {
+  background-color: var(--scrollbar-corner-active);
+}
+.factory__101f7bc3da75 .scrollbar-thin {
+  scrollbar-width: thin;
+}
+.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.factory__101f7bc3da75 {
+  --scrollbar-track: #fef2f2 !important;
+}
+.factory__101f7bc3da75 ~ h1 {
   font-size: 1rem;
   line-height: 1.5rem;
 }
-.factory__fdec05c89cfd div ~ h2 {
+.factory__101f7bc3da75 div ~ h2 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81/var(--tw-text-opacity));
 }
-.factory__fdec05c89cfd div > h1, .factory__fdec05c89cfd div > h2 {
+.factory__101f7bc3da75 div > h1, .factory__101f7bc3da75 div > h2 {
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
 @media (min-width: 640px) {
-  .factory__fdec05c89cfd div {
+  .factory__101f7bc3da75 div {
     --tw-bg-opacity: 1;
     background-color: rgb(255 0 0/var(--tw-bg-opacity));
   }
