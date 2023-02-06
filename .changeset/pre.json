@@ -1,0 +1,10 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "tailwind-factory": "2.0.3"
+  },
+  "changesets": [
+    "fuzzy-fans-film"
+  ]
+}

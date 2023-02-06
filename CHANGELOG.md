@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.0.4-alpha.0
+
+### Patch Changes
+
+- adding alpha version
+
 ## 2.0.0
 
 ### Major Changes
