@@ -4,7 +4,7 @@
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 
 # WARNING
-Sorry version number, got a big error uploading the prerelease. I'm creating a plugin for this application.
+Sorry version number, got a big error uploading the prerelease. I'm creating a plugin for this application. It was inexperience.
 
 # Summary
 1. [Installation](#installation)
@@ -440,6 +440,9 @@ export const NewComponent = Parent.extends(ParentComponent, `
 ```
 
 # Roadmap
-First, sorry version number, got a big error uploading the prerelease.
+First, I repeat: sorry version number, got a big error uploading the prerelease.
 
-I'm trying to create a macro in the "macro" branch to improve the application. I don't know if I'll make it, but I'm studying.
+- [ ] Finish plugin
+  - Full deep classes support 
+- [ ] Release 2.0.0 version
+- [ ] Add custom colors in extensio
