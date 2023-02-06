@@ -444,5 +444,5 @@ export const NewComponent = Parent.extends(ParentComponent, `
 # Roadmap
 - [ ] Finish plugin
   - Full deep classes support 
-- [ ] Release 2.0.0 version
+- [ ] Release 2.1.0 version
 - [ ] Add custom colors in extension
