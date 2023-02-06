@@ -24,7 +24,7 @@ export type PluginType = {
 };
 
 let outputStylePath = path.resolve(__dirname, "styles.css");
-let configPath = "../../tailwind.config.js";
+let configPath = path.resolve(__dirname, "validator", "tailwind.config.js");//"../../tailwind.config.js";
 let inputStylePath = "";//"../../src/styles/global.css";
 
 export default function ({ types: t }: typeof babel): PluginObj {
@@ -34,7 +34,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
     name: "tailwind-factory",
     pre: (state) => {
       console.warn = Logs.omitExpectedWarnings();
-      Logs.info("generating styles");
+      Logs.info("generating styles...");
 
       const filename = state.opts.filename ?? "";
 
@@ -56,7 +56,6 @@ export default function ({ types: t }: typeof babel): PluginObj {
       if (imported) {
         const filename = state.opts.filename ?? "";
         emitter.setLoadedFile(filename, outputStylePath);
-        console.log(filename);
       }
     },
     visitor: {

@@ -45,7 +45,7 @@ export class Logs {
         return;
       }
 
-      return Logs._warn(...rest);
+      return Logs._warn("\n", ...rest, "\n");
     };
   }
 
