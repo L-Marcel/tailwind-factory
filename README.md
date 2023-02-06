@@ -4,6 +4,8 @@
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 
 # WARNING
+Sorry version number, got a big error uploading the prerelease. I'm creating a plugin for this application. It was inexperience.
+
 Download the alpha version at your own risk, it is still undocumented and has changed a lot. I'm making it available to perform tests in the production environment.
 
 # Summary
