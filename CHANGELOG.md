@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.0.4-alpha.1
+
+### Patch Changes
+
+- changing exported files in package
+
 ## 2.0.4-alpha.0
 
 ### Patch Changes
