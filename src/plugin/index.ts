@@ -24,8 +24,8 @@ export type PluginType = {
 };
 
 let outputStylePath = path.resolve(__dirname, "styles.css");
-let configPath = path.resolve(__dirname, "validator", "tailwind.config.js");//"../../tailwind.config.js";
-let inputStylePath = "";//"../../src/styles/global.css";
+let configPath = path.resolve(__dirname, "validator", "tailwind.config.js"); //"../../tailwind.config.js";
+const inputStylePath = ""; //"../../src/styles/global.css";
 
 export default function ({ types: t }: typeof babel): PluginObj {
   let imported = false;
@@ -44,13 +44,15 @@ export default function ({ types: t }: typeof babel): PluginObj {
       emitter.clearLoadedFile(filename);
 
       const watchedFiles = ["tailwind.config.js"];
-      const watchedFile = watchedFiles.find(file => filename.endsWith(file));
+      const watchedFile = watchedFiles.find((file) => {
+        return filename.endsWith(file);
+      });
 
       const isImportant = StyleController.isDev && watchedFile;
 
-      if(isImportant) {
+      if (isImportant) {
         Validator.validate(watchedFile, state.code);
-      };
+      }
     },
     post: (state) => {
       if (imported) {
@@ -103,15 +105,6 @@ export default function ({ types: t }: typeof babel): PluginObj {
             }
 
             const classes = removeWhiteSpaceInClasses(rawClasses);
-
-            if (
-              classes.split(" ").every((_class) => {
-                return _class.startsWith("factory__");
-              })
-            ) {
-              return;
-            }
-
             const separatedClasses = StyleFactory.separateClasses(classes);
 
             const finalClass = StyleFactory.formateStyleClasses(
@@ -249,6 +242,8 @@ export default function ({ types: t }: typeof babel): PluginObj {
               methodOptions,
             ])
           );
+
+          path.skip();
         }
       },
     },

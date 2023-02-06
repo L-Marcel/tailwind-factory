@@ -74,7 +74,7 @@ export class StyleController {
 
   static cleanCache(callback?: () => void) {
     StyleController.writeCache([], callback);
-  };
+  }
 
   private static updateUsedCache() {
     const cachedStyles = StyleController.getFormattedCache();

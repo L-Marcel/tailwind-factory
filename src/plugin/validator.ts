@@ -1,5 +1,5 @@
 import path from "path";
-import { writeFile } from 'node:fs';
+import { writeFile } from "node:fs";
 import { StyleController } from "./controller";
 import { Logs } from "./logs";
 import { existsSync, mkdir, readFile, unlink } from "fs";
@@ -45,14 +45,18 @@ export class Validator {
 
       const savedContent = data.toString();
 
-      if(savedContent !== content) {
-        Logs.warning(`Changes in "${filename}" detected by the validator. Restart the server to apply the changes!`);
+      if (savedContent !== content) {
+        Logs.warning(
+          `Changes in "${filename}" detected by the validator. Restart the server to apply the changes!`
+        );
         unlink(Validator.validatorPath(filename), (err) => {
-          if(err) {
-            Logs.error(`The validator is not able to reset the saved data of "${filename}"!`);
-          };
+          if (err) {
+            Logs.error(
+              `The validator is not able to reset the saved data of "${filename}"!`
+            );
+          }
         });
-      };
+      }
     });
   }
 }

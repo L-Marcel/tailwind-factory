@@ -1,23 +1,16 @@
 [
   {
-    "reference": "factory__101f7bc3da75",
-    "classes": "~ h1 { text-base } scrollbar-thin scrollbar-track-red-50 div { sm:bg-test-500 text-test-700 ~ h2 { text-gray-700 } > h1, > h2 { text-xl } }",
+    "reference": "factory__434f2468b819",
+    "classes": "flex flex-col items-center w-screen h-full overflow-hidden pt-10 bg-slate-800",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\index.ts",
-    "css": ".factory__101f7bc3da75 {\n  --scrollbar-track: initial;\n  --scrollbar-thumb: initial;\n  --scrollbar-corner: initial;\n  --scrollbar-track-hover: var(--scrollbar-track);\n  --scrollbar-thumb-hover: var(--scrollbar-thumb);\n  --scrollbar-corner-hover: var(--scrollbar-corner);\n  --scrollbar-track-active: var(--scrollbar-track-hover);\n  --scrollbar-thumb-active: var(--scrollbar-thumb-hover);\n  --scrollbar-corner-active: var(--scrollbar-corner-hover);\n  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);\n  overflow: overlay;\n}\n.factory__101f7bc3da75 .scrollbar-thin.overflow-x-hidden {\n  overflow-x: hidden;\n}\n.factory__101f7bc3da75 .scrollbar-thin.overflow-y-hidden {\n  overflow-y: hidden;\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-track {\n  background-color: var(--scrollbar-track);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-thumb {\n  background-color: var(--scrollbar-thumb);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-corner {\n  background-color: var(--scrollbar-corner);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-track:hover {\n  background-color: var(--scrollbar-track-hover);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-thumb:hover {\n  background-color: var(--scrollbar-thumb-hover);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-corner:hover {\n  background-color: var(--scrollbar-corner-hover);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-track:active {\n  background-color: var(--scrollbar-track-active);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-thumb:active {\n  background-color: var(--scrollbar-thumb-active);\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar-corner:active {\n  background-color: var(--scrollbar-corner-active);\n}\n.factory__101f7bc3da75 .scrollbar-thin {\n  scrollbar-width: thin;\n}\n.factory__101f7bc3da75 .scrollbar-thin::-webkit-scrollbar {\n  width: 8px;\n  height: 8px;\n}\n.factory__101f7bc3da75 {\n  --scrollbar-track: #fef2f2 !important;\n}\n.factory__101f7bc3da75 ~ h1 {\n  font-size: 1rem;\n  line-height: 1.5rem;\n}\n.factory__101f7bc3da75 div ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(55 65 81/var(--tw-text-opacity));\n}\n.factory__101f7bc3da75 div > h1, .factory__101f7bc3da75 div > h2 {\n  font-size: 1.25rem;\n  line-height: 1.75rem;\n}\n@media (min-width: 640px) {\n  .factory__101f7bc3da75 div {\n    --tw-bg-opacity: 1;\n    background-color: rgb(255 0 0/var(--tw-bg-opacity));\n  }\n}",
+    "css": ".factory__434f2468b819 {\n  display: flex;\n}\n.factory__434f2468b819 {\n  height: 100%;\n}\n.factory__434f2468b819 {\n  width: 100vw;\n}\n.factory__434f2468b819 {\n  flex-direction: column;\n}\n.factory__434f2468b819 {\n  align-items: center;\n}\n.factory__434f2468b819 {\n  overflow: hidden;\n}\n.factory__434f2468b819 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(30 41 59/var(--tw-bg-opacity));\n}\n.factory__434f2468b819 {\n  padding-top: 2.5rem;\n}",
     "state": "updated"
   },
   {
-    "reference": "factory__fdec05c89cfd_theme_dark",
-    "classes": "~ h2 { text-red-500 } p { text-lg span, strong { text-blue-600 } }",
+    "reference": "factory__075a6ed5dcab_theme_dark",
+    "classes": "",
     "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\index.ts",
-    "css": ".factory__fdec05c89cfd_theme_dark ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(239 68 68/var(--tw-text-opacity));\n}\n.factory__fdec05c89cfd_theme_dark p {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n}\n.factory__fdec05c89cfd_theme_dark p span, .factory__fdec05c89cfd_theme_dark p strong {\n  --tw-text-opacity: 1;\n  color: rgb(37 99 235/var(--tw-text-opacity));\n}",
-    "state": "updated"
-  },
-  {
-    "reference": "factory__fdec05c89cfd_theme_light",
-    "classes": "~ h2 { text-red-400 }",
-    "filename": "C:\\projects\\tailwind-factory\\web\\src\\styles\\index.ts",
-    "css": ".factory__fdec05c89cfd_theme_light ~ h2 {\n  --tw-text-opacity: 1;\n  color: rgb(248 113 113/var(--tw-text-opacity));\n}",
+    "css": "",
     "state": "updated"
   }
 ]

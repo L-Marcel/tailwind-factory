@@ -13,25 +13,34 @@ export class Logs {
 
   static printedMessages: string[] = [];
 
-  private static log(newLine: boolean, tag: string, color: LogsColors, message: string, ...rest: any[]) {
+  private static log(
+    newLine: boolean,
+    tag: string,
+    color: LogsColors,
+    message: string,
+    ...rest: any[]
+  ) {
     const alreadyPrinted = this.printedMessages.includes(message);
 
     if (!alreadyPrinted) {
-      console.log(`${newLine? "\n":""}${kleur[color](tag.padEnd(5, " "))} ~ ${message}`, ...rest);
+      console.log(
+        `${newLine ? "\n" : ""}${kleur[color](tag.padEnd(5, " "))} ~ ${message}`,
+        ...rest
+      );
       Logs.printedMessages.push(message);
     }
   }
 
   static info(message: string, ...rest: any[]) {
-    Logs.log(false, "style", "blue", message);
+    Logs.log(false, "style", "blue", message, ...rest);
   }
 
   static error(message: string, ...rest: any[]) {
-    Logs.log(true, "error", "red", message, ...[...rest, "\n"]);
+    Logs.log(true, "error", "red", message, ...rest, "\n");
   }
 
   static warning(message: string, ...rest: any[]) {
-    Logs.log(true, "warn", "yellow", message, ...[...rest, "\n"]);
+    Logs.log(true, "warn", "yellow", message, ...rest, "\n");
   }
 
   static omitExpectedWarnings() {
