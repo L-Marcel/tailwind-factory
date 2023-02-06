@@ -5,12 +5,12 @@ export const Container = tf(
   "div",
   `
   ~ h1 {
-    text-xl
+    text-base
   }
 
   div {
     sm:bg-test-500
-    text-test-500
+    text-test-700
 
     ~ h2 {
       text-gray-700

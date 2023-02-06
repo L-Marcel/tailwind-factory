@@ -1,6 +1,10 @@
 import { JSXElementConstructor, ComponentProps } from 'react';
+import { NextConfig } from 'next';
 
 declare function removeWhiteSpaceInClasses(classes: string): string;
+
+declare function webpackWithFactory(config: any): any;
+declare function nextWithFactory(nextConfig: NextConfig): NextConfig;
 
 type BooleanString = "true" | "false";
 type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
@@ -29,4 +33,4 @@ declare function tf<Type extends FactoryElement, StyleVariants, DefaultStyleVari
     };
 };
 
-export { FactoryElement, FactoryExtractKeys, FactoryExtractKeysAndValues, FactoryExtractRequiredKeysAndValues, StyledElementOptions, removeWhiteSpaceInClasses, tf };
+export { FactoryElement, FactoryExtractKeys, FactoryExtractKeysAndValues, FactoryExtractRequiredKeysAndValues, StyledElementOptions, nextWithFactory, removeWhiteSpaceInClasses, tf, webpackWithFactory };

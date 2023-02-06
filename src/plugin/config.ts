@@ -8,8 +8,8 @@ export class FactoryConfig {
         .then((res) => {
           return res.default;
         })
-        .catch((err) => {
-          Logs.error("tailwind config not found");
+        .catch(() => {
+          Logs.error("Tailwind config not found");
           return {};
         });
     }

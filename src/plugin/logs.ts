@@ -13,25 +13,25 @@ export class Logs {
 
   static printedMessages: string[] = [];
 
-  private static log(color: LogsColors, message: string, ...rest: any[]) {
+  private static log(newLine: boolean, tag: string, color: LogsColors, message: string, ...rest: any[]) {
     const alreadyPrinted = this.printedMessages.includes(message);
 
     if (!alreadyPrinted) {
-      console.log(`${kleur[color]("style")} - ${message}`, ...rest);
+      console.log(`${newLine? "\n":""}${kleur[color](tag.padEnd(5, " "))} ~ ${message}`, ...rest);
       Logs.printedMessages.push(message);
     }
   }
 
   static info(message: string, ...rest: any[]) {
-    Logs.log("blue", message, ...rest);
+    Logs.log(false, "style", "blue", message);
   }
 
   static error(message: string, ...rest: any[]) {
-    Logs.log("red", message, ...rest);
+    Logs.log(true, "error", "red", message, ...[...rest, "\n"]);
   }
 
   static warning(message: string, ...rest: any[]) {
-    Logs.log("yellow", message, ...rest);
+    Logs.log(true, "warn", "yellow", message, ...[...rest, "\n"]);
   }
 
   static omitExpectedWarnings() {
@@ -45,7 +45,7 @@ export class Logs {
         return;
       }
 
-      return Logs._warn(rest.toString(), ...rest);
+      return Logs._warn(...rest);
     };
   }
 

@@ -2,7 +2,7 @@ import postcss from "postcss";
 import tailwind, { Config } from "tailwindcss";
 import { DeepReference } from "../plugin/factory";
 import { FactoryConfig } from "../plugin/config";
-import sass from "sass";
+import { getExternalCss } from "./getExternalCss";
 
 type TailwindGenerateClassesParams = {
   components: DeepReference[];
@@ -10,14 +10,18 @@ type TailwindGenerateClassesParams = {
   configPath?: string;
 };
 
-function generateTailwindStylesFile(components: DeepReference[] = []) {
+function generateTailwindStylesFile(components: DeepReference[] = [], externalCss = "") {
   const haveComponents = components.length >= 1;
 
   if (!haveComponents) {
     return `
 @tailwind utilities;
 @tailwind components;
-    `;
+
+@layer components {
+  ${externalCss}
+}
+`;
   }
 
   const componentsCss = components
@@ -29,10 +33,12 @@ function generateTailwindStylesFile(components: DeepReference[] = []) {
   return `
 @tailwind utilities;
 @tailwind components;
+
 @layer components {
+  ${externalCss}
   ${componentsCss}
 }
-  `;
+`;
 }
 
 export async function getTailwindClasses(
@@ -50,9 +56,9 @@ export async function getTailwindClasses(
     ],
   };
 
+  let externalCss = "";
   if (inputStylePath) {
-    const sassResult = sass.compile(inputStylePath);
-    //console.log(sassResult);
+    externalCss = getExternalCss(inputStylePath);
   }
 
   if (configPath) {
@@ -68,7 +74,7 @@ export async function getTailwindClasses(
   }
 
   const result = await postcss(tailwind(tailwindConfig)).process(
-    generateTailwindStylesFile(components),
+    generateTailwindStylesFile(components, externalCss),
     {
       from: undefined,
     }

@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-// const { withFactory } = require("tailwind-factory/withFactory");
-// console.log(withFactory);
-// module.exports = withFactory(["components", "pages", "styles", "app"], {
-//   reactStrictMode: true,
-// });
+const { nextWithFactory } = require("tailwind-factory");
 
-module.exports = {
+module.exports = nextWithFactory({
   reactStrictMode: true,
-};
+});

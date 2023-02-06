@@ -42,7 +42,7 @@ export class StyleController {
       .join("\n");
   }
 
-  private static writeCache(styles: FactoryPlugin.Style[], callback: () => void) {
+  private static writeCache(styles: FactoryPlugin.Style[], callback?: () => void) {
     const isDev = StyleController.isDev;
     const cachePathAlreadyExists = existsSync(StyleController.cacheFolderPath);
 
@@ -68,9 +68,13 @@ export class StyleController {
         return;
       }
 
-      callback();
+      callback && callback();
     });
   }
+
+  static cleanCache(callback?: () => void) {
+    StyleController.writeCache([], callback);
+  };
 
   private static updateUsedCache() {
     const cachedStyles = StyleController.getFormattedCache();

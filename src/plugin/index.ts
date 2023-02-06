@@ -8,6 +8,7 @@ import path from "node:path";
 import { StyleController } from "./controller";
 import { Logs } from "./logs";
 import { StyleFactory } from "./factory";
+import { Validator } from "./validator";
 
 type Properties = (types.ObjectMethod | types.ObjectProperty | types.SpreadElement)[];
 
@@ -24,7 +25,7 @@ export type PluginType = {
 
 let outputStylePath = path.resolve(__dirname, "styles.css");
 let configPath = "../../tailwind.config.js";
-let inputStylePath = "../../src/styles/global.css";
+let inputStylePath = "";//"../../src/styles/global.css";
 
 export default function ({ types: t }: typeof babel): PluginObj {
   let imported = false;
@@ -41,11 +42,21 @@ export default function ({ types: t }: typeof babel): PluginObj {
       StyleController.startCacheCycle(filename);
 
       emitter.clearLoadedFile(filename);
+
+      const watchedFiles = ["tailwind.config.js"];
+      const watchedFile = watchedFiles.find(file => filename.endsWith(file));
+
+      const isImportant = StyleController.isDev && watchedFile;
+
+      if(isImportant) {
+        Validator.validate(watchedFile, state.code);
+      };
     },
     post: (state) => {
       if (imported) {
         const filename = state.opts.filename ?? "";
         emitter.setLoadedFile(filename, outputStylePath);
+        console.log(filename);
       }
     },
     visitor: {
@@ -75,7 +86,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
           const filename = state.filename ?? "";
 
           outputStylePath = config?.styles?.outputPath ?? outputStylePath;
-          inputStylePath = config?.styles?.inputPath ?? inputStylePath;
+          //inputStylePath = config?.styles?.inputPath ?? inputStylePath;
           configPath = config?.styles?.config ?? configPath;
 
           if (
