@@ -31,15 +31,15 @@ export class Logs {
     }
   }
 
-  static info(message: string, ...rest: any[]) {
+  static info(message: any, ...rest: any[]) {
     Logs.log(false, "style", "blue", message, ...rest);
   }
 
-  static error(message: string, ...rest: any[]) {
+  static error(message: any, ...rest: any[]) {
     Logs.log(true, "error", "red", message, ...rest, "\n");
   }
 
-  static warning(message: string, ...rest: any[]) {
+  static warning(message: any, ...rest: any[]) {
     Logs.log(true, "warn", "yellow", message, ...rest, "\n");
   }
 

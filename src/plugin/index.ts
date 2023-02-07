@@ -23,7 +23,7 @@ export type PluginType = {
   };
 };
 
-let outputStylePath = path.resolve(__dirname, "styles.css");
+let outputStylePath = "styles.css";
 let configPath = path.resolve(__dirname, "validator", "tailwind.config.js"); //"../../tailwind.config.js";
 const inputStylePath = ""; //"../../src/styles/global.css";
 
@@ -89,6 +89,9 @@ export default function ({ types: t }: typeof babel): PluginObj {
           outputStylePath = config?.styles?.outputPath ?? outputStylePath;
           //inputStylePath = config?.styles?.inputPath ?? inputStylePath;
           configPath = config?.styles?.config ?? configPath;
+
+          Logs.info(outputStylePath);
+          Logs.info(configPath);
 
           if (
             methodArguments.length >= 2 &&

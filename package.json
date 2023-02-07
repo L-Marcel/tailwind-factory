@@ -1,6 +1,6 @@
 {
   "name": "tailwind-factory",
-  "version": "2.0.4-alpha.1",
+  "version": "2.0.4-alpha.11",
   "description": "A lib to create and extends React components like stitches using Tailwind classes!",
   "keywords": [
     "tailwind",
@@ -12,10 +12,7 @@
   ],
   "private": false,
   "repository": "https://github.com/l-marcel/tailwind-factory",
-  "main": "dist/index.js",
-  "files": [
-    "dist/**"
-  ],
+  "main": "index.js",
   "scripts": {
     "test": "jest --runInBand --watch --collect-coverage",
     "dev": "tsup --watch",

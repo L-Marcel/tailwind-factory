@@ -1,5 +1,65 @@
 # tailwind-factory
 
+## 2.0.4-alpha.11
+
+### Patch Changes
+
+- first success
+
+## 2.0.4-alpha.10
+
+### Patch Changes
+
+- adding many logs
+
+## 2.0.4-alpha.9
+
+### Patch Changes
+
+- adding logs to watch file paths
+
+## 2.0.4-alpha.8
+
+### Patch Changes
+
+- changing styles path
+
+## 2.0.4-alpha.7
+
+### Patch Changes
+
+- adding temporary log
+
+## 2.0.4-alpha.6
+
+### Patch Changes
+
+- adding types...
+
+## 2.0.4-alpha.5
+
+### Patch Changes
+
+- changing exports...
+
+## 2.0.4-alpha.4
+
+### Patch Changes
+
+- adding reference files
+
+## 2.0.4-alpha.3
+
+### Patch Changes
+
+- updating exports in package
+
+## 2.0.4-alpha.2
+
+### Patch Changes
+
+- adding exports in package
+
 ## 2.0.4-alpha.1
 
 ### Patch Changes
