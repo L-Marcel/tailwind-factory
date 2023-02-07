@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.0.4-alpha.12
+
+### Patch Changes
+
+- adding production link
+
 ## 2.0.4-alpha.11
 
 ### Patch Changes
