@@ -1,0 +1,9 @@
+[
+  {
+    "reference": "factory__a7b15f373f2b",
+    "classes": "flex flex-col items-center w-screen h-screen overflow-hidden pt-6 md:pt-10 2xl:pt-14 bg-slate-900 .background-left { relative after:absolute after:w-5 after:bg-blue-500 after:h-5 }",
+    "filename": "C:\\Users\\Gilmara\\Desktop\\tailwind-factory\\web\\src\\styles\\index.ts",
+    "css": ".factory__a7b15f373f2b {\n  display: flex;\n}\n.factory__a7b15f373f2b {\n  height: 100vh;\n}\n.factory__a7b15f373f2b {\n  width: 100vw;\n}\n.factory__a7b15f373f2b {\n  flex-direction: column;\n}\n.factory__a7b15f373f2b {\n  align-items: center;\n}\n.factory__a7b15f373f2b {\n  overflow: hidden;\n}\n.factory__a7b15f373f2b {\n  --tw-bg-opacity: 1;\n  background-color: rgb(15 23 42/var(--tw-bg-opacity));\n}\n.factory__a7b15f373f2b {\n  padding-top: 1.5rem;\n}\n@media (min-width: 768px) {\n  .factory__a7b15f373f2b {\n    padding-top: 2.5rem;\n  }\n}\n@media (min-width: 1536px) {\n  .factory__a7b15f373f2b {\n    padding-top: 3.5rem;\n  }\n}",
+    "state": "updated"
+  }
+]

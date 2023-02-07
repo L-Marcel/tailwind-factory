@@ -1,5 +1,17 @@
 # tailwind-factory
 
+## 2.1.0-alpha.33
+
+### Patch Changes
+
+- fixing bug on escape classes
+
+## 2.1.0-alpha.32
+
+### Minor Changes
+
+- removing bug on format classes
+
 ## 2.1.0-alpha.31
 
 ### Minor Changes

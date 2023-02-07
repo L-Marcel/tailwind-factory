@@ -6,38 +6,22 @@ export const Container = tf(
   flex
   flex-col
   items-center
+
   w-screen
   h-screen
   overflow-hidden
-  pt-10
-  bg-slate-800
-`,
-  {
-    variants: {
-      theme: {
-        dark: `
-          
-        `,
-        light: ``,
-      },
-    },
-    defaultVariants: {
-      theme: "dark",
-    },
+
+  pt-6
+  md:pt-10
+  2xl:pt-14
+
+  bg-slate-900
+
+  .background-left {
+    relative
+    after:absolute
+    after:w-5
+    after:bg-blue-500
+    after:h-5
   }
-);
-
-export const Heading = tf("h1", `
-  text-xl
-  text-slate-100
-  italic
-  
-  span {
-    
-    font-bold
-  }
-`, {
-
-});
-
-export const Description = Heading.__extends("p");
+`);

@@ -30,7 +30,6 @@ export type DeepStyleClass = {
 type StyleClass = string | DeepStyleClass;
 export class StyleFactory {
   private static escapeSpecialCharacters(value: string) {
-    const specialCharacters = [":", "[", "]", "#", "/", "+", "(", ")", "%", "*", ","];
     const escapedsSecialCharacters = [
       ":",
       "\\[",
@@ -42,26 +41,35 @@ export class StyleFactory {
       "\\)",
       "%",
       "\\*",
-      ",",
+      ","
     ];
-    const comma = "\\2c ";
 
-    const hasBrackets = value.includes("[") && value.includes("]");
+    const replaceValues = [
+      "\\\\:",
+      "\\\\[",
+      "\\\\]",
+      "\\\\#",
+      "\\\\/",
+      "\\\\+",
+      "\\\\(",
+      "\\\\)",
+      "\\\\%",
+      "\\\\*",
+      "\\\\2c"
+    ];
 
-    if (hasBrackets) {
-      specialCharacters.forEach((character, index) => {
-        const escapedCharacter = escapedsSecialCharacters[index];
-        const characterRegex = new RegExp(escapedCharacter, "g");
+    replaceValues.forEach((replace, index) => {
+      const escapedCharacter = escapedsSecialCharacters[index];
+      const characterRegex = new RegExp(escapedCharacter, "g");
 
-        if (characterRegex.test(value) && character !== ",") {
-          value = value.replace(characterRegex, `\\${character}`);
-        } else if (characterRegex.test(value)) {
-          value = value.replace(characterRegex, comma);
-        }
-      });
+      if (characterRegex.test(value)) {
+        value = value.replace(characterRegex, `${replace}`);
+      }
+    });
 
-      return value;
-    }
+    if(value.startsWith("2xl")) {
+      value = value.replace(/2xl/g, "\\\\32xl");
+    };
 
     return value;
   }
@@ -306,7 +314,7 @@ export class StyleFactory {
 
     let formattedTailwindCss = res.css;
 
-    classes.forEach((styleClass) => {
+    classes.sort((a, b) => a.length > b.length? 1:-1).forEach((styleClass, i) => {
       const isString = typeof styleClass === "string";
 
       if (isString) {
@@ -316,19 +324,20 @@ export class StyleFactory {
           return component.reference === formattedStyleClass;
         });
 
-        const classIsDetected = formattedTailwindCss.includes(formattedStyleClass);
         const haveDot = formattedStyleClass.startsWith(".");
-
-        const classReferAComponent = component && classIsDetected;
-        const fromClass = `${haveDot ? "" : "."}${formattedStyleClass} `;
+        const fromClass = `${haveDot ? "" : "\\."}${formattedStyleClass}`;
         const toReplace = "&";
 
+        const classRegex = new RegExp(`${fromClass}(?=.*? )`, "");
+        const classIsDetected = classRegex.test(formattedTailwindCss);
+        const classReferAComponent = component && classIsDetected;
+       
         if (classReferAComponent) {
           return;
         }
-
+  
         formattedTailwindCss = classIsDetected
-          ? formattedTailwindCss.replace(fromClass, toReplace)
+          ? formattedTailwindCss.replace(classRegex, toReplace)
           : formattedTailwindCss;
       }
     });
