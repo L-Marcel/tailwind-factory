@@ -3,12 +3,12 @@
 import babel, { PluginObj, types } from "@babel/core";
 import { removeWhiteSpaceInClasses } from "../factory/tailwind";
 import { emitter } from "./emitter";
-import path from "node:path";
 
 import { StyleController } from "./controller";
 import { Logs } from "./logs";
 import { StyleFactory } from "./factory";
 import { Validator } from "./validator";
+import { Config } from "tailwindcss";
 
 type Properties = (types.ObjectMethod | types.ObjectProperty | types.SpreadElement)[];
 
@@ -19,12 +19,14 @@ export type PluginType = {
   styles?: {
     outputPath?: string;
     inputPath?: string;
-    config?: string;
+    config?: Promise<Config | undefined>;
   };
 };
 
-let outputStylePath = "styles.css";
-let configPath = path.resolve(__dirname, "validator", "tailwind.config.js"); //"../../tailwind.config.js";
+let outputStylePath = "src/styles/generated.css";
+let tailwindConfig: Promise<Config | undefined>;
+
+//disabled
 const inputStylePath = ""; //"../../src/styles/global.css";
 
 export default function ({ types: t }: typeof babel): PluginObj {
@@ -76,11 +78,28 @@ export default function ({ types: t }: typeof babel): PluginObj {
           types.ObjectExpression
         ];
 
+        const newMethodArguments: 
+          (
+            types.ArgumentPlaceholder | 
+            types.JSXNamespacedName | 
+            types.SpreadElement | 
+            babel.types.Expression
+          )[] = [methodArguments[0]];
+
         if (
-          imported &&
-          (callee.type === "Identifier" || callee.type === "V8IntrinsicIdentifier") &&
-          callee.name === "tf"
+          (imported &&
+          (t.isIdentifier(callee) || t.isV8IntrinsicIdentifier(callee)) &&
+          callee.name === "tf") 
+          
+          || 
+          
+          (t.isMemberExpression(callee) && 
+          (t.isIdentifier(callee.object) || t.isV8IntrinsicIdentifier(callee.object)) &&
+          (t.isIdentifier(callee.property) || t.isV8IntrinsicIdentifier(callee.property))) &&
+          callee.property.name === "__extends"
         ) {
+          imported = true;
+
           let methodStyleArgument = "";
 
           const config: PluginType = state.opts;
@@ -88,10 +107,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
 
           outputStylePath = config?.styles?.outputPath ?? outputStylePath;
           //inputStylePath = config?.styles?.inputPath ?? inputStylePath;
-          configPath = config?.styles?.config ?? configPath;
-
-          Logs.info(outputStylePath);
-          Logs.info(configPath);
+          tailwindConfig = config?.styles?.config ?? tailwindConfig;
 
           if (
             methodArguments.length >= 2 &&
@@ -117,21 +133,29 @@ export default function ({ types: t }: typeof babel): PluginObj {
                 identifier: "",
               },
               filename,
-              configPath,
+              tailwindConfig,
               outputStylePath,
               inputStylePath
             );
 
             methodStyleArgument = finalClass;
+            newMethodArguments.push(t.templateLiteral(
+              [
+                t.templateElement({
+                  raw: finalClass,
+                }),
+              ],
+              []
+            ));
           }
-
-          let methodOptions = methodArguments[2];
+         
           if (methodArguments.length >= 3 && t.isObjectExpression(methodArguments[2])) {
+            let methodOptions = methodArguments[2];
             const optionsProperties = methodArguments[2].properties;
 
             const properties: Properties = [];
 
-            optionsProperties.forEach((property, index) => {
+            optionsProperties.forEach((property) => {
               if (
                 t.isObjectProperty(property) &&
                 t.isIdentifier(property?.key) &&
@@ -182,7 +206,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
                             identifier: "",
                           },
                           filename,
-                          configPath,
+                          tailwindConfig,
                           outputStylePath,
                           inputStylePath,
                           baseReference
@@ -229,21 +253,18 @@ export default function ({ types: t }: typeof babel): PluginObj {
             });
 
             methodOptions = t.objectExpression(properties);
+            newMethodArguments.push(methodOptions);
           }
 
+          const isExpression = t.isMemberExpression(callee);
+          const objectName = isExpression && (t.isIdentifier(callee.object) || t.isV8IntrinsicIdentifier(callee.object))? callee.object.name:"";
+
+          const callExpressionContent = isExpression? 
+            t.memberExpression(t.identifier(objectName), t.identifier("__extends")):
+            t.identifier("tf");
+
           path.replaceWith(
-            t.callExpression(t.identifier("tf"), [
-              methodArguments[0],
-              t.templateLiteral(
-                [
-                  t.templateElement({
-                    raw: methodStyleArgument,
-                  }),
-                ],
-                []
-              ),
-              methodOptions,
-            ])
+            t.callExpression(callExpressionContent, newMethodArguments)
           );
 
           path.skip();

@@ -2,6 +2,7 @@ import { EventEmitter } from "node:events";
 import { generateId } from "../utils/generateId";
 import { StyleController } from "./controller";
 import { DeepStyleClass, StyleFactory } from "./factory";
+import { Config } from "tailwindcss";
 
 export type ProcessDataParams = {
   filename: string;
@@ -16,7 +17,7 @@ export type ProcessDeepClassesParams = {
   deepClass: DeepStyleClass;
   outputStylePath?: string;
   inputStylePath?: string;
-  configPath?: string;
+  config?: Promise<Config | undefined>;
 };
 
 type RegisterStyleResponse = {
@@ -282,13 +283,13 @@ emitter.on(
     inputStylePath,
     filename,
     reference,
-    configPath,
+    config,
   }) {
     StyleController.keepCacheCycle(filename);
 
     const css = await StyleFactory.generateClassTree(deepClass, {
       reference,
-      configPath,
+      config,
       inputStylePath,
     });
 

@@ -1,5 +1,107 @@
 # tailwind-factory
 
+## 2.0.4-alpha.30
+
+### Patch Changes
+
+- fixing error on format classes
+
+## 2.0.4-alpha.29
+
+### Patch Changes
+
+- removing escaped chars
+
+## 2.0.4-alpha.28
+
+### Patch Changes
+
+- adding more logs
+
+## 2.0.4-alpha.27
+
+### Patch Changes
+
+- adding logs to raw classes
+
+## 2.0.4-alpha.26
+
+### Patch Changes
+
+- fixing bug with regex
+
+## 2.0.4-alpha.25
+
+### Patch Changes
+
+- fixing bug on escape characters
+
+## 2.0.4-alpha.24
+
+### Patch Changes
+
+- adding brackets support
+
+## 2.0.4-alpha.23
+
+### Patch Changes
+
+- forcing text color to test brackets
+
+## 2.0.4-alpha.22
+
+### Patch Changes
+
+- changing separated classes log
+
+## 2.0.4-alpha.21
+
+### Patch Changes
+
+- generating build
+
+## 2.0.4-alpha.20
+
+### Patch Changes
+
+- changing logs to test bracket support
+
+## 2.0.4-alpha.19
+
+### Patch Changes
+
+- adding more logs
+
+## 2.0.4-alpha.18
+
+### Patch Changes
+
+- changing tailwind config import approach
+
+## 2.0.4-alpha.17
+
+### Patch Changes
+
+- adding logs
+
+## 2.0.4-alpha.16
+
+### Patch Changes
+
+- adding support for optional params
+
+## 2.0.4-alpha.15
+
+### Patch Changes
+
+- generating build
+
+## 2.0.4-alpha.14
+
+### Patch Changes
+
+- adding \_\_extends function support
+
 ## 2.0.4-alpha.13
 
 ### Patch Changes

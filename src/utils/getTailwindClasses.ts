@@ -7,7 +7,7 @@ import { getExternalCss } from "./getExternalCss";
 type TailwindGenerateClassesParams = {
   components: DeepReference[];
   inputStylePath?: string;
-  configPath?: string;
+  config?: Promise<Config | undefined>;
 };
 
 function generateTailwindStylesFile(components: DeepReference[] = [], externalCss = "") {
@@ -43,7 +43,7 @@ function generateTailwindStylesFile(components: DeepReference[] = [], externalCs
 
 export async function getTailwindClasses(
   raw: string,
-  { components, inputStylePath, configPath }: TailwindGenerateClassesParams
+  { components, inputStylePath, config }: TailwindGenerateClassesParams
 ) {
   let tailwindConfig: Config = {
     corePlugins: {
@@ -61,10 +61,10 @@ export async function getTailwindClasses(
     externalCss = getExternalCss(inputStylePath);
   }
 
-  if (configPath) {
-    const config = await FactoryConfig.getTailwindConfig(configPath);
+  if (config) {
+    const newConfig = await FactoryConfig.getTailwindConfig(config);
     tailwindConfig = {
-      ...config,
+      ...newConfig,
       ...tailwindConfig,
 
       corePlugins: {

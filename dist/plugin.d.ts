@@ -1,4 +1,5 @@
 import babel, { PluginObj } from '@babel/core';
+import { Config } from 'tailwindcss';
 
 type PluginPreset = "react";
 type PluginType = {
@@ -6,7 +7,7 @@ type PluginType = {
     styles?: {
         outputPath?: string;
         inputPath?: string;
-        config?: string;
+        config?: Promise<Config | undefined>;
     };
 };
 declare function export_default({ types: t }: typeof babel): PluginObj;

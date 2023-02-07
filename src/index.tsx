@@ -229,12 +229,12 @@ export function tf<
     }
 
     return Object.assign(CreatedExtendedElement, {
-      extends: extendsElement,
+      __extends: extendsElement,
     });
   }
 
   return Object.assign(CreatedElement, {
-    extends: extendsElement,
+    __extends: extendsElement,
   });
 }
 

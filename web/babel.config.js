@@ -1,5 +1,3 @@
-const path = require("path");
-
 module.exports = (api) => {
   api.cache(false);
   return {
@@ -9,6 +7,7 @@ module.exports = (api) => {
         "tailwind-factory/plugin",
         {
           styles: {
+            config: require("./tailwind.config"),
             outputPath: "src/styles/generated.css"
           },
         },

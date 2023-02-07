@@ -49,7 +49,7 @@ To use [`Tailwind CSS IntelliSense`](https://marketplace.visualstudio.com/items?
 //Tailwind IntelliSense Regex
 "tailwindCSS.experimental.classRegex": [
   ["tf\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // tf(`...`)
-  ["\\.extends\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // xxx.extends(`...`)
+  ["\\.__extends\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // xxx.extends(`...`)
 ],
 ```
 

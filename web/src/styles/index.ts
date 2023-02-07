@@ -1,6 +1,5 @@
 import { tf } from "tailwind-factory";
 
-//No utility classes were detected in your source
 export const Container = tf(
   "div",
   `
@@ -27,3 +26,17 @@ export const Container = tf(
     },
   }
 );
+
+export const Heading = tf("h1", `
+  text-xl
+  text-[#ff4894]
+  
+  span {
+    
+    font-bold
+  }
+`, {
+
+});
+
+export const Description = Heading.__extends("p");

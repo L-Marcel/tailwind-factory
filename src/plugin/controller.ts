@@ -160,9 +160,7 @@ export class StyleController {
     if (path && formattedStyles) {
       writeFile(path, formattedStyles, (err) => {
         if (err) {
-          Logs.info(path);
           Logs.error("Unable to update styles");
-          Logs.error(err);
           return;
         }
 

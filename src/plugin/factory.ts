@@ -6,6 +6,8 @@ import { StyleController } from "./controller";
 import { ProcessDeepClassesParams, emitter } from "./emitter";
 import sass from "sass";
 import { generateId } from "../utils/generateId";
+import { Config } from "tailwindcss";
+import { Logs } from "./logs";
 
 export type DeepReference = {
   css: string;
@@ -16,7 +18,7 @@ export type DeepReference = {
 type GenerateClassTreeOptions = {
   reference: string;
   identifier?: string;
-  configPath?: string;
+  config?: Promise<Config | undefined>;
   inputStylePath?: string;
 };
 
@@ -28,6 +30,31 @@ export type DeepStyleClass = {
 
 type StyleClass = string | DeepStyleClass;
 export class StyleFactory {
+  private static escapeSpecialCharacters(value: string) {
+    const specialCharacters = [":", "[", "]", "#", "/", "+", "(", ")", "%", "*", ","];
+    const escapedsSecialCharacters = [":","\\[", "\\]", "#", "\\/", "\\+", "\\(", "\\)", "%", "\\*", ","];
+    const comma = "\\2c ";
+
+    const hasBrackets = value.includes("[") && value.includes("]");
+
+    if(hasBrackets) {
+      specialCharacters.forEach((character, index) => {
+        const escapedCharacter = escapedsSecialCharacters[index];
+        const characterRegex = new RegExp(escapedCharacter, "g");
+
+        if(characterRegex.test(value) && character !== ",") {
+          value = value.replace(characterRegex, `\\${character}`);
+        } else if(characterRegex.test(value)) {
+          value = value.replace(characterRegex, comma);
+        };
+      });
+
+      return value;
+    };
+
+    return value;
+  };
+
   static separateClasses(classes: string) {
     const mapOfClasses = stringToArray(classes);
 
@@ -129,7 +156,7 @@ export class StyleFactory {
       deepClass,
       outputStylePath,
       inputStylePath,
-      configPath,
+      config,
     }: Omit<ProcessDeepClassesParams, "reference">,
     _reference?: string
   ) {
@@ -145,7 +172,7 @@ export class StyleFactory {
       emitter.emit("process", {
         deepClass,
         filename,
-        configPath,
+        config,
         reference,
         outputStylePath,
         inputStylePath,
@@ -161,7 +188,7 @@ export class StyleFactory {
   static formateStyleClasses(
     deepStyleClass: DeepStyleClass,
     filename: string,
-    configPath: string,
+    config: Promise<Config | undefined>,
     outputStylePath: string,
     inputStylePath: string,
     _reference?: string
@@ -172,7 +199,7 @@ export class StyleFactory {
         filename,
         outputStylePath,
         inputStylePath,
-        configPath,
+        config,
       },
       _reference
     );
@@ -221,7 +248,7 @@ export class StyleFactory {
 
   static async generateClassTree(
     deepClass: DeepStyleClass,
-    { reference, identifier, configPath, inputStylePath }: GenerateClassTreeOptions
+    { reference, identifier, config, inputStylePath }: GenerateClassTreeOptions
   ) {
     const classes: string[] = [];
     const components: DeepReference[] = [];
@@ -231,7 +258,9 @@ export class StyleFactory {
       const isString = typeof currentClass === "string";
 
       if (isString) {
-        classes.push(currentClass);
+        classes.push(
+          currentClass
+        );
         continue;
       }
 
@@ -239,7 +268,7 @@ export class StyleFactory {
       const componentReference = `deep_${id}`;
 
       const css = await StyleFactory.generateClassTree(currentClass, {
-        configPath,
+        config,
         reference: componentReference,
         identifier: currentClass.identifier,
         inputStylePath,
@@ -254,17 +283,19 @@ export class StyleFactory {
     }
 
     const rawClasses = classes.join(" ");
-
+    Logs.warning(`raw classes: ${JSON.stringify(rawClasses, null, 2)}`);
     const res = await getTailwindClasses(
       `
       ${rawClasses}
     `,
       {
         components,
-        configPath,
+        config,
         inputStylePath,
       }
     );
+
+    Logs.warning(`css: ${JSON.stringify(res.css, null, 2)}`)
 
     let formattedTailwindCss = res.css;
 
@@ -272,10 +303,7 @@ export class StyleFactory {
       const isString = typeof styleClass === "string";
 
       if (isString) {
-        const classHasSeparator = /:/g.test(styleClass);
-        const formattedStyleClass = classHasSeparator
-          ? styleClass.replace(/:/g, "\\:")
-          : styleClass;
+        const formattedStyleClass = StyleFactory.escapeSpecialCharacters(styleClass);
 
         const component = components.find((component) => {
           return component.reference === formattedStyleClass;
@@ -285,7 +313,7 @@ export class StyleFactory {
         const haveDot = formattedStyleClass.startsWith(".");
 
         const classReferAComponent = component && classIsDetected;
-        const fromClass = `${haveDot ? "" : "."}${formattedStyleClass}`;
+        const fromClass = `${haveDot ? "" : "."}${formattedStyleClass} `;
         const toReplace = "&";
 
         if (classReferAComponent) {
