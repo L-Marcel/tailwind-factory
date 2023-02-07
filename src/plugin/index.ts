@@ -5,7 +5,7 @@ import { removeWhiteSpaceInClasses } from "../factory/tailwind";
 import { emitter } from "./emitter";
 
 import { StyleController } from "./controller";
-import { Logs } from "./logs";
+import { Logs, LogsMode } from "./logs";
 import { StyleFactory } from "./factory";
 import { Validator } from "./validator";
 import { Config } from "tailwindcss";
@@ -16,6 +16,7 @@ export type PluginPreset = "react";
 
 export type PluginType = {
   preset?: PluginPreset;
+  logs?: LogsMode;
   styles?: {
     outputPath?: string;
     inputPath?: string;
@@ -23,19 +24,27 @@ export type PluginType = {
   };
 };
 
+const watchedFiles = ["tailwind.config.js"];
+
 let outputStylePath = "src/styles/generated.css";
 let tailwindConfig: Promise<Config | undefined>;
 
 //disabled
 const inputStylePath = ""; //"../../src/styles/global.css";
 
+let config: PluginType = {};
 export default function ({ types: t }: typeof babel): PluginObj {
   let imported = false;
 
   return {
     name: "tailwind-factory",
-    pre: (state) => {
+    pre(state) {
+      config = this.opts;
+      Logs.init(config.logs ?? "recommended");
+
       console.warn = Logs.omitExpectedWarnings();
+      console.error = Logs.omitUncaughtException();
+
       Logs.info("generating styles...");
 
       const filename = state.opts.filename ?? "";
@@ -45,7 +54,6 @@ export default function ({ types: t }: typeof babel): PluginObj {
 
       emitter.clearLoadedFile(filename);
 
-      const watchedFiles = ["tailwind.config.js"];
       const watchedFile = watchedFiles.find((file) => {
         return filename.endsWith(file);
       });
@@ -56,7 +64,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
         Validator.validate(watchedFile, state.code);
       }
     },
-    post: (state) => {
+    post(state) {
       if (imported) {
         const filename = state.opts.filename ?? "";
         emitter.setLoadedFile(filename, outputStylePath);
@@ -78,36 +86,32 @@ export default function ({ types: t }: typeof babel): PluginObj {
           types.ObjectExpression
         ];
 
-        const newMethodArguments: 
-          (
-            types.ArgumentPlaceholder | 
-            types.JSXNamespacedName | 
-            types.SpreadElement | 
-            babel.types.Expression
-          )[] = [methodArguments[0]];
+        const newMethodArguments: (
+          | types.ArgumentPlaceholder
+          | types.JSXNamespacedName
+          | types.SpreadElement
+          | babel.types.Expression
+        )[] = [methodArguments[0]];
 
         if (
           (imported &&
-          (t.isIdentifier(callee) || t.isV8IntrinsicIdentifier(callee)) &&
-          callee.name === "tf") 
-          
-          || 
-          
-          (t.isMemberExpression(callee) && 
-          (t.isIdentifier(callee.object) || t.isV8IntrinsicIdentifier(callee.object)) &&
-          (t.isIdentifier(callee.property) || t.isV8IntrinsicIdentifier(callee.property))) &&
-          callee.property.name === "__extends"
+            (t.isIdentifier(callee) || t.isV8IntrinsicIdentifier(callee)) &&
+            callee.name === "tf") ||
+          (t.isMemberExpression(callee) &&
+            (t.isIdentifier(callee.object) || t.isV8IntrinsicIdentifier(callee.object)) &&
+            (t.isIdentifier(callee.property) ||
+              t.isV8IntrinsicIdentifier(callee.property)) &&
+            callee.property.name === "__extends")
         ) {
           imported = true;
-
-          let methodStyleArgument = "";
-
-          const config: PluginType = state.opts;
-          const filename = state.filename ?? "";
 
           outputStylePath = config?.styles?.outputPath ?? outputStylePath;
           //inputStylePath = config?.styles?.inputPath ?? inputStylePath;
           tailwindConfig = config?.styles?.config ?? tailwindConfig;
+
+          const filename = state.filename ?? "";
+
+          let methodStyleArgument = "";
 
           if (
             methodArguments.length >= 2 &&
@@ -139,16 +143,18 @@ export default function ({ types: t }: typeof babel): PluginObj {
             );
 
             methodStyleArgument = finalClass;
-            newMethodArguments.push(t.templateLiteral(
-              [
-                t.templateElement({
-                  raw: finalClass,
-                }),
-              ],
-              []
-            ));
+            newMethodArguments.push(
+              t.templateLiteral(
+                [
+                  t.templateElement({
+                    raw: finalClass,
+                  }),
+                ],
+                []
+              )
+            );
           }
-         
+
           if (methodArguments.length >= 3 && t.isObjectExpression(methodArguments[2])) {
             let methodOptions = methodArguments[2];
             const optionsProperties = methodArguments[2].properties;
@@ -257,15 +263,17 @@ export default function ({ types: t }: typeof babel): PluginObj {
           }
 
           const isExpression = t.isMemberExpression(callee);
-          const objectName = isExpression && (t.isIdentifier(callee.object) || t.isV8IntrinsicIdentifier(callee.object))? callee.object.name:"";
+          const objectName =
+            isExpression &&
+            (t.isIdentifier(callee.object) || t.isV8IntrinsicIdentifier(callee.object))
+              ? callee.object.name
+              : "";
 
-          const callExpressionContent = isExpression? 
-            t.memberExpression(t.identifier(objectName), t.identifier("__extends")):
-            t.identifier("tf");
+          const callExpressionContent = isExpression
+            ? t.memberExpression(t.identifier(objectName), t.identifier("__extends"))
+            : t.identifier("tf");
 
-          path.replaceWith(
-            t.callExpression(callExpressionContent, newMethodArguments)
-          );
+          path.replaceWith(t.callExpression(callExpressionContent, newMethodArguments));
 
           path.skip();
         }

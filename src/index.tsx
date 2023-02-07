@@ -4,7 +4,8 @@ import { getStyledElementClassName, removeWhiteSpaceInClasses } from "./factory/
 import { uniteProperties } from "./utils/uniteProperties";
 import { Post } from "./post";
 import { parseToChildren } from "./utils/parseToChildren";
-import { nextWithFactory, webpackWithFactory } from './withFactory';
+import { nextWithFactory, webpackWithFactory } from "./withFactory";
+import { Logs } from "./plugin/logs";
 
 type BooleanString = "true" | "false";
 type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
@@ -238,4 +239,4 @@ export function tf<
   });
 }
 
-export { removeWhiteSpaceInClasses, nextWithFactory, webpackWithFactory };
+export { nextWithFactory, webpackWithFactory };

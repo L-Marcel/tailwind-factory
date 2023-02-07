@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.1.0-alpha.31
+
+### Minor Changes
+
+- finishing logs, validator, factory and config
+
 ## 2.0.4-alpha.30
 
 ### Patch Changes

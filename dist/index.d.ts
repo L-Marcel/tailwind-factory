@@ -1,8 +1,6 @@
 import { JSXElementConstructor, ComponentProps } from 'react';
 import { NextConfig } from 'next';
 
-declare function removeWhiteSpaceInClasses(classes: string): string;
-
 declare function webpackWithFactory(config: any): any;
 declare function nextWithFactory(nextConfig: NextConfig): NextConfig;
 
@@ -33,4 +31,4 @@ declare function tf<Type extends FactoryElement, StyleVariants, DefaultStyleVari
     };
 };
 
-export { FactoryElement, FactoryExtractKeys, FactoryExtractKeysAndValues, FactoryExtractRequiredKeysAndValues, StyledElementOptions, nextWithFactory, removeWhiteSpaceInClasses, tf, webpackWithFactory };
+export { FactoryElement, FactoryExtractKeys, FactoryExtractKeysAndValues, FactoryExtractRequiredKeysAndValues, StyledElementOptions, nextWithFactory, tf, webpackWithFactory };

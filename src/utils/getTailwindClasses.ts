@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import postcss from "postcss";
 import tailwind, { Config } from "tailwindcss";
 import { DeepReference } from "../plugin/factory";
 import { FactoryConfig } from "../plugin/config";
 import { getExternalCss } from "./getExternalCss";
+import { stringArrayToBoolean } from "./stringArrayToBoolean";
 
 type TailwindGenerateClassesParams = {
   components: DeepReference[];
@@ -63,11 +66,16 @@ export async function getTailwindClasses(
 
   if (config) {
     const newConfig = await FactoryConfig.getTailwindConfig(config);
+
+    const corePlugins = Array.isArray(newConfig?.corePlugins)
+      ? stringArrayToBoolean(newConfig?.corePlugins as any[])
+      : {};
+
     tailwindConfig = {
       ...newConfig,
       ...tailwindConfig,
-
       corePlugins: {
+        ...corePlugins,
         preflight: false,
       },
     };

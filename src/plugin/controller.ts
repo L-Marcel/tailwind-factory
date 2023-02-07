@@ -102,9 +102,10 @@ export class StyleController {
     StyleController.filesInQueue = [];
     StyleController.writeCache(usedCachedStyles, () => {
       Logs.info("styles stored in cache");
+      console.error = Logs.restoreUncaughtException();
       setTimeout(() => {
         Logs.printedMessages = [];
-      }, 1200);
+      }, 5000);
     });
   }
 
@@ -165,6 +166,7 @@ export class StyleController {
         }
 
         console.warn = Logs.restoreExpectedWarnings();
+
         this.writeCache(StyleController.styles, callback);
       });
     } else if (!path) {

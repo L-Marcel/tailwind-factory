@@ -7,7 +7,6 @@ import { ProcessDeepClassesParams, emitter } from "./emitter";
 import sass from "sass";
 import { generateId } from "../utils/generateId";
 import { Config } from "tailwindcss";
-import { Logs } from "./logs";
 
 export type DeepReference = {
   css: string;
@@ -32,28 +31,40 @@ type StyleClass = string | DeepStyleClass;
 export class StyleFactory {
   private static escapeSpecialCharacters(value: string) {
     const specialCharacters = [":", "[", "]", "#", "/", "+", "(", ")", "%", "*", ","];
-    const escapedsSecialCharacters = [":","\\[", "\\]", "#", "\\/", "\\+", "\\(", "\\)", "%", "\\*", ","];
+    const escapedsSecialCharacters = [
+      ":",
+      "\\[",
+      "\\]",
+      "#",
+      "\\/",
+      "\\+",
+      "\\(",
+      "\\)",
+      "%",
+      "\\*",
+      ",",
+    ];
     const comma = "\\2c ";
 
     const hasBrackets = value.includes("[") && value.includes("]");
 
-    if(hasBrackets) {
+    if (hasBrackets) {
       specialCharacters.forEach((character, index) => {
         const escapedCharacter = escapedsSecialCharacters[index];
         const characterRegex = new RegExp(escapedCharacter, "g");
 
-        if(characterRegex.test(value) && character !== ",") {
+        if (characterRegex.test(value) && character !== ",") {
           value = value.replace(characterRegex, `\\${character}`);
-        } else if(characterRegex.test(value)) {
+        } else if (characterRegex.test(value)) {
           value = value.replace(characterRegex, comma);
-        };
+        }
       });
 
       return value;
-    };
+    }
 
     return value;
-  };
+  }
 
   static separateClasses(classes: string) {
     const mapOfClasses = stringToArray(classes);
@@ -88,7 +99,7 @@ export class StyleFactory {
       const haveBrackets = cur.includes("[") && cur.includes("]");
 
       const elementWihoutBrackets = haveBrackets ? cur.split("[")[0] : cur;
-      const posibleElement = hasComma
+      const possibleElement = hasComma
         ? elementWihoutBrackets.replace(",", "")
         : elementWihoutBrackets;
 
@@ -112,7 +123,7 @@ export class StyleFactory {
       if (
         !canBeABlock &&
         (nextElementIsKey || nextElementIsAnOperator || isASpecialDeclarationCharacter) &&
-        (isIntrinsicElement(posibleElement) || startWithSpecialCharacter)
+        (isIntrinsicElement(possibleElement) || startWithSpecialCharacter)
       ) {
         blockContent = [];
         canBeABlock = true;
@@ -258,9 +269,7 @@ export class StyleFactory {
       const isString = typeof currentClass === "string";
 
       if (isString) {
-        classes.push(
-          currentClass
-        );
+        classes.push(currentClass);
         continue;
       }
 
@@ -283,7 +292,7 @@ export class StyleFactory {
     }
 
     const rawClasses = classes.join(" ");
-    Logs.warning(`raw classes: ${JSON.stringify(rawClasses, null, 2)}`);
+
     const res = await getTailwindClasses(
       `
       ${rawClasses}
@@ -294,8 +303,6 @@ export class StyleFactory {
         inputStylePath,
       }
     );
-
-    Logs.warning(`css: ${JSON.stringify(res.css, null, 2)}`)
 
     let formattedTailwindCss = res.css;
 

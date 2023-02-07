@@ -1,9 +1,12 @@
 import babel, { PluginObj } from '@babel/core';
 import { Config } from 'tailwindcss';
 
+type LogsMode = "recommended" | "none" | "all";
+
 type PluginPreset = "react";
 type PluginType = {
     preset?: PluginPreset;
+    logs?: LogsMode;
     styles?: {
         outputPath?: string;
         inputPath?: string;

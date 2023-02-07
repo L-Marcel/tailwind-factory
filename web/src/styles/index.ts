@@ -29,7 +29,8 @@ export const Container = tf(
 
 export const Heading = tf("h1", `
   text-xl
-  text-[#ff4894]
+  text-slate-100
+  italic
   
   span {
     
