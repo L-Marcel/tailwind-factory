@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.0.4-alpha.13
+
+### Patch Changes
+
+- updating link in readme
+
 ## 2.0.4-alpha.12
 
 ### Patch Changes
