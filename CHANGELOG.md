@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.1.0-alpha.39
+
+### Patch Changes
+
+- updating homepage link
+
 ## 2.1.0-alpha.38
 
 ### Patch Changes

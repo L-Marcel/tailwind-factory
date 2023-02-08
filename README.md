@@ -5,7 +5,7 @@ A lib to create and extends React components defining variants like Stitches usi
 
 # WARNING
 If all goes well, the Alpha is very close to being released... 
-Spoiler: https://tailwind-factory-homepage.vercel.app
+Spoiler: https://tailwind-factory.vercel.app
 
 # Summary
 1. [Installation](#installation)
@@ -441,7 +441,8 @@ export const NewComponent = Parent.extends(ParentComponent, `
 ```
 
 # Roadmap
-- [ ] Finish plugin
-  - Full deep classes support 
+- [x] Finish plugin main features
+  - Deep classes support
+- [ ] Update documentation
 - [ ] Release 2.1.0 version
 - [ ] Add custom colors in extension
