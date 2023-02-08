@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.1.0-alpha.38
+
+### Patch Changes
+
+- changing warning
+
 ## 2.1.0-alpha.37
 
 ### Minor Changes

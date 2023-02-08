@@ -4,13 +4,8 @@
 A lib to create and extends React components defining variants like Stitches using Tailwind!
 
 # WARNING
-Sorry version number, got a big error uploading the prerelease. I'm creating a plugin for this application. It was inexperience.
-
-Download the alpha version at your own risk, it is still undocumented and has changed a lot. I'm making it available to perform tests in the production environment.
-
-Okay, it's working on: https://tailwind-factory-homepage.vercel.app
-
-There isn't much yet, but I'm still going to make a lot of changes. I'm having problems with setting paths in my development environment and production environment.
+If all goes well, the Alpha is very close to being released... 
+Spoiler: https://tailwind-factory-homepage.vercel.app
 
 # Summary
 1. [Installation](#installation)
