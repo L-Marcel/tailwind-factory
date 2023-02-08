@@ -103,9 +103,6 @@ export class StyleController {
     StyleController.writeCache(usedCachedStyles, () => {
       Logs.info("styles stored in cache");
       console.error = Logs.restoreUncaughtException();
-      setTimeout(() => {
-        Logs.printedMessages = [];
-      }, 5000);
     });
   }
 

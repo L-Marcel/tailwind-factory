@@ -40,7 +40,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
     name: "tailwind-factory",
     pre(state) {
       config = this.opts;
-      Logs.init(config.logs ?? "recommended");
+      Logs.init(config.logs ?? "errors");
 
       console.warn = Logs.omitExpectedWarnings();
       console.error = Logs.omitUncaughtException();

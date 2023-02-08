@@ -1,5 +1,29 @@
 # tailwind-factory
 
+## 2.1.0-alpha.37
+
+### Minor Changes
+
+- improving pseudo, classes and id support, changing log system, adding debug logs and finishing main features
+
+## 2.1.0-alpha.36
+
+### Minor Changes
+
+- adding style syntax error and exception
+
+## 2.1.0-alpha.35
+
+### Patch Changes
+
+- removing bug with brackets
+
+## 2.1.0-alpha.34
+
+### Minor Changes
+
+- recovering support for classes and ids inside deep classes
+
 ## 2.1.0-alpha.33
 
 ### Patch Changes

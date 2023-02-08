@@ -7,11 +7,14 @@ import { ProcessDeepClassesParams, emitter } from "./emitter";
 import sass from "sass";
 import { generateId } from "../utils/generateId";
 import { Config } from "tailwindcss";
+import { Logs } from "./logs";
+import { StyleError } from "./errors/StyleError";
 
 export type DeepReference = {
   css: string;
   reference: string;
   identifier: string;
+  isPseudoClass: boolean;
 };
 
 type GenerateClassTreeOptions = {
@@ -44,19 +47,24 @@ export class StyleFactory {
       ","
     ];
 
+    //who invented this?
     const replaceValues = [
       "\\\\:",
-      "\\\\[",
-      "\\\\]",
+      "\\\\\\[",
+      "\\\\\\]",
       "\\\\#",
-      "\\\\/",
-      "\\\\+",
-      "\\\\(",
-      "\\\\)",
+      "\\\\\\/",
+      "\\\\\\+",
+      "\\\\\\(",
+      "\\\\\\)",
       "\\\\%",
-      "\\\\*",
+      "\\\\\\*",
       "\\\\2c"
     ];
+
+    if(!value.startsWith(".") && value.includes(".")) {
+      value = value.replace(/\./g, "\\\\.");
+    };
 
     replaceValues.forEach((replace, index) => {
       const escapedCharacter = escapedsSecialCharacters[index];
@@ -267,6 +275,7 @@ export class StyleFactory {
 
   static async generateClassTree(
     deepClass: DeepStyleClass,
+    filename: string,
     { reference, identifier, config, inputStylePath }: GenerateClassTreeOptions
   ) {
     const classes: string[] = [];
@@ -284,23 +293,28 @@ export class StyleFactory {
       const id = generateId();
       const componentReference = `deep_${id}`;
 
-      const css = await StyleFactory.generateClassTree(currentClass, {
+      const css = await StyleFactory.generateClassTree(currentClass, filename, {
         config,
         reference: componentReference,
         identifier: currentClass.identifier,
         inputStylePath,
       });
 
+      let isPseudoClass = false;
+      if(currentClass.identifier.startsWith(":")) {
+        isPseudoClass = true;
+      };
+
       classes.push(componentReference);
       components.push({
         reference: componentReference,
         identifier: currentClass.identifier,
+        isPseudoClass,
         css,
       });
     }
 
     const rawClasses = classes.join(" ");
-
     const res = await getTailwindClasses(
       `
       ${rawClasses}
@@ -314,32 +328,28 @@ export class StyleFactory {
 
     let formattedTailwindCss = res.css;
 
-    classes.sort((a, b) => a.length > b.length? 1:-1).forEach((styleClass, i) => {
-      const isString = typeof styleClass === "string";
+    Logs.debug(`components: `, components, '\n');
 
-      if (isString) {
-        const formattedStyleClass = StyleFactory.escapeSpecialCharacters(styleClass);
+    classes.sort((a, b) => a.length > b.length? 1:-1).forEach((styleClass, index) => {
+      const formattedStyleClass = StyleFactory.escapeSpecialCharacters(styleClass);
 
-        const component = components.find((component) => {
-          return component.reference === formattedStyleClass;
-        });
+      const haveDot = formattedStyleClass.startsWith(".");
+      const fromClass = `${haveDot? "" : "\\."}${formattedStyleClass}`;
+      const toReplace = "&";
 
-        const haveDot = formattedStyleClass.startsWith(".");
-        const fromClass = `${haveDot ? "" : "\\."}${formattedStyleClass}`;
-        const toReplace = "&";
+      const asComponent = components.find(component => component.reference === styleClass);
 
-        const classRegex = new RegExp(`${fromClass}(?=.*? )`, "");
-        const classIsDetected = classRegex.test(formattedTailwindCss);
-        const classReferAComponent = component && classIsDetected;
-       
-        if (classReferAComponent) {
-          return;
-        }
-  
-        formattedTailwindCss = classIsDetected
-          ? formattedTailwindCss.replace(classRegex, toReplace)
-          : formattedTailwindCss;
-      }
+      let classRegex = new RegExp(`${fromClass}${asComponent?.isPseudoClass? ``:`(?=.*? )`}`, "");
+      const classIsDetected = classRegex.test(formattedTailwindCss);
+
+      Logs.debug(`${index + 1}º`, classIsDetected, classRegex, fromClass, haveDot);
+      if(asComponent?.isPseudoClass) {
+        Logs.debug(`pseudo: `, formattedTailwindCss);
+      };
+
+      formattedTailwindCss = classIsDetected
+        ? formattedTailwindCss.replace(classRegex, toReplace)
+        : formattedTailwindCss;
     });
 
     const blockReference = identifier ?? `.${reference}`;
@@ -355,21 +365,35 @@ export class StyleFactory {
         specialOperator
       );
 
-      const compiledCss = sass.compileString(newCss);
+      try {
+        const compiledCss = sass.compileString(newCss);
 
-      const finalCss = StyleFactory.removeReferenceBeforeOperator(
-        compiledCss.css,
-        temporaryReference,
-        specialOperator
-      );
-
-      return finalCss;
+        const finalCss = StyleFactory.removeReferenceBeforeOperator(
+          compiledCss.css,
+          temporaryReference,
+          specialOperator
+        );
+  
+        Logs.debug(`css: `, finalCss, "\n");
+        return finalCss;
+      } catch (error: any) {
+        const _error = new StyleError(error?.message ?? "", filename, error?.stack ?? error?.message);
+        Logs.error(_error.message);
+        return "";
+      }
     }
 
-    const compiledCss = sass.compileString(
-      `${blockReference} {\n${formattedTailwindCss}\n}`
-    );
-
-    return compiledCss.css;
+    try {
+      const compiledCss = sass.compileString(
+        `${blockReference} {\n${formattedTailwindCss}\n}`
+      );
+  
+      Logs.debug(`css: `, compiledCss.css, "\n");
+      return compiledCss.css;
+    } catch (error: any) {
+      const _error = new StyleError(error?.message ?? "", filename, error?.stack ?? error?.message);
+      Logs.error(_error.message);
+      return "";
+    }
   }
 }

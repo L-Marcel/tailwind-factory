@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import kleur from "kleur";
 
-export type LogsMode = "recommended" | "none" | "all";
-type LogsColors = "blue" | "red" | "yellow";
+export type LogsMode = "none" | "all" | "normal" | "debug" | "errors";
+type LogsColors = "blue" | "red" | "yellow" | "green";
 
 const possibleExceptions = ["uncaughtException"];
 
@@ -11,10 +11,14 @@ const expectedMessages = [
   "tailwindcss.com/docs/content-configuration",
 ];
 
-const specialMessages = ["detected by the validator"];
-
+type LogOptions = {
+  newLine: boolean;
+  debug: boolean;
+  tag: string;
+  color: LogsColors;
+}
 export class Logs {
-  private static mode: LogsMode = "recommended";
+  private static mode: LogsMode = "errors";
 
   private static _warn = console.warn;
   private static _error = console.error;
@@ -28,6 +32,7 @@ export class Logs {
   private static addNowAndRemoveAfter(message: string, time: number) {
     Logs.printedMessages.push(message);
     setTimeout(() => {
+      Logs.debug("message deleted: ", message);
       Logs.printedMessages = Logs.printedMessages.filter((printedMessage) => {
         return printedMessage !== message;
       });
@@ -35,16 +40,11 @@ export class Logs {
   }
 
   private static log(
-    newLine: boolean,
-    tag: string,
-    color: LogsColors,
+    { color, debug, newLine, tag }: LogOptions,
     message: string,
     ...rest: any[]
   ) {
     const alreadyPrinted = Logs.printedMessages.includes(message);
-    const isSpecial = specialMessages.some((specialMessage) => {
-      return message.includes(specialMessage);
-    });
 
     if (!alreadyPrinted) {
       console.log(
@@ -52,30 +52,56 @@ export class Logs {
         ...rest
       );
 
-      if (isSpecial) {
-        return Logs.addNowAndRemoveAfter(message, 2000);
+      if (!debug) {
+        return Logs.addNowAndRemoveAfter(message, 10000);
       }
 
-      return Logs.printedMessages.push(message);
+      return;
     }
   }
 
-  static info(message: any, ...rest: any[]) {
-    const isEnabled = Logs.mode !== "none";
+  static debug(message: any, ...rest: any[]) {
+    const isEnabled = Logs.mode !== "none" && Logs.mode !== "errors";
 
-    isEnabled && Logs.log(false, "style", "blue", message, ...rest);
+    isEnabled && Logs.log({
+      newLine: false, 
+      debug: true,
+      tag: "debug", 
+      color: "green"
+    }, message, ...rest);
+  }
+
+  static info(message: any, ...rest: any[]) {
+    const isEnabled = Logs.mode !== "none" && Logs.mode !== "errors";
+
+    isEnabled && Logs.log({
+      newLine: false, 
+      debug: false,
+      tag: "style", 
+      color: "blue"
+    }, message, ...rest);
   }
 
   static error(message: any, ...rest: any[]) {
     const isEnabled = Logs.mode !== "none";
 
-    isEnabled && Logs.log(true, "error", "red", message, ...rest, "\n");
+    isEnabled && Logs.log({
+      newLine: true, 
+      debug: false,
+      tag: "error", 
+      color: "red"
+    }, message, ...rest, "\n");
   }
 
   static warning(message: any, ...rest: any[]) {
     const isEnabled = Logs.mode !== "none";
 
-    isEnabled && Logs.log(true, "warn", "yellow", message, ...rest, "\n");
+    isEnabled && Logs.log({
+      newLine: true,
+      debug: false,
+      tag: "warn",
+      color: "yellow"
+    }, message, ...rest, "\n");
   }
 
   static omitExpectedWarnings() {

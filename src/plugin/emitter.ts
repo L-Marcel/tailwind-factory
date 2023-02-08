@@ -287,10 +287,10 @@ emitter.on(
   }) {
     StyleController.keepCacheCycle(filename);
 
-    const css = await StyleFactory.generateClassTree(deepClass, {
+    const css = await StyleFactory.generateClassTree(deepClass, filename, {
       reference,
       config,
-      inputStylePath,
+      inputStylePath
     });
 
     this.updateStyle({ reference, filename, css }, outputStylePath);

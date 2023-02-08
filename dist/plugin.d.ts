@@ -1,7 +1,7 @@
 import babel, { PluginObj } from '@babel/core';
 import { Config } from 'tailwindcss';
 
-type LogsMode = "recommended" | "none" | "all";
+type LogsMode = "none" | "all" | "normal" | "debug" | "errors";
 
 type PluginPreset = "react";
 type PluginType = {
