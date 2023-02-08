@@ -6,7 +6,7 @@ module.exports = (api) => {
       [
         "tailwind-factory/plugin",
         {
-          logs: "debug",
+          logs: process.env.NODE_ENV === "development"? "debug":"normal",
           styles: {
             config: require("./tailwind.config"),
             outputPath: "src/styles/generated.css"

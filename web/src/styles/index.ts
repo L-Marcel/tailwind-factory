@@ -1,29 +1,33 @@
 import { tf } from "tailwind-factory";
 
+//Don't do that!!! I'm trying it out as I go... and laughing at the size too.
 export const Container = tf(
   "div", `
   flex
   flex-col
   items-center
+  justify-between
+  relative
 
   w-screen
   h-screen
-  overflow-hidden
+  overflow-x-hidden
+  overflow-y-auto
 
-  pt-6
+  pt-4
   md:pt-10
   2xl:pt-14
 
   bg-slate-800
 
   .background-left {
-    relative
+    absolute
     after:fixed
     after:bg-transparent
     after:border-slate-700
     after:border-t-[95vh]
     after:border-r-[2rem]
-    md:after:border-r-[6rem]
+    md:after:border-r-[4rem]
     lg:after:border-r-[8rem]
     xl:after:border-r-[12rem]
     after:border-r-transparent
@@ -32,13 +36,13 @@ export const Container = tf(
   }
 
   .background-right {
-    relative
+    absolute
     after:fixed
     after:bg-transparent
     after:border-slate-700
     after:border-b-[95vh]
     after:border-l-[2rem]
-    md:after:border-l-[6rem]
+    md:after:border-l-[4rem]
     lg:after:border-l-[8rem]
     xl:after:border-l-[12rem]
     after:border-l-transparent
@@ -48,26 +52,9 @@ export const Container = tf(
 
   #button-group {
     flex
-    flex-row
-    gap-6
-  }
-
-  section {
-    fixed
-    bottom-0
-    px-4
-    md:mx-auto
-    flex
-    flex-col
-    md:flex-row
     justify-center
-    gap-5
-    md:gap-20
-    min-w-full
-
-    pre {
-      last:rounded-b-none
-      md:rounded-b-none
-    }
+    gap-6
+    -mt-[5rem]
+    md:-mt-16
   }
 `);

@@ -10,7 +10,8 @@ export const ButtonContainer = tf("button", `
   md:pt-3
   md:pb-[.9rem]
   md:text-xl
-  box-shadow-lg
+  2xl:text-2xl
+  shadow-lg
   duration-200
   transition-colors
 `, {

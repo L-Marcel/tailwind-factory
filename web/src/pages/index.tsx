@@ -1,9 +1,23 @@
 import { Container } from "@/styles";
 import { Button } from "components/Button";
 import { Code } from "components/Code";
+import { examples } from "constants/examples";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const [exampleIndex, setExampleIndex] = useState(0);
+
+  function handleNextExample() {
+    setExampleIndex(index => {
+      if(index < (examples.length - 1)) {
+        return index + 1;
+      };
+
+      return 0;
+    });
+  };
+
   return <Container>
     <Image
       src="/logo.png"
@@ -19,20 +33,14 @@ export default function Home() {
           Get Started
         </Button>
       </a>
-      <Button theme="secondary">
+      <Button onClick={handleNextExample} theme="secondary">
         Next Example
       </Button>
     </div>
-    <section>
-      <Code>
-        <span>flex</span>
-        <span>flex-col</span>
-        <button>test</button>
-      </Code>
-      <Code>
-        <span>flex</span>
-        <span>flex-col</span>
-      </Code>
-    </section>
+    <Code>
+      <code>
+        {examples[exampleIndex]}
+      </code>
+    </Code>
   </Container>;
 }
