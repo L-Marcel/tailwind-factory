@@ -1,5 +1,23 @@
 # tailwind-factory
 
+## 2.2.4
+
+### Patch Changes
+
+- updating readme
+
+## 2.2.3
+
+### Patch Changes
+
+- fixing bug with regex
+
+## 2.2.2
+
+### Patch Changes
+
+- disabling media queries blocks
+
 ## 2.2.1
 
 ### Patch Changes

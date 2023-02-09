@@ -24,8 +24,8 @@ A lib to create and extends React components defining variants like Stitches and
 5. [Classes priority](#classes-priority)
 6. [How it works](#how-it-works)
 7. [Snippets](#snippets)
-9. [Roadmap](#roadmap)
-10. [Author's opinion](#about-building-the-library)
+8. [Roadmap](#roadmap)
+9. [Author's opinion](#about-building-the-library)
 
 # Installation
 To install Tailwind Factory you need to run in your project:
@@ -500,7 +500,7 @@ Inject into __`all`__:
 }
 ```
 
-Inject __`media query`__:
+Inject __`media query`__ (temporary disabled):
 ```scss
 rounded-md
 p:first-of-type {

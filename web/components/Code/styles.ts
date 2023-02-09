@@ -22,7 +22,7 @@ export const CodeContainer = tf("pre", `
   }
 
   #pseudo {
-    text-purple-400
+    text-purple-500
   }
 
   #comment {

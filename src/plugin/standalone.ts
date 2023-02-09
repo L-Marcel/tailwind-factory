@@ -78,7 +78,7 @@ export class Standalone {
         : elementWihoutBrackets;
   
       const specialOperators = ["+", ">", "~"];
-      const specialDeclarationsCharacters = ["&", "@media", ...specialOperators];
+      const specialDeclarationsCharacters = ["&", ...specialOperators];
       const specialCharacters = [".", "#", "*", ":", ...specialDeclarationsCharacters];
   
       const isAnOperator = specialOperators.includes(cur);
@@ -292,7 +292,7 @@ export class Standalone {
 
       const asComponent = components.find(component => component.reference === styleClass);
 
-      let classRegex = new RegExp(`${fromClass}${asComponent?.isPseudoClass? ``:`(?=.*? )`}`, "g");
+      let classRegex = new RegExp(`${fromClass}${asComponent?.isPseudoClass? ``:`(?=.*? )`}`, "");
       const classIsDetected = classRegex.test(formattedTailwindCss);
 
       Logs.debug(`${index + 1}º`, classIsDetected, classRegex, fromClass, haveDot);
@@ -300,29 +300,29 @@ export class Standalone {
         Logs.debug(`pseudo: `, formattedTailwindCss);
       };
 
-      formattedTailwindCss = classIsDetected
+      return formattedTailwindCss = classIsDetected
         ? formattedTailwindCss.replace(classRegex, toReplace)
         : formattedTailwindCss;
     });
 
     const blockReference = identifier ?? `.${reference}`;
 
-    const isMedia = blockReference.startsWith("@media");
+    // const isMedia = blockReference.startsWith("@media");
 
-    if(isMedia) {
-      try {
-        const compiledCss = sass.compileString(
-          `.${reference} {\n${blockReference} {\n${formattedTailwindCss}\n}\n}`
-        );
+    // if(isMedia) {
+    //   try {
+    //     const compiledCss = sass.compileString(
+    //       `.${reference} {\n${blockReference} {\n${formattedTailwindCss}\n}\n}`
+    //     );
 
-        Logs.debug(`css: `, compiledCss.css, "\n");
-        return compiledCss.css;
-      } catch (error: any) {
-        const _error = new StyleError(error?.message ?? "", filename, error?.stack ?? error?.message);
-        Logs.error(_error.message);
-        return "";
-      }
-    };
+    //     Logs.debug(`css: `, compiledCss.css, "\n");
+    //     return compiledCss.css;
+    //   } catch (error: any) {
+    //     const _error = new StyleError(error?.message ?? "", filename, error?.stack ?? error?.message);
+    //     Logs.error(_error.message);
+    //     return "";
+    //   }
+    // };
 
     const specialOperators = ["+", "~", ">"];
     const specialOperator = specialOperators.find((operator) => {

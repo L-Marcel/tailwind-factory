@@ -14,7 +14,7 @@ specifiers:
   postcss: ^8.4.21
   react: 18.2.0
   react-dom: 18.2.0
-  tailwind-factory: 2.2.0
+  tailwind-factory: 2.2.3
   tailwind-scrollbar: ^2.1.0
   tailwindcss: ^3.2.4
   twin.macro: ^3.1.0
@@ -30,7 +30,7 @@ dependencies:
   next: 13.1.6_pbqkqtl3ytrxhl67w6o5ecjene
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  tailwind-factory: 2.2.0
+  tailwind-factory: 2.2.3
   tailwind-scrollbar: 2.1.0_tailwindcss@3.2.4
   typescript: 4.9.4
 
@@ -2371,8 +2371,8 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /tailwind-factory/2.2.0:
-    resolution: {integrity: sha512-hfuTDNTXo04ZyE4Xfc4u5zXYr+IlVuLIG1gI6jSp5moRMiphl7M0SKakCYjVvpOaHTpvZ9PleQ4fGec+IHBaYA==}
+  /tailwind-factory/2.2.3:
+    resolution: {integrity: sha512-WIGxfp4kfY//ZdjaKgkrOfUL2QowFSwcQ99EVMvvdoU/WQ1G5bkTsT8+xFtz2iTCgGCgX/vC9ff/6EWtzA6MYg==}
     dependencies:
       get-css-data: 2.1.0
       kleur: 4.1.5
