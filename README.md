@@ -1,27 +1,32 @@
 
 [![image info](./web/public/logo.png)](https://github.com/l-marcel/tailwind-factory)
 
-A lib to create and extends React components defining variants like Stitches using Tailwind!
-
-# WARNING
-If all goes well, the Alpha is very close to being released... 
-Spoiler: https://tailwind-factory.vercel.app
+A lib to create and extends React components defining variants like Stitches and using Tailwind classes!
 
 # Summary
 1. [Installation](#installation)
-   1. [Tailwind Configuration](#tailwind-configuration)
-2. [Basic Usage](#basic-usage)
+   1. [Tailwind configuration](#tailwind-configuration)
+   2. [Plugin configuration](#plugin-configuration)
+      1. [Plugin options](#plugin-options)
+      2. [With Next](#with-next)
+      3. [With Webpack](#with-webpack)
+   3. [Run without plugin](#run-without-plugin)
+      1. [Advantages](#advantages)
+      2. [Disadvantages](#disadvantages)
+2. [Basic usage](#basic-usage)
    1. [Custom components](#custom-components)
 3. [Heritage](#heritage)
-4. [[Experimental] Deep Classes](#experimental-deep-classes)
+4. [Deep classes](#deep-classes)
    1. [Available syntaxes](#available-syntaxes)
-   2. [Unavailable syntaxes](#unavailable-syntaxes)
-   3. [Tailwind Group](#tailwind-group)
+   2. [Is it possible to use external classes?](#is-it-possible-to-use-external-classes)
+   3. [Tailwind group](#tailwind-group)
    4. [Using with variants](#using-with-variants)
-5. [How it works](#how-it-works)
-6. [Classes Priority](#classes-priority)
+5. [Classes priority](#classes-priority)
+6. [How it works](#how-it-works)
 7. [Snippets](#snippets)
 9. [Roadmap](#roadmap)
+10. [About building the library](#roadmap)
+11. [Author's opinion](#authors-opinion)
 
 # Installation
 To install Tailwind Factory you need to run in your project:
@@ -36,17 +41,144 @@ npm install tailwind-factory
 yarn add tailwind-factory
 ```
 
-### Tailwind Configuration
-If you want to use with Tailwind you need to install and configure [`Tailwind`](https://tailwindcss.com/docs/installation/) before!
+## Tailwind configuration
+Now you should install and configure [Tailwind](https://tailwindcss.com/docs/installation/)!
 
-To use [`Tailwind CSS IntelliSense`](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) you need to add the following configuration in your User Settings:
+To use [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) you need to add the following configuration in your User Settings:
 ```js
 //Tailwind IntelliSense Regex
+"tailwindCSS.experimental.classRegex": [
+  ["tf\\(([^)]*)\\);", "(?:`)([^'\"`]*)(?:`)"], // tf(`...`);
+  ["\\.__extends\\(([^)]*)\\);", "(?:`)([^'\"`]*)(?:`)"], // xxx.extends(`...`);
+],
+```
+
+In this case it is necessary to put a __`semicolon`__ at the end of the function call. Using the [snippets](#snippets) you will not suffer from this. It already puts the __`semicolon`__.
+
+If you don't like the idea very much (what do you mean you didn't come from Java, just kidding) you can use the old regex from the library, but you'll have problems if you call a __`parenthesis`__ inside the function if you do:
+```js
+//Tailwind IntelliSense Olg Regex
 "tailwindCSS.experimental.classRegex": [
   ["tf\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // tf(`...`)
   ["\\.__extends\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // xxx.extends(`...`)
 ],
 ```
+
+## Plugin configuration
+Tailwind Factory has its own __`Babel`__ plugin that is used to generate the styles that are already included with the library. To use it you will need to provide it in your babel configuration file:
+```js
+//babel.config.js
+module.exports = (api) => {
+  //Can be true, but I haven't tested the effects.
+  api.cache(false); 
+  
+  return {
+    //...
+    plugins: [
+      //...,
+      [
+        "tailwind-factory/plugin",
+        {
+          logs: "normal",
+          styles: {
+            config: require("./tailwind.config"),
+            outputPath: "src/styles/generated.css"
+          },
+        },
+      ],
+    ],
+  };
+};
+```
+
+If you want to pass your __`Tailwind`__ configuration the babel file has to export a __`JavaScript`__ module so that you can pass your configuration using require. You can also pass the configuration directly, but this will limit you further.
+
+### Plugin options
+```ts
+//types definition
+export type PluginType = {
+  preset?: "react"; //In case you need it someday
+  logs?: "none" | "all" | "normal" | "debug" | "errors";
+  styles?: {
+    outputPath?: string;
+    inputPath?: string; //Disabled
+    config?: Promise<TailwindConfig | undefined>;
+  };
+};
+```
+- __`logs`__ - How the plugin should print the log, see the presets:
+  - __`"none"`__ - the plugin will not output or format any logs;
+  - __`"all"`__ - the plugin will output and format any logs, except debug logs;
+  - __`"normal"`__ - (default) the plugin will output and format some logs, except debug logs;
+  - __`"debug"`__ - the plugin will output and format some logs, including debug logs;
+  - __`"errors"`__ - the plugin will output and format only error logs.
+
+- __`styles.config`__ - Tailwind config (default: {});
+- __`styles.outputPath`__ - Path to put the generated styles (default: "src/styles/generated.css"). The file should be created before. 
+
+### With Next
+Edit your Next configuration file so it understands which files are important for the plugin:
+```js
+//next.config.js
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { nextWithFactory } = require("tailwind-factory");
+
+module.exports = nextWithFactory({
+  reactStrictMode: true,
+  //...
+});
+```
+
+Import the __`generated styles`__ file and the __`Tailwind`__ configuration into one of the first files to be called before __`rendering`__ (the import has to come before any __`components`__ created by the library).
+
+Common example in Next:
+```tsx
+//src/pages/_app.tsx
+import type { AppProps } from "next/app";
+
+import "../../tailwind.config";
+import "../styles/generated.css";
+
+export default function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />;
+}
+```
+
+### With Webpack
+Edit your Webpack configuration file so it understands which files are important for the plugin:
+```js
+//webpack.config.js
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { webpackWithFactory } = require("tailwind-factory");
+
+module.exports = webpackWithFactory({
+  //...
+});
+```
+
+Import the __`generated styles`__ file and the __`Tailwind`__ configuration into one of the first files to be called before __`rendering`__ (the import has to come before any __`components`__ created by the library).
+```tsx
+import "../../tailwind.config";
+import "../styles/generated.css";
+```
+
+## Run without plugin
+You can run Tailwind Factory without its plugin. It's faster in many cases, but very limited and slower in __`production`__.
+
+I will list here some __`advantages`__ and __`disadvantages`__ of running Tailwind Factory without the plugin:
+
+### Advantages
+- Fastest in development (because it will not be depending on the library's own cache to be checking the style of unchanged files);
+- Fastest build (because you won't be using __`Babel`__);
+- Support external classes (which do not belong to __`Tailwind`__);
+- It doesn't generate a styling file (it doesn't actually need one);
+- Specific classes of Tailwind may work better (because I don't have conditions to go out checking class by class).
+
+### Disadvantages
+- Extremely limited Deep Classes support;
+- Styles generated within Deep Classes will only be applied to the parent component's children, not to other child components. It works on the childrens of a standard HTML tag;
+- Costs more memory on the __`Client-Side`__, mainly if you are using Deep Classes resources;
+- Weak documentation (since I don't have a team, it's hard to document all of this!).
 
 # Basic Usage
 ```tsx
@@ -55,10 +187,8 @@ import { tf } from "tailwind-factory";
 //Example of a common use case
 //Note: use ` to use Tailwind CSS IntelliSense
 // and " or ' to use the properties' autocomplete
-export const Container = tf("div", `
-  flex
-  flex-col
-`, {
+export const Container = tf("div", `flex flex-col`, 
+{
   variants: {
     theme: {
       dark: `bg-zinc-800 text-zinc-100`,
@@ -110,15 +240,15 @@ export const Title = tf(JSXTitle, `
   text-inherit
 `, {
   ...
-})
+});
 ```
 
 # Heritage
-Components receive a function called __`extends`__ which can be called by passing or not a new component. The first parameter is precisely this new type of component. If __`null`__, it will __`inherit`__ the extended component. Otherwise, it will __`inherit`__ all properties and variants of the new component.
+Components receive a function called __`__extends`__ which can be called by passing or not a new component. The first parameter is precisely this new type of component. If __`null`__, it will __`inherit`__ the extended component. Otherwise, it will __`inherit`__ all properties and variants of the new component.
 ```tsx
 //Example extending the styles
-//Note: all factory components have a `extends` function
-export const Header = Container.extends(
+//Note: all factory components have a `__extends` function
+export const Header = Container.__extends(
   null, //Will inherit the properties and variants of Container
 `
   flex
@@ -149,7 +279,7 @@ export const Header = Container.extends(
 You can replace the null value with __`another component`__:
 ```tsx
 //Example extending another component
-export const Header = Container.extends(
+export const Header = Container.__extends(
   //Will inherit the properties of AnotherComponent 
   // and variants of Container
   AnotherComponent, 
@@ -172,7 +302,7 @@ The idea was to make it closer to the __`'as'`__ property provided in some libra
 
 I'm still wondering if the best way is to keep the extends function together with the components. If you have a problem with this or an idea, you can create an Issue.
 
-# [Experimental] Deep Classes
+# Deep classes
 In some cases, to avoid creating __`multiple components`__ you can use a syntax similar to __`CSS`__:
 ```tsx
 //Deep classes example
@@ -198,15 +328,53 @@ const Container = tf(
       font-bold
     }
 
-    h2 {
+    .test {
       text-6xl
     }
   }
 
-  > h2, h1, p {
+  > h2, > h1, p {
     text-red-400
   }
 `);
+```
+
+Example of generated styles:
+```css
+.factory__52dad3ab6fb6 {
+  width: 1rem;
+}
+.factory__52dad3ab6fb6 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 249 157/var(--tw-bg-opacity));
+}
+.factory__52dad3ab6fb6 h2 {
+  font-style: italic;
+}
+.factory__52dad3ab6fb6 div {
+  height: 0.75rem;
+}
+.factory__52dad3ab6fb6 > div {
+  display: flex;
+}
+.factory__52dad3ab6fb6 > div {
+  flex-direction: column;
+}
+.factory__52dad3ab6fb6 > div {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254/var(--tw-bg-opacity));
+}
+.factory__52dad3ab6fb6 > div > h2 {
+  font-weight: 700;
+}
+.factory__52dad3ab6fb6 > div .test {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+.factory__52dad3ab6fb6 > h2, .factory__52dad3ab6fb6 > h1, .factory__52dad3ab6fb6 p {
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113/var(--tw-text-opacity));
+}
 ```
 
 Example of component structure:
@@ -216,7 +384,7 @@ Example of component structure:
   <h2>Red</h2>
   <p>Red Text</p>
   <div>
-    <h2>Normal</h2>
+    <h2 className="test">Normal</h2>
     <div className="hover:bg-red-300">
       <h2>Normal</h2>
     </div>
@@ -226,20 +394,22 @@ Example of component structure:
 
 Example output:
 ```html
-<div class="bg-lime-200 w-4">
-  <h1 class="text-red-400">Red Title</h1>
-  <h2 class="italic text-red-400">Red</h2>
-  <p class="text-red-400">Red Text</p>
-  <div class="h-3 flex flex-col bg-blue-200">
-    <h2 class="italic font-bold text-6xl">Normal</h2>
-    <div class="h-3 hover:bg-red-300">
-      <h2 class="italic text-6xl">Normal</h2>
+<div class="factory__52dad3ab6fb6">
+  <h1>Red Title</h1>
+  <h2>Red</h2>
+  <p>Red Text</p>
+  <div>
+    <h2 className="test">Normal</h2>
+    <div class="hover:bg-red-300">
+      <h2>Normal</h2>
     </div>
   </div>
 </div>
 ```
 
 ### Available syntaxes
+> Know that spaces between values ​​count here. The way Tailwind Factory separates classes is very much related to the use of commas and the space between classes. I don't mean the tabs, but it's good to pay attention to the details.
+
 To inject by __`tag`__:
 ```scss
 div {
@@ -261,7 +431,7 @@ To inject by __`class`__:
   }
 }
 ```
-On inject by class __`expected classes`__ are __`saved`__, but are sent to the beginning of the class list. It is understood, in this case, that the __`expected classes`__ cannot overlap with other classes and variants of Tailwind Factory.
+> On run without plugin the inject by class __`expected classes`__ are __`saved`__, but are sent to the beginning of the class list. It is understood, in this case, that the __`expected classes`__ cannot overlap with other classes and variants of Tailwind Factory.
 
 To inject by __`id`__:
 ```scss
@@ -294,53 +464,85 @@ To inject only in the __`first group`__ of __`children`__ inside the component (
     text-gray-200
   }
 
-  > .main, input {
+  //To repeat the '>' to apply in all
+  //Unnecessary if you are not using the plugin
+  > .main, > input {
     rounded-md
   }
-}
-```
 
-### Unavailable syntaxes
-First, this __`deep class`__ approach is not the same as defining classes in a typical __`style file`__! Some things like checking states is not supported. Example with __`:hover`__:
-```scss
-//not work!
-div:hover {
-  h2 {
-    text-red-500
+  //Just #all receive '>'
+  > #alt, textarea {
+    rounded-lg
   }
 }
 ```
-This happens because __`Tailwind Factory`__ only works with __`class management`__! You can get around this by defining your classes in a __`styling file`__.
+
+Inject with __`pseudo classes`__:
+```scss
+:hover {
+  p:first-of-type {
+    text-sm
+  }
+}
+
+div:focus {
+  rounded-md
+  border-2
+}
+```
+> This __`first focus`__ is not applied to everyone, but to the component created by the function and receiving the style.
+
+Inject into __`all`__:
+```scss
+*:focus {
+  p:first-of-type {
+    text-sm
+  }
+}
+```
+
+Inject __`media query`__:
+```scss
+rounded-md
+p:first-of-type {
+  text-red-500
+}
+
+@media(min-width:900px) {
+  w-6
+  p:first-of-type {
+    text-red-400
+
+    @media(min-width:100px) {
+      text-blue-500
+    }
+  }
+}
+```
+
+Inject with __`arbitrary`__ value:
+```diff
+max-w-[30rem]
+text-[#5a74db]
+```
+
+### Is it possible to use external classes?
+Tailwind Factory with plugin does NOT support external classes (not part of Tailwind) in function call. However, you can still call a class by passing it directly to the component:
+```html
+<div className="custom-class"/>
+```
+> The idea is that you don't need to use this, since within the function call itself you can __`declare`__ a class even within __`variants`__. I even tried to make the Tailwind Factory style syntax closer to __`CSS`__ syntax and not be __`too`__ limited.
+
 
 ### Tailwind Group
-In some cases, a __`group`__ in Tailwind is the sufficient to set up a __`hover`__:
+In some cases, a __`group`__ in Tailwind is the sufficient to set up a __`hover`__ (I consider this a good practice):
 ```scss
-//work!
 div {
   group
   hover:bg-gray-500
   h2 {
     group-hover:text-red-500
   }
-}
-```
-
-In other cases you may prefer to use external classes:
-```scss
-//style.scss
-//With Tailwind (you can use the common CSS too)
-.custom-class:hover {
-  h2 {
-    @apply
-      text-red-500;
-  }
-}
-```
-```scss
-//work too!
-div {
-  hover:bg-gray-500
-  custom-class
 }
 ```
 
@@ -377,21 +579,14 @@ const Container = tf(
 });
 ```
 
-You can __`extends`__ too:
+You can __`__extends`__ too:
 ```tsx
-const Hero = Container.extends(null, `
+const Hero = Container.__extends(null, `
   h1 {
     text-9xl
   }
 `);
 ```
-
-# How it works
-Tailwind Factory just __`arranges`__ the classes within the variants according to the properties passed for the component. Tailwind does the rest, so I think you'll have no problem using other forms of styling based on __`class`__ definitions. Like traditional __`CSS`__, __`Sass`__, or __`CSS Modules`__.
-
-Come to think of it, maybe the name should be Style Factory or Class Factory. But now it's too late... I will keep the name.
-
-Note: Classes are formatted before being passed to components. Reducing the number of spaces between classes to one.
 
 # Classes Priority
 1. Inline Classes
@@ -400,13 +595,26 @@ Note: Classes are formatted before being passed to components. Reducing the numb
 4. Factory Styles
 5. Extended Factory Styles
 6. Inline Saved Classes 
-   - Inline Classes used in Deep Classes
+   - [Without plugin] Inline Classes used in Deep Classes
+
+# How it works
+Tailwind Factory (without the plugin) just __`arranges`__ the classes within the variants according to the properties passed for the component. The __`plugin`__ does the rest, checks the __`changed file`__, gets the __`classes`__, transforms the classes using __`Tailwind`__, preprocesses the styles with __`Postcss`__ and __`Sass`__, puts the processed styles into the __`cache`__, loads the cache (which contains the other styles) and __`generates`__ the file with all the styles.
+
+The cache is tied to the component's __`style parameter`__ and its __`variants`__, not the __`deep classes`__ within the component's styles.
+
+At the moment it is inevitable that, if you change any parameter of the function that brings __`style`__, a __`flash`__ will occur in its __`rendering`__. There is no way for this to happen in __`production`__, because it is not possible to pass parameters within the styles defined in the function (this will probably cause an error in the plugin), Even the __`variants`__ serve to reduce this limitation.
+
+This flash happens because when a change is made the name of the __`class`__ linked to the style parameter or component variant will change. So, since it's faster to change the __`class`__ name than to load the change into the __`style sheet`__, the components that haven't changed will keep their styles (since their class name won't change) while the one with the changed class will __`wait`__ it will be generated by the plugin and loaded by the browser with a class that doesn't exist __`yet`__.
+
+Generating style names __`earlier`__ was actually a way around Babel's limitations. It was not designed/structured to support __`asynchronous functions`__ because that reduces performance and slows down rendering. And, in fact, the Tailwind Factory plugin is very __ `heavy`__ and needs your time to generate the component styles, this is a __`limitation`__ of the library itself.
+
+> I am providing only what I __`can´__ and with sincerely.
 
 # Snippets
 Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
 
 ## List of Snippets:
-Documented version: __`0.1.0`__
+Documented version: __`0.1.2`__
 
 __`tfi`__: Import Tailwind Factory and create a new factory component
 ```tsx
@@ -432,7 +640,7 @@ export const NewComponent = tf("div", `
 
 __`tfe`__: Create a new extended factory component
 ```tsx
-export const NewComponent = Parent.extends(ParentComponent, `
+export const NewComponent = Parent.__extends(ParentComponent, `
   
 `, {
   variants: {},
@@ -443,6 +651,17 @@ export const NewComponent = Parent.extends(ParentComponent, `
 # Roadmap
 - [x] Finish plugin main features
   - Deep classes support
-- [ ] Update documentation
-- [ ] Release 2.1.0 version
+- [x] Update documentation
+- [x] Release 2.2.0 version
 - [ ] Add custom colors in extension
+
+# Author's opinion
+> The intention I had was to create a styling library that was just like me, the way I wanted it to work. It might not be the best option you're going to have, but it's certainly the best I can offer at the moment. There must be an error here or there, nothing that can't be fixed. When I was doing it, I actually thought a lot about creating a macro like __`Twin.macro`__, but there are already too many! And I also want something similar to __`Stitches`__, which, by the way, I like a lot (but I like __`Tailwind`__ even more).
+>
+> Disregard the level of English, as it's a lot of text and I'm not fluent I resorted a lot to Google translator, doing some small checks from time to time.
+>
+> Another thing, when I finished the library I thought: wouldn't it be nice to have a __`preprocessor`__ that loaded styles like this? Well, unfortunately this is not the kind of thing I want to try to do myself, but I'll leave the idea here. Feel free to call me or try it __`yourself`__, 
+>
+> I left a class called Standalone that has a function capable to transforming the styles that follow the Syntax of this library. However, you will need to call it asynchronously and with access to Node's fs (file system), a limitation of __`Tailwind API`__).
+>
+> I think if you've read all this, you certainly have a lot of patience.

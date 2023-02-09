@@ -5,7 +5,6 @@ import { uniteProperties } from "./utils/uniteProperties";
 import { Post } from "./post";
 import { parseToChildren } from "./utils/parseToChildren";
 import { nextWithFactory, webpackWithFactory } from "./withFactory";
-import { Logs } from "./plugin/logs";
 
 type BooleanString = "true" | "false";
 type ValueType<B> = B extends BooleanString ? boolean | BooleanString : B;
@@ -29,7 +28,6 @@ export type FactoryExtractKeysAndValues<V> = {
 export type StyledElementOptions<V, D, O> = {
   variants?: V;
   defaultVariants?: D & Partial<O>;
-  mode?: "plugin" | "legacy";
 };
 
 export type FactoryElement = keyof JSX.IntrinsicElements | JSXElementConstructor<any>;
@@ -107,10 +105,7 @@ export function tf<
     let className = elementClassName + classNameInProps;
     let children = elementProps?.children;
 
-    const mode = config?.mode ?? "plugin";
-    const modeIsLegacy = mode === "legacy";
-
-    if (modeIsLegacy && className.includes("{") && className.includes("}")) {
+    if (className.includes("{") && className.includes("}")) {
       const { newChildren, newClassNames } = Post.children(children, className);
 
       children = newChildren;
@@ -210,10 +205,7 @@ export function tf<
       let className = elementClassName + classNameInProps;
       let children = elementProps?.children;
 
-      const mode = newConfig?.mode ?? "plugin";
-      const modeIsLegacy = mode === "legacy";
-
-      if (modeIsLegacy && className.includes("{") && className.includes("}")) {
+      if (className.includes("{") && className.includes("}")) {
         const { newChildren, newClassNames } = Post.children(children, className);
         children = newChildren;
         className = newClassNames;
@@ -239,4 +231,4 @@ export function tf<
   });
 }
 
-export { nextWithFactory, webpackWithFactory };
+export { nextWithFactory, webpackWithFactory, removeWhiteSpaceInClasses };

@@ -61,7 +61,7 @@ export class Logs {
   }
 
   static debug(message: any, ...rest: any[]) {
-    const isEnabled = Logs.mode !== "none" && Logs.mode !== "errors";
+    const isEnabled = Logs.mode === "debug";
 
     isEnabled && Logs.log({
       newLine: false, 
@@ -118,6 +118,7 @@ export class Logs {
           return rest.toString().includes(expectedMessage);
         })
       ) {
+        Logs.debug("ommited warning: ", ...rest);
         return;
       }
 
@@ -143,6 +144,7 @@ export class Logs {
           return rest.toString().includes(possibleException);
         })
       ) {
+        Logs.debug("ommited error: ", ...rest);
         return;
       }
 

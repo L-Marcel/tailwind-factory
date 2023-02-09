@@ -1,5 +1,7 @@
 module.exports = (api) => {
-  api.cache(false);
+  //Can be true, but I haven't tested the effects.
+  api.cache(false); 
+  
   return {
     presets: ["next/babel"],
     plugins: [

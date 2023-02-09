@@ -1,6 +1,7 @@
 import { tf } from "tailwind-factory";
 
 export const CodeContainer = tf("pre", `
+  relative
   bg-slate-900
   px-8
   py-6
@@ -30,5 +31,10 @@ export const CodeContainer = tf("pre", `
 
   #bracket {
     text-yellow-200
+  }
+
+  button {
+    right-2
+    top-2
   }
 `, {});

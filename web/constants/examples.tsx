@@ -12,7 +12,7 @@ export const examples = [
     <span id="bracket">{"\n}"}</span>
   </>,
   <>
-    <span id="comment">//average</span>{"\n"}
+    <span id="comment">//medium</span>{"\n"}
     mt-[<span id="bracket">calc(10rem+5%)</span>]{"\n"}
     ml-[<span id="bracket">20%</span>]{"\n"}
     rounded-md{"\n"}

@@ -38,7 +38,7 @@ export default function Home() {
       </Button>
     </div>
     <Code>
-      <code>
+      <code className="relative">
         {examples[exampleIndex]}
       </code>
     </Code>

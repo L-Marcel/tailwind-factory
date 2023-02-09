@@ -5,7 +5,7 @@
   "publisher": "l-marcel",
   "license": "MIT",
   "icon": "assets/logo.png",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": "https://github.com/L-Marcel/tailwind-factory/tree/main/extensions/tailwind-factory",
   "engines": {
     "vscode": "^1.74.0"

@@ -1,6 +1,8 @@
 import { JSXElementConstructor, ComponentProps } from 'react';
 import { NextConfig } from 'next';
 
+declare function removeWhiteSpaceInClasses(classes: string): string;
+
 declare function webpackWithFactory(config: any): any;
 declare function nextWithFactory(nextConfig: NextConfig): NextConfig;
 
@@ -22,7 +24,6 @@ type FactoryExtractKeysAndValues<V> = {
 type StyledElementOptions<V, D, O> = {
     variants?: V;
     defaultVariants?: D & Partial<O>;
-    mode?: "plugin" | "legacy";
 };
 type FactoryElement = keyof JSX.IntrinsicElements | JSXElementConstructor<any>;
 declare function tf<Type extends FactoryElement, StyleVariants, DefaultStyleVariants, DefaultStyleVariantsScheme extends FactoryExtractKeys<StyleVariants>>(element: Type, styles?: string, config?: StyledElementOptions<StyleVariants, DefaultStyleVariants, DefaultStyleVariantsScheme>): ((props: ComponentProps<Type> & (DefaultStyleVariants extends infer C ? Partial<StyleVariants extends infer U ? FactoryExtractKeys<U> : any> & Required<Omit<StyleVariants extends infer U ? FactoryExtractKeys<U> : any, keyof C>> : StyleVariants extends infer U ? FactoryExtractKeys<U> : any)) => JSX.Element) & {
@@ -31,4 +32,4 @@ declare function tf<Type extends FactoryElement, StyleVariants, DefaultStyleVari
     };
 };
 
-export { FactoryElement, FactoryExtractKeys, FactoryExtractKeysAndValues, FactoryExtractRequiredKeysAndValues, StyledElementOptions, nextWithFactory, tf, webpackWithFactory };
+export { FactoryElement, FactoryExtractKeys, FactoryExtractKeysAndValues, FactoryExtractRequiredKeysAndValues, StyledElementOptions, nextWithFactory, removeWhiteSpaceInClasses, tf, webpackWithFactory };

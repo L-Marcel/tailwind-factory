@@ -9,6 +9,7 @@ import { Logs, LogsMode } from "./logs";
 import { StyleFactory } from "./factory";
 import { Validator } from "./validator";
 import { Config } from "tailwindcss";
+import { Standalone } from "./standalone";
 
 type Properties = (types.ObjectMethod | types.ObjectProperty | types.SpreadElement)[];
 
@@ -128,7 +129,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
             }
 
             const classes = removeWhiteSpaceInClasses(rawClasses);
-            const separatedClasses = StyleFactory.separateClasses(classes);
+            const separatedClasses = Standalone.separateClasses(classes);
 
             const finalClass = StyleFactory.formateStyleClasses(
               {
@@ -204,7 +205,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
 
                         const classes = removeWhiteSpaceInClasses(valueRaw);
 
-                        const separatedClasses = StyleFactory.separateClasses(classes);
+                        const separatedClasses = Standalone.separateClasses(classes);
                         const finalVariantClass = StyleFactory.formateStyleClasses(
                           {
                             rawClasses: classes,
@@ -281,3 +282,5 @@ export default function ({ types: t }: typeof babel): PluginObj {
     },
   };
 }
+
+export { StyleFactory, Standalone };

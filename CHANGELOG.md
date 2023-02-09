@@ -1,5 +1,54 @@
 # tailwind-factory
 
+## 2.2.0
+
+### Minor Changes
+
+- c2a854f: removing bug on format classes
+- 3853678: improving pseudo, classes and id support, changing log system, adding debug logs and finishing main features
+- 3853678: adding style syntax error and exception
+- f647bb1: finishing logs, validator, factory and config
+- releasing plugin
+- 3853678: recovering support for classes and ids inside deep classes
+
+### Patch Changes
+
+- 6450196: adding many logs
+- 52900ab: removing escaped chars
+- 6450196: first success
+- 52900ab: adding support for optional params
+- 52900ab: fixing error on format classes
+- 6450196: adding temporary log
+- bb7cc48: adding production link
+- 52900ab: forcing text color to test brackets
+- 52900ab: changing tailwind config import approach
+- 04ccdfa: updating homepage link
+- 6450196: adding logs to watch file paths
+- 335f9dd: adding alpha version
+- 6450196: changing styles path
+- 52900ab: changing separated classes log
+- 52900ab: generating build
+- 52900ab: changing logs to test bracket support
+- 6450196: adding reference files
+- 52900ab: adding more logs
+- c2a854f: fixing bug on escape classes
+- 6450196: adding exports in package
+- 6450196: updating exports in package
+- 52900ab: adding logs
+- 52900ab: generating build
+- 52900ab: adding logs to raw classes
+- b5104ca: updating link in readme
+- 52900ab: adding \_\_extends function support
+- 52900ab: adding brackets support
+- 66b1678: changing exported files in package
+- 3853678: removing bug with brackets
+- e964ea3: changing warning
+- 6450196: changing exports...
+- 6450196: adding types...
+- 52900ab: fixing bug with regex
+- 52900ab: fixing bug on escape characters
+- 52900ab: adding more logs
+
 ## 2.1.0-alpha.39
 
 ### Patch Changes
