@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.2.1
+
+### Patch Changes
+
+- removing cache into build
+
 ## 2.2.0
 
 ### Minor Changes

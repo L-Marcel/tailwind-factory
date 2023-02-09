@@ -25,8 +25,7 @@ A lib to create and extends React components defining variants like Stitches and
 6. [How it works](#how-it-works)
 7. [Snippets](#snippets)
 9. [Roadmap](#roadmap)
-10. [About building the library](#roadmap)
-11. [Author's opinion](#authors-opinion)
+10. [Author's opinion](#about-building-the-library)
 
 # Installation
 To install Tailwind Factory you need to run in your project:
@@ -655,7 +654,7 @@ export const NewComponent = Parent.__extends(ParentComponent, `
 - [x] Release 2.2.0 version
 - [ ] Add custom colors in extension
 
-# Author's opinion
+# About building the library
 > The intention I had was to create a styling library that was just like me, the way I wanted it to work. It might not be the best option you're going to have, but it's certainly the best I can offer at the moment. There must be an error here or there, nothing that can't be fixed. When I was doing it, I actually thought a lot about creating a macro like __`Twin.macro`__, but there are already too many! And I also want something similar to __`Stitches`__, which, by the way, I like a lot (but I like __`Tailwind`__ even more).
 >
 > Disregard the level of English, as it's a lot of text and I'm not fluent I resorted a lot to Google translator, doing some small checks from time to time.
