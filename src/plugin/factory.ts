@@ -1,25 +1,10 @@
 import { StyleController } from "./controller";
 import { ProcessDeepClassesParams, emitter } from "./emitter";
 import { Config } from "tailwindcss";
-import { Standalone } from "./standalone";
-
-export type DeepReference = {
-  css: string;
-  reference: string;
-  identifier: string;
-  isPseudoClass: boolean;
-};
-
-export type DeepStyleClass = {
-  identifier: string;
-  rawClasses: string;
-  classes: StyleClass[];
-};
-
-type StyleClass = string | DeepStyleClass;
+import { DeepStyleClass, Standalone } from "./standalone";
 export class StyleFactory {
   static generateClassTree = Standalone.generateClassTree;
-  
+
   private static processStyles(
     {
       filename,

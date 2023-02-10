@@ -1,329 +1,341 @@
 # tailwind-factory
 
+## 2.2.7
+
+### Patch Changes
+
+- Removing get-css-data from dependencies
+
+## 2.2.6
+
+### Patch Changes
+
+- Enabling media query blocks
+
 ## 2.2.5
 
 ### Patch Changes
 
-- updating readme
+- Updating readme
 
 ## 2.2.4
 
 ### Patch Changes
 
-- updating readme
+- Updating readme
 
 ## 2.2.3
 
 ### Patch Changes
 
-- fixing bug with regex
+- Fixing bug with regex
 
 ## 2.2.2
 
 ### Patch Changes
 
-- disabling media queries blocks
+- Disabling media queries blocks
 
 ## 2.2.1
 
 ### Patch Changes
 
-- removing cache into build
+- Removing cache into build
 
 ## 2.2.0
 
 ### Minor Changes
 
-- c2a854f: removing bug on format classes
-- 3853678: improving pseudo, classes and id support, changing log system, adding debug logs and finishing main features
-- 3853678: adding style syntax error and exception
-- f647bb1: finishing logs, validator, factory and config
+- c2a854f: Removing bug on format classes
+- 3853678: Improving pseudo, classes and id support, changing log system, adding debug logs and finishing main features
+- 3853678: Adding style syntax error and exception
+- f647bb1: Finishing logs, validator, factory and config
 - releasing plugin
-- 3853678: recovering support for classes and ids inside deep classes
+- 3853678: Recovering support for classes and ids inside deep classes
 
 ### Patch Changes
 
-- 6450196: adding many logs
-- 52900ab: removing escaped chars
-- 6450196: first success
-- 52900ab: adding support for optional params
-- 52900ab: fixing error on format classes
-- 6450196: adding temporary log
-- bb7cc48: adding production link
-- 52900ab: forcing text color to test brackets
-- 52900ab: changing tailwind config import approach
-- 04ccdfa: updating homepage link
-- 6450196: adding logs to watch file paths
-- 335f9dd: adding alpha version
-- 6450196: changing styles path
-- 52900ab: changing separated classes log
-- 52900ab: generating build
-- 52900ab: changing logs to test bracket support
-- 6450196: adding reference files
-- 52900ab: adding more logs
-- c2a854f: fixing bug on escape classes
-- 6450196: adding exports in package
-- 6450196: updating exports in package
-- 52900ab: adding logs
-- 52900ab: generating build
-- 52900ab: adding logs to raw classes
-- b5104ca: updating link in readme
-- 52900ab: adding \_\_extends function support
-- 52900ab: adding brackets support
-- 66b1678: changing exported files in package
-- 3853678: removing bug with brackets
-- e964ea3: changing warning
-- 6450196: changing exports...
-- 6450196: adding types...
-- 52900ab: fixing bug with regex
-- 52900ab: fixing bug on escape characters
-- 52900ab: adding more logs
+- 6450196: Adding many logs
+- 52900ab: Removing escaped chars
+- 6450196: First success
+- 52900ab: Adding support for optional params
+- 52900ab: Fixing error on format classes
+- 6450196: Adding temporary log
+- bb7cc48: Adding production link
+- 52900ab: Forcing text color to test brackets
+- 52900ab: Changing tailwind config import approach
+- 04ccdfa: Updating homepage link
+- 6450196: Adding logs to watch file paths
+- 335f9dd: Adding alpha version
+- 6450196: Changing styles path
+- 52900ab: Changing separated classes log
+- 52900ab: Generating build
+- 52900ab: Changing logs to test bracket support
+- 6450196: Adding reference files
+- 52900ab: Adding more logs
+- c2a854f: Fixing bug on escape classes
+- 6450196: Adding exports in package
+- 6450196: Updating exports in package
+- 52900ab: Adding logs
+- 52900ab: Generating build
+- 52900ab: Adding logs to raw classes
+- b5104ca: Updating link in readme
+- 52900ab: Adding \_\_extends function support
+- 52900ab: Adding brackets support
+- 66b1678: Changing exported files in package
+- 3853678: Removing bug with brackets
+- e964ea3: Changing warning
+- 6450196: Changing exports...
+- 6450196: Adding types...
+- 52900ab: Fixing bug with regex
+- 52900ab: Fixing bug on escape characters
+- 52900ab: Adding more logs
 
 ## 2.1.0-alpha.39
 
 ### Patch Changes
 
-- updating homepage link
+- Updating homepage link
 
 ## 2.1.0-alpha.38
 
 ### Patch Changes
 
-- changing warning
+- Changing warning
 
 ## 2.1.0-alpha.37
 
 ### Minor Changes
 
-- improving pseudo, classes and id support, changing log system, adding debug logs and finishing main features
+- Improving pseudo, classes and id support, changing log system, adding debug logs and finishing main features
 
 ## 2.1.0-alpha.36
 
 ### Minor Changes
 
-- adding style syntax error and exception
+- Adding style syntax error and exception
 
 ## 2.1.0-alpha.35
 
 ### Patch Changes
 
-- removing bug with brackets
+- Removing bug with brackets
 
 ## 2.1.0-alpha.34
 
 ### Minor Changes
 
-- recovering support for classes and ids inside deep classes
+- Recovering support for classes and ids inside deep classes
 
 ## 2.1.0-alpha.33
 
 ### Patch Changes
 
-- fixing bug on escape classes
+- Fixing bug on escape classes
 
 ## 2.1.0-alpha.32
 
 ### Minor Changes
 
-- removing bug on format classes
+- Removing bug on format classes
 
 ## 2.1.0-alpha.31
 
 ### Minor Changes
 
-- finishing logs, validator, factory and config
+- Finishing logs, validator, factory and config
 
 ## 2.0.4-alpha.30
 
 ### Patch Changes
 
-- fixing error on format classes
+- Fixing error on format classes
 
 ## 2.0.4-alpha.29
 
 ### Patch Changes
 
-- removing escaped chars
+- Removing escaped chars
 
 ## 2.0.4-alpha.28
 
 ### Patch Changes
 
-- adding more logs
+- Adding more logs
 
 ## 2.0.4-alpha.27
 
 ### Patch Changes
 
-- adding logs to raw classes
+- Adding logs to raw classes
 
 ## 2.0.4-alpha.26
 
 ### Patch Changes
 
-- fixing bug with regex
+- Fixing bug with regex
 
 ## 2.0.4-alpha.25
 
 ### Patch Changes
 
-- fixing bug on escape characters
+- Fixing bug on escape characters
 
 ## 2.0.4-alpha.24
 
 ### Patch Changes
 
-- adding brackets support
+- Adding brackets support
 
 ## 2.0.4-alpha.23
 
 ### Patch Changes
 
-- forcing text color to test brackets
+- Forcing text color to test brackets
 
 ## 2.0.4-alpha.22
 
 ### Patch Changes
 
-- changing separated classes log
+- Changing separated classes log
 
 ## 2.0.4-alpha.21
 
 ### Patch Changes
 
-- generating build
+- Generating build
 
 ## 2.0.4-alpha.20
 
 ### Patch Changes
 
-- changing logs to test bracket support
+- Changing logs to test bracket support
 
 ## 2.0.4-alpha.19
 
 ### Patch Changes
 
-- adding more logs
+- Adding more logs
 
 ## 2.0.4-alpha.18
 
 ### Patch Changes
 
-- changing tailwind config import approach
+- Changing tailwind config import approach
 
 ## 2.0.4-alpha.17
 
 ### Patch Changes
 
-- adding logs
+- Adding logs
 
 ## 2.0.4-alpha.16
 
 ### Patch Changes
 
-- adding support for optional params
+- Adding support for optional params
 
 ## 2.0.4-alpha.15
 
 ### Patch Changes
 
-- generating build
+- Generating build
 
 ## 2.0.4-alpha.14
 
 ### Patch Changes
 
-- adding \_\_extends function support
+- Adding \_\_extends function support
 
 ## 2.0.4-alpha.13
 
 ### Patch Changes
 
-- updating link in readme
+- Updating link in readme
 
 ## 2.0.4-alpha.12
 
 ### Patch Changes
 
-- adding production link
+- Adding production link
 
 ## 2.0.4-alpha.11
 
 ### Patch Changes
 
-- first success
+- First success
 
 ## 2.0.4-alpha.10
 
 ### Patch Changes
 
-- adding many logs
+- Adding many logs
 
 ## 2.0.4-alpha.9
 
 ### Patch Changes
 
-- adding logs to watch file paths
+- Adding logs to watch file paths
 
 ## 2.0.4-alpha.8
 
 ### Patch Changes
 
-- changing styles path
+- Changing styles path
 
 ## 2.0.4-alpha.7
 
 ### Patch Changes
 
-- adding temporary log
+- Adding temporary log
 
 ## 2.0.4-alpha.6
 
 ### Patch Changes
 
-- adding types...
+- Adding types...
 
 ## 2.0.4-alpha.5
 
 ### Patch Changes
 
-- changing exports...
+- Changing exports...
 
 ## 2.0.4-alpha.4
 
 ### Patch Changes
 
-- adding reference files
+- Adding reference files
 
 ## 2.0.4-alpha.3
 
 ### Patch Changes
 
-- updating exports in package
+- Updating exports in package
 
 ## 2.0.4-alpha.2
 
 ### Patch Changes
 
-- adding exports in package
+- Adding exports in package
 
 ## 2.0.4-alpha.1
 
 ### Patch Changes
 
-- changing exported files in package
+- Changing exported files in package
 
 ## 2.0.4-alpha.0
 
 ### Patch Changes
 
-- adding alpha version
+- Adding alpha version
 
 ## 2.0.0
 
 ### Major Changes
 
-- adding custom plugin, improving deep classes and adding logs
+- Adding custom plugin, improving deep classes and adding logs
 
 ## 1.5.12
 

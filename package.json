@@ -1,6 +1,6 @@
 {
   "name": "tailwind-factory",
-  "version": "2.2.5",
+  "version": "2.2.7",
   "description": "A lib to create and extends React components like stitches using Tailwind classes!",
   "keywords": [
     "tailwind",
@@ -54,7 +54,6 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "get-css-data": "^2.1.0",
     "kleur": "^4.1.5",
     "postcss": "^8.4.21",
     "sass": "^1.58.0"

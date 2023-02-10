@@ -16,7 +16,7 @@ type LogOptions = {
   debug: boolean;
   tag: string;
   color: LogsColors;
-}
+};
 export class Logs {
   private static mode: LogsMode = "errors";
 
@@ -63,45 +63,67 @@ export class Logs {
   static debug(message: any, ...rest: any[]) {
     const isEnabled = Logs.mode === "debug";
 
-    isEnabled && Logs.log({
-      newLine: false, 
-      debug: true,
-      tag: "debug", 
-      color: "green"
-    }, message, ...rest);
+    isEnabled &&
+      Logs.log(
+        {
+          newLine: false,
+          debug: true,
+          tag: "debug",
+          color: "green",
+        },
+        message,
+        ...rest
+      );
   }
 
   static info(message: any, ...rest: any[]) {
     const isEnabled = Logs.mode !== "none" && Logs.mode !== "errors";
 
-    isEnabled && Logs.log({
-      newLine: false, 
-      debug: false,
-      tag: "style", 
-      color: "blue"
-    }, message, ...rest);
+    isEnabled &&
+      Logs.log(
+        {
+          newLine: false,
+          debug: false,
+          tag: "style",
+          color: "blue",
+        },
+        message,
+        ...rest
+      );
   }
 
   static error(message: any, ...rest: any[]) {
     const isEnabled = Logs.mode !== "none";
 
-    isEnabled && Logs.log({
-      newLine: true, 
-      debug: false,
-      tag: "error", 
-      color: "red"
-    }, message, ...rest, "\n");
+    isEnabled &&
+      Logs.log(
+        {
+          newLine: true,
+          debug: false,
+          tag: "error",
+          color: "red",
+        },
+        message,
+        ...rest,
+        "\n"
+      );
   }
 
   static warning(message: any, ...rest: any[]) {
     const isEnabled = Logs.mode !== "none";
 
-    isEnabled && Logs.log({
-      newLine: true,
-      debug: false,
-      tag: "warn",
-      color: "yellow"
-    }, message, ...rest, "\n");
+    isEnabled &&
+      Logs.log(
+        {
+          newLine: true,
+          debug: false,
+          tag: "warn",
+          color: "yellow",
+        },
+        message,
+        ...rest,
+        "\n"
+      );
   }
 
   static omitExpectedWarnings() {

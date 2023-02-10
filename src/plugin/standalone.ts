@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Config } from "tailwindcss";
 import { removeWhiteSpaceInClasses } from "../factory/tailwind";
 import { generateId } from "../utils/generateId";
@@ -20,6 +21,7 @@ export type DeepReference = {
   reference: string;
   identifier: string;
   isPseudoClass: boolean;
+  isMediaQuery: boolean;
 };
 
 type GenerateClassTreeOptions = {
@@ -40,7 +42,7 @@ type StyleClass = string | DeepStyleClass;
 export class Standalone {
   static separateClasses(classes: string) {
     const mapOfClasses = stringToArray(classes);
-  
+
     let layer = 0;
     let blockType: string[] = [];
     let blockContent: string[] = [];
@@ -50,50 +52,52 @@ export class Standalone {
       const [isStillInsideBlock, currentLayer] = checkLayer(isInsideBlock, layer, cur);
       isInsideBlock = isStillInsideBlock;
       layer = currentLayer;
-  
+
       if (isInsideBlock) {
         blockContent.push(cur);
         return prev;
       } else if (!isInsideBlock && canBeABlock && cur === "}") {
         canBeABlock = false;
-  
+
         blockContent.shift();
         const classes = blockContent.join(" ");
-  
+
         prev.push({
           identifier: blockType.join(" "),
           rawClasses: classes,
           classes: Standalone.separateClasses(classes),
         });
       }
-  
+
       const hasComma = cur.endsWith(",");
       const haveBrackets = cur.includes("[") && cur.includes("]");
       const haveColorInside = !cur.startsWith(":") && cur.includes(":");
-      const afterPseudoClass = haveColorInside? cur.split(":")[0]:cur;
+      const afterPseudoClass = haveColorInside ? cur.split(":")[0] : cur;
 
-      const elementWihoutBrackets = haveBrackets ? afterPseudoClass.split("[")[0] : afterPseudoClass;
+      const elementWihoutBrackets = haveBrackets
+        ? afterPseudoClass.split("[")[0]
+        : afterPseudoClass;
       const possibleElement = hasComma
         ? elementWihoutBrackets.replace(",", "")
         : elementWihoutBrackets;
-  
+
       const specialOperators = ["+", ">", "~"];
-      const specialDeclarationsCharacters = ["&", ...specialOperators];
+      const specialDeclarationsCharacters = ["&", "@media", ...specialOperators];
       const specialCharacters = [".", "#", "*", ":", ...specialDeclarationsCharacters];
-  
+
       const isAnOperator = specialOperators.includes(cur);
       const isASpecialDeclarationCharacter = specialDeclarationsCharacters.includes(cur);
-  
+
       const startWithSpecialCharacter = specialCharacters.some((specialCharacter) => {
         return cur.startsWith(specialCharacter);
       });
-  
+
       const nextElementIsKey =
         (index < list.length - 1 && list[index + 1] === "{") || hasComma;
-  
+
       const nextElementIsAnOperator =
         index < list.length - 1 && specialOperators.includes(list[index + 1]);
-  
+
       if (
         !canBeABlock &&
         (nextElementIsKey || nextElementIsAnOperator || isASpecialDeclarationCharacter) &&
@@ -101,23 +105,23 @@ export class Standalone {
       ) {
         blockContent = [];
         canBeABlock = true;
-  
+
         if (nextElementIsAnOperator) {
           const nextElement = list[index + 1];
           const nextElementIsAnArrow = nextElement === ">";
-  
+
           if (cur === "&" && nextElementIsAnArrow) {
             return prev;
           }
         }
-  
+
         blockType = [cur];
         return prev;
       } else if (canBeABlock && !isInsideBlock && (nextElementIsKey || isAnOperator)) {
         blockType.push(cur);
         return prev;
       }
-  
+
       if (
         !canBeABlock &&
         !isInsideBlock &&
@@ -128,10 +132,10 @@ export class Standalone {
       ) {
         prev.push(cur);
       }
-  
+
       return prev;
     }, [] as StyleClass[]);
-  
+
     Logs.debug("on separate: ", result);
     return result;
   }
@@ -148,7 +152,7 @@ export class Standalone {
       "\\)",
       "%",
       "\\*",
-      ","
+      ",",
     ];
 
     //who invented this?
@@ -163,12 +167,12 @@ export class Standalone {
       "\\\\\\)",
       "\\\\%",
       "\\\\\\*",
-      "\\\\2c"
+      "\\\\2c",
     ];
 
-    if(!value.startsWith(".") && value.includes(".")) {
+    if (!value.startsWith(".") && value.includes(".")) {
       value = value.replace(/\./g, "\\\\.");
-    };
+    }
 
     replaceValues.forEach((replace, index) => {
       const escapedCharacter = escapedsSecialCharacters[index];
@@ -179,14 +183,13 @@ export class Standalone {
       }
     });
 
-    if(value.startsWith("2xl")) {
+    if (value.startsWith("2xl")) {
       value = value.replace(/2xl/g, "\\\\32xl");
-    };
+    }
 
     return value;
   }
-  
-  
+
   static addReferenceBeforeOperator(css: string, operator: string) {
     const id = generateId();
     const temporaryReference = `.__prevent_deprecation_${id}`;
@@ -254,15 +257,21 @@ export class Standalone {
       });
 
       let isPseudoClass = false;
-      if(currentClass.identifier.startsWith(":")) {
+      if (currentClass.identifier.startsWith(":")) {
         isPseudoClass = true;
-      };
+      }
+
+      let isMediaQuery = false;
+      if (currentClass.identifier.startsWith("@media")) {
+        isMediaQuery = true;
+      }
 
       classes.push(componentReference);
       components.push({
         reference: componentReference,
         identifier: currentClass.identifier,
         isPseudoClass,
+        isMediaQuery,
         css,
       });
     }
@@ -281,48 +290,63 @@ export class Standalone {
 
     let formattedTailwindCss = res.css;
 
-    Logs.debug(`components: `, components, '\n');
+    Logs.debug("components: ", components, "\n");
 
-    classes.sort((a, b) => a.length > b.length? 1:-1).forEach((styleClass, index) => {
-      const formattedStyleClass = Standalone.escapeSpecialCharacters(styleClass);
+    classes
+      .sort((a, b) => {
+        return a.length > b.length ? 1 : -1;
+      })
+      .forEach((styleClass, index) => {
+        const formattedStyleClass = Standalone.escapeSpecialCharacters(styleClass);
 
-      const haveDot = formattedStyleClass.startsWith(".");
-      const fromClass = `${haveDot? "" : "\\."}${formattedStyleClass}`;
-      const toReplace = "&";
+        const haveDot = formattedStyleClass.startsWith(".");
+        const fromClass = `${haveDot ? "" : "\\."}${formattedStyleClass}`;
+        const toReplace = "&";
 
-      const asComponent = components.find(component => component.reference === styleClass);
+        const asComponent = components.find((component) => {
+          return component.reference === styleClass;
+        });
 
-      let classRegex = new RegExp(`${fromClass}${asComponent?.isPseudoClass? ``:`(?=.*? )`}`, "");
-      const classIsDetected = classRegex.test(formattedTailwindCss);
+        const classRegex = new RegExp(
+          `${fromClass}${asComponent?.isPseudoClass ? "" : "(?=.*? )"}`,
+          asComponent?.isMediaQuery ? "g" : ""
+        );
+        const classIsDetected = classRegex.test(formattedTailwindCss);
 
-      Logs.debug(`${index + 1}º`, classIsDetected, classRegex, fromClass, haveDot);
-      if(asComponent?.isPseudoClass) {
-        Logs.debug(`pseudo: `, formattedTailwindCss);
-      };
+        Logs.debug(`${index + 1}º`, classIsDetected, classRegex, fromClass, haveDot);
+        if (asComponent?.isPseudoClass) {
+          Logs.debug("pseudo: ", formattedTailwindCss);
+        } else if (asComponent?.isMediaQuery) {
+          Logs.debug("media query: ", formattedTailwindCss);
+        }
 
-      return formattedTailwindCss = classIsDetected
-        ? formattedTailwindCss.replace(classRegex, toReplace)
-        : formattedTailwindCss;
-    });
+        return (formattedTailwindCss = classIsDetected
+          ? formattedTailwindCss.replace(classRegex, toReplace)
+          : formattedTailwindCss);
+      });
 
     const blockReference = identifier ?? `.${reference}`;
 
-    // const isMedia = blockReference.startsWith("@media");
+    const isMedia = blockReference.startsWith("@media");
 
-    // if(isMedia) {
-    //   try {
-    //     const compiledCss = sass.compileString(
-    //       `.${reference} {\n${blockReference} {\n${formattedTailwindCss}\n}\n}`
-    //     );
+    if (isMedia) {
+      try {
+        const compiledCss = sass.compileString(
+          `.${reference} {\n${blockReference} {\n${formattedTailwindCss}\n}\n}`
+        );
 
-    //     Logs.debug(`css: `, compiledCss.css, "\n");
-    //     return compiledCss.css;
-    //   } catch (error: any) {
-    //     const _error = new StyleError(error?.message ?? "", filename, error?.stack ?? error?.message);
-    //     Logs.error(_error.message);
-    //     return "";
-    //   }
-    // };
+        Logs.debug("css: ", compiledCss.css, "\n");
+        return compiledCss.css;
+      } catch (error: any) {
+        const _error = new StyleError(
+          error?.message ?? "",
+          filename,
+          error?.stack ?? error?.message
+        );
+        Logs.error(_error.message);
+        return "";
+      }
+    }
 
     const specialOperators = ["+", "~", ">"];
     const specialOperator = specialOperators.find((operator) => {
@@ -343,11 +367,15 @@ export class Standalone {
           temporaryReference,
           specialOperator
         );
-  
-        Logs.debug(`css: `, finalCss, "\n");
+
+        Logs.debug("css: ", finalCss, "\n");
         return finalCss;
       } catch (error: any) {
-        const _error = new StyleError(error?.message ?? "", filename, error?.stack ?? error?.message);
+        const _error = new StyleError(
+          error?.message ?? "",
+          filename,
+          error?.stack ?? error?.message
+        );
         Logs.error(_error.message);
         return "";
       }
@@ -358,33 +386,44 @@ export class Standalone {
       const compiledCss = sass.compileString(
         `${blockReference} {\n${formattedTailwindCss}\n}`
       );
-  
-      Logs.debug(`css: `, compiledCss.css, "\n");
+
+      Logs.debug("css: ", compiledCss.css, "\n");
       return compiledCss.css;
     } catch (error: any) {
-      const _error = new StyleError(error?.message ?? "", filename, error?.stack ?? error?.message);
+      const _error = new StyleError(
+        error?.message ?? "",
+        filename,
+        error?.stack ?? error?.message
+      );
       Logs.error(_error.message);
       return "";
     }
   }
 
-  static async run(raw: string, { _reference, filename, config }: StandaloneOptions = {
-    filename: "standalone"
-  }) {
+  static async run(
+    raw: string,
+    { _reference, filename, config }: StandaloneOptions = {
+      filename: "standalone",
+    }
+  ) {
     const classes = removeWhiteSpaceInClasses(raw);
     const separatedClasses = Standalone.separateClasses(classes);
-  
+
     const id = generateId();
     const reference = _reference ?? `factory__${id}`;
-    const css = await Standalone.generateClassTree({
-      rawClasses: classes,
-      classes: separatedClasses,
-      identifier: "",
-    }, filename ?? "standalone.ts", {
-      reference,
-      config
-    });
-  
+    const css = await Standalone.generateClassTree(
+      {
+        rawClasses: classes,
+        classes: separatedClasses,
+        identifier: "",
+      },
+      filename ?? "standalone.ts",
+      {
+        reference,
+        config,
+      }
+    );
+
     return { reference, css };
-  };
+  }
 }

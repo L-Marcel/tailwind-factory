@@ -1,7 +1,7 @@
 import kleur from "kleur";
 
 enum StyleErrors {
-  SyntaxError = "StyleSyntaxError"
+  SyntaxError = "StyleSyntaxError",
 }
 
 export class StyleError extends Error {
@@ -12,26 +12,26 @@ export class StyleError extends Error {
     super.message = message;
     super.name = StyleErrors.SyntaxError;
 
-    if(stack.includes("Error: Expected expression.")) {
-
-
+    if (stack.includes("Error: Expected expression.")) {
       let reference = stack.replace("Error: Expected expression.", "");
       const atRegex = / at /g;
 
-      if(atRegex.test(reference)) {
+      if (atRegex.test(reference)) {
         const [newReference] = reference.split(atRegex);
         reference = newReference;
-      };
-      
-      super.message = `${kleur.italic(StyleErrors.SyntaxError)}: Expression not supported.` 
-      + `${reference}\n`
-      + `At ${kleur.italic(filename)}`;
+      }
+
+      super.message =
+        `${kleur.italic(StyleErrors.SyntaxError)}: Expression not supported.` +
+        `${reference}\n` +
+        `At ${kleur.italic(filename)}`;
 
       return;
-    };
+    }
 
-    super.message = `${kleur.italic(StyleErrors.SyntaxError)}: ` 
-      + `${message}\n`
-      + `At ${kleur.italic(filename)}`;
-  };
+    super.message =
+      `${kleur.italic(StyleErrors.SyntaxError)}: ` +
+      `${message}\n` +
+      `At ${kleur.italic(filename)}`;
+  }
 }

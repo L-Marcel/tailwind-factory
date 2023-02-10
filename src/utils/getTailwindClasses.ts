@@ -29,7 +29,7 @@ function generateTailwindStylesFile(components: DeepReference[] = [], externalCs
 
   const componentsCss = components
     .map(({ reference, css, isPseudoClass }) => {
-      return isPseudoClass? `.${reference}${css}`:`.${reference} {\n${css}\n}`;
+      return isPseudoClass ? `.${reference}${css}` : `.${reference} {\n${css}\n}`;
     })
     .join("\n");
 

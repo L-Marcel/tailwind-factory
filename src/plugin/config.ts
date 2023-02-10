@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-
 export class FactoryConfig {
   static async getTailwindConfig(
     config: Promise<Config | undefined>

@@ -1,8 +1,9 @@
 import { EventEmitter } from "node:events";
 import { generateId } from "../utils/generateId";
 import { StyleController } from "./controller";
-import { DeepStyleClass, StyleFactory } from "./factory";
+import { StyleFactory } from "./factory";
 import { Config } from "tailwindcss";
+import { DeepStyleClass } from "./standalone";
 
 export type ProcessDataParams = {
   filename: string;
@@ -290,7 +291,7 @@ emitter.on(
     const css = await StyleFactory.generateClassTree(deepClass, filename, {
       reference,
       config,
-      inputStylePath
+      inputStylePath,
     });
 
     this.updateStyle({ reference, filename, css }, outputStylePath);

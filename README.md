@@ -500,7 +500,7 @@ Inject into __`all`__:
 }
 ```
 
-Inject __`media query`__ (temporary disabled):
+Inject __`media query`__:
 ```scss
 rounded-md
 p:first-of-type {
