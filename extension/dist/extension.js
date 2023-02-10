@@ -1,0 +1,1 @@
+(()=>{"use strict";var t,e={};t=e,Object.defineProperty(t,"__esModule",{value:!0}),t.deactivate=t.activate=void 0,t.activate=function(t){console.log('Congratulations, your extension "tailwind-factory" is now active!')},t.deactivate=function(){},module.exports=e})();

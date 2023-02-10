@@ -23,7 +23,9 @@ A lib to create and extends React components defining variants like Stitches and
    4. [Using with variants](#using-with-variants)
 5. [Classes priority](#classes-priority)
 6. [How it works](#how-it-works)
-7. [Snippets](#snippets)
+7. [Extension](#extension)
+   1. [Color tokens](#color-tokens)
+   2. [Snippets](#snippets)
 8. [Roadmap](#roadmap)
 9. [About building the library](#about-building-the-library)
 
@@ -54,7 +56,9 @@ To use [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?it
 
 In this case it is necessary to put a __`semicolon`__ at the end of the function call. Using the [snippets](#snippets) you will not suffer from this. It already puts the __`semicolon`__.
 
-If you don't like the idea very much (what do you mean you didn't come from Java, just kidding) you can use the old regex from the library, but you'll have problems if you call a __`parenthesis`__ inside the function if you do:
+If you don't like the idea very much (what do you mean you didn't come from Java, just kidding) you can use the old regex from the library, but you'll have problems if you call a __`parenthesis`__ inside the function if you do. Also, you will have problems with the __`colors highlight`__ set by the __`plugin`__ if you are using it.
+
+Still, I'll leave it here:
 ```js
 //Tailwind IntelliSense Olg Regex
 "tailwindCSS.experimental.classRegex": [
@@ -500,13 +504,15 @@ Inject into __`all`__:
 }
 ```
 
-Inject __`media query`__:
+Inject with __`media query`__:
 ```scss
-rounded-md
+//work
+md:rounded-md
 p:first-of-type {
-  text-red-500
+  md:text-red-500
 }
 
+//work
 @media(min-width:900px) {
   w-6
   p:first-of-type {
@@ -609,12 +615,25 @@ Generating style names __`earlier`__ was actually a way around Babel's limitatio
 
 > I am providing only what I __`can`__ and with sincerely.
 
-# Snippets
+# Extension
 Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
 
-## List of Snippets:
-Documented version: __`0.1.2`__
+Documented version: __`1.0.1`__
 
+> __`Warning`__: it is important that you put the semicolon at the end of the function!
+
+## Color tokens
+- `entity.factory.style`: __#91c26e__
+- `entity.factory.symbol`: __#abb3c0__
+- `entity.factory.style.internal.class`: __#d7c075__
+- `entity.factory.style.html.tag`: __#da6f77__
+- `entity.factory.style.pseudo`: __#ba7de6__ / italic
+- `entity.factory.style.rule`: __#c16bff__ / italic / bold
+- `entity.factory.style.internal.id`: __#7d8be6__
+- `entity.factory.style.number`: __#efba89__
+- `entity.factory.style.unit`: __#eda460__ / italic
+
+## Snippets
 __`tfi`__: Import Tailwind Factory and create a new factory component
 ```tsx
 import { tf } from "tailwind-factory";
@@ -652,7 +671,7 @@ export const NewComponent = Parent.__extends(ParentComponent, `
   - Deep classes support
 - [x] Update documentation
 - [x] Release 2.2.0 version
-- [ ] Add custom colors in extension
+- [x] Add custom colors in extension
 
 # About building the library
 > The intention I had was to create a styling library that was just like me, the way I wanted it to work. It might not be the best option you're going to have, but it's certainly the best I can offer at the moment. There must be an error here or there, nothing that can't be fixed. When I was doing it, I actually thought a lot about creating a macro like __`Twin.macro`__, but there are already too many! And I also want something similar to __`Stitches`__, which, by the way, I like a lot (but I like __`Tailwind`__ even more).

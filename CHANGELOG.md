@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.3.0
+
+### Minor Changes
+
+- Adding plugin color tokens
+
 ## 2.2.7
 
 ### Patch Changes

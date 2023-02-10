@@ -1,0 +1,129 @@
+{
+  "fileTypes": [],
+  "injectionSelector": "L:meta.var.expr",
+  "scopeName": "entity.factory",
+  "patterns": [
+    { "include": "#tailwind-factory-function" }
+  ],
+  "repository": {
+    "tailwind-factory-function": {
+      "begin": "(tf\\(|[\\w\\d_]{1,}\\.__extends\\()",
+      "end": "\\);",
+      "name": "entity.factory.function",
+      "patterns": [
+        { "include": "#tailwind-factory-styles" },
+        { "include": "#tailwind-factory-string-quoted-double" },
+        { "include": "#tailwind-factory-string-quoted-single" },
+        { "include": "#tailwind-factory-boolean-true" },
+        { "include": "#tailwind-factory-boolean-false" },
+        { "include": "#tailwind-factory-null" },
+        { "include": "#tailwind-factory-undefined" },
+        { "include": "#tailwind-factory-decimal" }
+      ]
+    },
+    "tailwind-factory-styles": {
+      "begin": "\\`",
+      "end": "([\\s\\w\\d\\{\\}\\(\\)\\[\\]\\@\\-\\+\\*#>/&%!:,.])*\\`",
+      "name": "string.template",
+      "patterns": [
+        { "include": "#factory-style" }
+      ]
+    },
+    "factory-style": {
+      "begin": "(?!\\d)(\\w|\\d|-|@|:|.)",
+      "end": "\\n",
+      "name": "entity.factory.style",
+      "beginCaptures": {
+        "0": {
+          "name": "entity.factory.style.open"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "entity.factory.style.close"
+        }
+      },
+      "patterns": [
+        { "include": "#factory-symbol" },
+        { "include": "#factory-pseudo-class" },
+        { "include": "#factory-tailwind-pseudo-class" },
+        { "include": "#factory-internal-rule" },
+        { "include": "#factory-internal-class" },
+        { "include": "#factory-internal-id" },
+        { "include": "#factory-html-tag" },
+        { "include": "#factory-style-number" }
+      ]
+    },
+    "factory-style-number": {
+      "begin": "(?<=(\\(|\\[|:|\\+|-|\\*|\\/))[\\d.]{1,}(?=(cm|mm|in|pt|pc|px|%|em|ex|ch|rem|vw|vh|vmin|vmax))",
+      "end": "(cm|mm|in|pt|pc|px|%|em|ex|ch|rem|vw|vh|vmin|vmax)",
+      "name": "entity.factory.style.number",
+      "endCaptures": {
+        "0": {
+          "name": "entity.factory.style.unit"
+        }
+      }
+    },
+    "factory-internal-rule": {
+      "match": "@media",
+      "name": "entity.factory.style.rule"
+    },
+    "factory-pseudo-class": {
+      "match": "(::target-text|::spelling-error|::slotted|::placeholder|::part|::marker|::highlight|::file-selector-button|::cue-region|::cue|::backdrop|where:|:scope|:right|:playing|:placeholder-shown|:picture-in-picture|:paused|:past|:nth-last-col|:nth-col|:modal|:local-link|:left|:is|:indeterminate|:host-context|:host|:has|:future|:fullscreen|:focus-within|:focus-visible|:first|:dir|:defined|:default|:current|:blank|:autofill|:any-link|::after|::before|::first-letter|::first-line|::selection|:active|:checked|:disabled|:empty|:enabled|:first-child|:first-of-type|:focus|:hover|:in-range|:invalid|:lang|:last-child|:last-of-type|:link|:not|:nth-child|:nth-last-child|:nth-last-of-type|:nth-of-type|:only-of-type|:only-child|:optional|:out-of-range|:read-only|:read-write|:required|:root|:target|:valid|:visited)",
+      "name": "entity.factory.style.pseudo"
+    },
+    "factory-tailwind-pseudo-class": {
+      "match": "([^\\d.\\(\\[\n ])(\\d|\\w|-){1,}:",
+      "name": "entity.factory.style.pseudo"
+    },
+    "factory-internal-class": {
+      "begin": "\\.(\\w)",
+      "end": "(?=( |,|\\n|:))",
+      "name": "entity.factory.style.internal.class"
+    },
+    "factory-internal-id": {
+      "begin": "\\#(\\w)",
+      "end": "(?=( |,|\\n|:))",
+      "name": "entity.factory.style.internal.id"
+    },
+    "factory-html-tag": {
+      "begin": "([^\\w])(div|p|h1|h2|h3|a|main|header|footer|section|article|abbr|address|area|aside|audio|b|base|bdi|bdo|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|dl|dt|em|embed|fieldset|figcaption|figure|form|h4|h5|h6|head|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|map|mark|menu|menuitem|meta|meter|nav|noindex|noscript|object|ol|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|slot|script|select|small|source|span|strong|style|sub|summary|sup|table|template|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr|svg|animate|animateMotion|animateTransform|circle|clipPath|defs|desc|ellipse|feBlend|feColorMatrix|feComponentTransfer|feComposite|feConvolveMatrix|feDiffuseLighting|feDisplacementMap|feDistantLight|feDropShadow|feFlood|feFuncA|feFuncB|feFuncG|feFuncR|feGaussianBlur|feImage|feMerge|feMergeNode|feMorphology|feOffset|fePointLight|feSpecularLighting|feSpotLight|feTile|feTurbulence|filter|foreignObject|g|image|line|linearGradient|marker|mask|metadata|mpath|path|pattern|polygon|polyline|radialGradient|rect|stop|switch|symbol|text|textPath|tspan|use|view)(?![^,\\s:\\[])",
+      "end": "(?=( |,|\\n|:))",
+      "name": "entity.factory.style.html.tag"
+    },
+    "factory-symbol": {
+      "match": "(,|{|}|\\(|\\)|>)",
+      "name": "entity.factory.symbol"
+    },
+    "tailwind-factory-string-quoted-double": {
+      "begin": "\\\"",
+      "end": "\\\"",
+      "name": "string.quoted.double"
+    },
+    "tailwind-factory-string-quoted-single": {
+      "begin": "\\\"",
+      "end": "\\\"",
+      "name": "string.quoted.single"
+    },
+    "tailwind-factory-boolean-true": {
+      "match": "(?<![^\\s:])true(?![^\\s,])",
+      "name": "constant.language.boolean.true"
+    },
+    "tailwind-factory-boolean-false": {
+      "match": "(?<![^\\s:])false(?![^\\s,])",
+      "name": "constant.language.boolean.false"
+    },
+    "tailwind-factory-null": {
+      "match": "(?<![^\\s(:])null(?![^\\s,])",
+      "name": "constant.language.null"
+    },
+    "tailwind-factory-undefined": {
+      "match": "(?<![^\\s(:])undefined(?![^\\s,])",
+      "name": "constant.language.undefined"
+    },
+    "tailwind-factory-decimal": {
+      "match": "(?<![^\\s:])[\\d](?![^\\s,])",
+      "name": "constant.numeric.decimal"
+    }
+  }
+}

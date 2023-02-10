@@ -4,33 +4,146 @@
   "description": "The official kit to enhance the Tailwind Factory experience.",
   "publisher": "l-marcel",
   "license": "MIT",
-  "icon": "assets/logo.png",
-  "version": "0.1.2",
+  "icon": "src/assets/logo.png",
+  "version": "1.0.1",
   "repository": "https://github.com/L-Marcel/tailwind-factory/tree/main/extensions/tailwind-factory",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.75.0"
   },
   "categories": [
-    "Snippets"
+    "Snippets",
+    "Other"
   ],
+  "main": "./dist/extension.js",
   "contributes": {
+    "configurationDefaults": {
+      "editor.tokenColorCustomizations": {
+        "textMateRules": [
+          {
+            "scope": "entity.factory.style",
+            "name": "Factory Style",
+            "settings": {
+              "foreground": "#91c26e"
+            }
+          },
+          {
+            "scope": "entity.factory.symbol",
+            "name": "Factory Ponctuation",
+            "settings": {
+              "foreground": "#abb3c0"
+            }
+          },
+          {
+            "name": "Factory Internal Class",
+            "scope": "entity.factory.style.internal.class",
+            "settings": {
+              "foreground": "#d7c075"
+            }
+          },
+          {
+            "name": "Factory HTML Tag",
+            "scope": "entity.factory.style.html.tag",
+            "settings": {
+              "foreground": "#da6f77"
+            }
+          },
+          {
+            "name": "Factory Pseudo Class/Element",
+            "scope": "entity.factory.style.pseudo",
+            "settings": {
+              "foreground": "#ba7de6",
+              "fontStyle": "italic"
+            }
+          },
+          {
+            "name": "Factory Style Rule",
+            "scope": "entity.factory.style.rule",
+            "settings": {
+              "foreground": "#c16bff",
+              "fontStyle": "italic bold"
+            }
+          },
+          {
+            "name": "Factory Internal Id",
+            "scope": "entity.factory.style.internal.id",
+            "settings": {
+              "foreground": "#7d8be6"
+            }
+          },
+          {
+            "name": "Factory Style Number",
+            "scope": "entity.factory.style.number",
+            "settings": {
+              "foreground": "#efba89"
+            }
+          },
+          {
+            "name": "Factory Style Unit",
+            "scope": "entity.factory.style.unit",
+            "settings": {
+              "foreground": "#eda460",
+              "fontStyle": "italic"
+            }
+          }
+        ]
+      }
+    },
+    "languages": [
+      {
+        "id": "tailwind-factory"
+      }
+    ],
     "snippets": [
       {
         "language": "typescript",
-        "path": "./snippets/snippets.code-snippets"
+        "path": "./src/snippets/snippets.code-snippets"
       },
       {
         "language": "javascript",
-        "path": "./snippets/snippets.code-snippets"
+        "path": "./src/snippets/snippets.code-snippets"
       },
       {
         "language": "typescriptreact",
-        "path": "./snippets/snippets.code-snippets"
+        "path": "./src/snippets/snippets.code-snippets"
       },
       {
         "language": "javascriptreact",
-        "path": "./snippets/snippets.code-snippets"
+        "path": "./src/snippets/snippets.code-snippets"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "tailwind-factory",
+        "path": "./src/syntaxes/tf.grammar.json",
+        "scopeName": "entity.factory",
+        "injectTo": [
+          "source.ts",
+          "source.tsx",
+          "source.js",
+          "source.jsx"
+        ]
       }
     ]
+  },
+  "scripts": {
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.1",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "~16.18.12",
+    "@types/vscode": "^1.75.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "@vscode/test-electron": "^2.2.3",
+    "eslint": "^8.34.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
