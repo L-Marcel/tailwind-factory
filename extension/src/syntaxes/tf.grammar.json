@@ -73,8 +73,8 @@
       "name": "entity.factory.style.pseudo"
     },
     "factory-tailwind-pseudo-class": {
-      "match": "((2?)[^\\d.\\(\\[\n ])(\\d|\\w|-){1,}:",
-      "name": "entity.factory.style.pseudo"
+      "match": "((2?)[^\\#\\.\\d.\\(\\[\n ])(\\d|\\w|-){1,}:",
+      "name": "entity.factory.style.pseudo.tailwind"
     },
     "factory-internal-class": {
       "begin": "\\.([A-z])",

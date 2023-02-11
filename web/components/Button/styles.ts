@@ -56,7 +56,10 @@ export const ButtonContainer = tf("button", `
 
 const Container = tf("section", `
   bg-slate-800
-  div:first-child {
+  button:first-child {
+    md:hover:bg-slate-900
+    svg, #icon:hover {
 
+    }
   }
 `);
