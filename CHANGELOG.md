@@ -1,5 +1,17 @@
 # tailwind-factory
 
+## 2.3.4
+
+### Patch Changes
+
+- Changing readme
+
+## 2.3.3
+
+### Patch Changes
+
+- Fixing all detected errors identifying pseudo classes
+
 ## 2.3.2
 
 ### Patch Changes
