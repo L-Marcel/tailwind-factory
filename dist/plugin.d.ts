@@ -38,7 +38,7 @@ declare class Standalone {
 declare class StyleFactory {
     static generateClassTree: typeof Standalone.generateClassTree;
     private static processStyles;
-    static formateStyleClasses(deepStyleClass: DeepStyleClass, filename: string, config: Promise<Config | undefined>, outputStylePath: string, inputStylePath: string, _reference?: string): string;
+    static formatStyleClasses(deepStyleClass: DeepStyleClass, filename: string, config: Promise<Config | undefined>, outputStylePath: string, inputStylePath: string, _reference?: string): string;
 }
 
 type PluginPreset = "react";

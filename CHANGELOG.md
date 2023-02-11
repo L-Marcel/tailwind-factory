@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.3.1
+
+### Patch Changes
+
+- Reviewing code and updating extension readme
+
 ## 2.3.0
 
 ### Minor Changes

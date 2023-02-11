@@ -11,6 +11,23 @@
 - `entity.factory.style.number`: __#efba89__
 - `entity.factory.style.unit`: __#eda460__ / italic
 
+You can change the colors in your VSCode configuration:
+```json
+{
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "entity.factory.style",
+        "name": "Factory Style",
+        "settings": {
+          "foreground": "#91c26e"
+        }
+      }
+    ]
+  }
+}
+```
+
 # Snippets
 `tfi`: Import Tailwind Factory and create a new factory component
 ```tsx

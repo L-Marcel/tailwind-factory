@@ -136,7 +136,7 @@ export class Standalone {
       return prev;
     }, [] as StyleClass[]);
 
-    Logs.debug("on separate: ", result);
+    //Logs.debug("on separate: ", result);
     return result;
   }
 
@@ -314,11 +314,11 @@ export class Standalone {
         const classIsDetected = classRegex.test(formattedTailwindCss);
 
         Logs.debug(`${index + 1}º`, classIsDetected, classRegex, fromClass, haveDot);
-        if (asComponent?.isPseudoClass) {
-          Logs.debug("pseudo: ", formattedTailwindCss);
-        } else if (asComponent?.isMediaQuery) {
-          Logs.debug("media query: ", formattedTailwindCss);
-        }
+        // if (asComponent?.isPseudoClass) {
+        //   Logs.debug("pseudo: ", formattedTailwindCss);
+        // } else if (asComponent?.isMediaQuery) {
+        //   Logs.debug("media query: ", formattedTailwindCss);
+        // }
 
         return (formattedTailwindCss = classIsDetected
           ? formattedTailwindCss.replace(classRegex, toReplace)
@@ -335,7 +335,7 @@ export class Standalone {
           `.${reference} {\n${blockReference} {\n${formattedTailwindCss}\n}\n}`
         );
 
-        Logs.debug("css: ", compiledCss.css, "\n");
+        //Logs.debug("css: ", compiledCss.css, "\n");
         return compiledCss.css;
       } catch (error: any) {
         const _error = new StyleError(
@@ -368,7 +368,7 @@ export class Standalone {
           specialOperator
         );
 
-        Logs.debug("css: ", finalCss, "\n");
+        //Logs.debug("css: ", finalCss, "\n");
         return finalCss;
       } catch (error: any) {
         const _error = new StyleError(
@@ -381,13 +381,13 @@ export class Standalone {
       }
     }
 
-    Logs.debug("css before compile: ", formattedTailwindCss);
+    //Logs.debug("css before compile: ", formattedTailwindCss);
     try {
       const compiledCss = sass.compileString(
         `${blockReference} {\n${formattedTailwindCss}\n}`
       );
 
-      Logs.debug("css: ", compiledCss.css, "\n");
+      //Logs.debug("css: ", compiledCss.css, "\n");
       return compiledCss.css;
     } catch (error: any) {
       const _error = new StyleError(

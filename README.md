@@ -618,7 +618,7 @@ Generating style names __`earlier`__ was actually a way around Babel's limitatio
 # Extension
 Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
 
-Documented version: __`1.0.1`__
+Documented version: __`1.0.2`__
 
 > __`Warning`__: it is important that you put the semicolon at the end of the function!
 
@@ -632,6 +632,23 @@ Documented version: __`1.0.1`__
 - `entity.factory.style.internal.id`: __#7d8be6__
 - `entity.factory.style.number`: __#efba89__
 - `entity.factory.style.unit`: __#eda460__ / italic
+
+You can change the colors in your VSCode configuration:
+```json
+{
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "entity.factory.style",
+        "name": "Factory Style",
+        "settings": {
+          "foreground": "#91c26e"
+        }
+      }
+    ]
+  }
+}
+```
 
 ## Snippets
 __`tfi`__: Import Tailwind Factory and create a new factory component

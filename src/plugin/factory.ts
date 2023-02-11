@@ -40,7 +40,7 @@ export class StyleFactory {
     return reference;
   }
 
-  static formateStyleClasses(
+  static formatStyleClasses(
     deepStyleClass: DeepStyleClass,
     filename: string,
     config: Promise<Config | undefined>,

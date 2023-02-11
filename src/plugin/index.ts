@@ -131,7 +131,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
             const classes = removeWhiteSpaceInClasses(rawClasses);
             const separatedClasses = Standalone.separateClasses(classes);
 
-            const finalClass = StyleFactory.formateStyleClasses(
+            const finalClass = StyleFactory.formatStyleClasses(
               {
                 rawClasses: classes,
                 classes: separatedClasses,
@@ -206,7 +206,7 @@ export default function ({ types: t }: typeof babel): PluginObj {
                         const classes = removeWhiteSpaceInClasses(valueRaw);
 
                         const separatedClasses = Standalone.separateClasses(classes);
-                        const finalVariantClass = StyleFactory.formateStyleClasses(
+                        const finalVariantClass = StyleFactory.formatStyleClasses(
                           {
                             rawClasses: classes,
                             classes: separatedClasses,
