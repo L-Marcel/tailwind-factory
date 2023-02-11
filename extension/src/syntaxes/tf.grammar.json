@@ -11,14 +11,14 @@
       "end": "\\);",
       "name": "entity.factory.function",
       "patterns": [
-        { "include": "#factory-symbol" },
-        { "include": "#factory-internal-class" },
-        { "include": "#factory-tailwind-pseudo-class" },
-        { "include": "#factory-pseudo-class" },
-        { "include": "#factory-internal-rule" },
-        { "include": "#factory-internal-id" },
-        { "include": "#factory-html-tag" },
-        { "include": "#factory-style-number" }
+        { "include": "#tailwind-factory-styles" },
+        { "include": "#tailwind-factory-string-quoted-double" },
+        { "include": "#tailwind-factory-string-quoted-single" },
+        { "include": "#tailwind-factory-boolean-true" },
+        { "include": "#tailwind-factory-boolean-false" },
+        { "include": "#tailwind-factory-null" },
+        { "include": "#tailwind-factory-undefined" },
+        { "include": "#tailwind-factory-decimal" }
       ]
     },
     "tailwind-factory-styles": {
@@ -45,10 +45,10 @@
       },
       "patterns": [
         { "include": "#factory-symbol" },
-        { "include": "#factory-pseudo-class" },
-        { "include": "#factory-tailwind-pseudo-class" },
-        { "include": "#factory-internal-rule" },
         { "include": "#factory-internal-class" },
+        { "include": "#factory-tailwind-pseudo-class" },
+        { "include": "#factory-pseudo-class" },
+        { "include": "#factory-internal-rule" },
         { "include": "#factory-internal-id" },
         { "include": "#factory-html-tag" },
         { "include": "#factory-style-number" }
