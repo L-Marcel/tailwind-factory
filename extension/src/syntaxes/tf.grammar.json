@@ -11,14 +11,14 @@
       "end": "\\);",
       "name": "entity.factory.function",
       "patterns": [
-        { "include": "#tailwind-factory-styles" },
-        { "include": "#tailwind-factory-string-quoted-double" },
-        { "include": "#tailwind-factory-string-quoted-single" },
-        { "include": "#tailwind-factory-boolean-true" },
-        { "include": "#tailwind-factory-boolean-false" },
-        { "include": "#tailwind-factory-null" },
-        { "include": "#tailwind-factory-undefined" },
-        { "include": "#tailwind-factory-decimal" }
+        { "include": "#factory-symbol" },
+        { "include": "#factory-internal-class" },
+        { "include": "#factory-tailwind-pseudo-class" },
+        { "include": "#factory-pseudo-class" },
+        { "include": "#factory-internal-rule" },
+        { "include": "#factory-internal-id" },
+        { "include": "#factory-html-tag" },
+        { "include": "#factory-style-number" }
       ]
     },
     "tailwind-factory-styles": {
@@ -69,7 +69,7 @@
       "name": "entity.factory.style.rule"
     },
     "factory-pseudo-class": {
-      "match": "(::target-text|::spelling-error|::slotted|::placeholder|::part|::marker|::highlight|::file-selector-button|::cue-region|::cue|::backdrop|where:|:scope|:right|:playing|:placeholder-shown|:picture-in-picture|:paused|:past|:nth-last-col|:nth-col|:modal|:local-link|:left|:is|:indeterminate|:host-context|:host|:has|:future|:fullscreen|:focus-within|:focus-visible|:first|:dir|:defined|:default|:current|:blank|:autofill|:any-link|::after|::before|::first-letter|::first-line|::selection|:active|:checked|:disabled|:empty|:enabled|:first-child|:first-of-type|:focus|:hover|:in-range|:invalid|:lang|:last-child|:last-of-type|:link|:not|:nth-child|:nth-last-child|:nth-last-of-type|:nth-of-type|:only-of-type|:only-child|:optional|:out-of-range|:read-only|:read-write|:required|:root|:target|:valid|:visited)",
+      "match": "(::file-selector-button|:picture-in-picture|:placeholder-shown|:nth-last-of-type|::spelling-error|:nth-last-child|:first-of-type|::first-letter|:focus-visible|:indeterminate|:first-of-type|:out-of-range|:only-of-type|:last-of-type|:focus-within|:host-context|:nth-last-col|::placeholder|::target-text|:nth-of-type|:first-child|::first-line|::cue-region|:read-write|:only-child|:last-child|::selection|:fullscreen|:local-link|::highlight|:read-only|:nth-child|::backdrop|:required|:optional|:in-range|:disabled|:any-link|:autofill|::slotted|:visited|:invalid|:enabled|:checked|::before|:current|:default|:defined|:nth-col|:playing|::marker|:target|:active|::after|:future|:paused|:valid|:hover|:focus|:empty|:blank|:first|:modal|:right|:scope|where:|::part|:root|:link|:lang|:host|:left|:past|::cue|:not|:dir|:has|:is)",
       "name": "entity.factory.style.pseudo"
     },
     "factory-tailwind-pseudo-class": {

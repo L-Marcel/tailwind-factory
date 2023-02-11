@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.3.2
+
+### Patch Changes
+
+- Fixing extension error on identify pseudo classes
+
 ## 2.3.1
 
 ### Patch Changes

@@ -618,11 +618,13 @@ Generating style names __`earlier`__ was actually a way around Babel's limitatio
 # Extension
 Tailwind Factory has an official extension that accompanies some snippets. See in: [`Tailwind Factory Extension`](https://marketplace.visualstudio.com/items?itemName=l-marcel.tailwind-factory)
 
-Documented version: __`1.0.2`__
+Documented version: __`1.1.0`__
 
 > __`Warning`__: it is important that you put the semicolon at the end of the function!
 
 ## Color tokens
+> Error identifying pseudo classes fixed
+
 - `entity.factory.style`: __#91c26e__
 - `entity.factory.symbol`: __#abb3c0__
 - `entity.factory.style.internal.class`: __#d7c075__
