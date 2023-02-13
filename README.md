@@ -6,13 +6,14 @@ A lib to create and extends React components defining variants like Stitches and
 # Summary
 1. [Installation](#installation)
    1. [Tailwind configuration](#tailwind-configuration)
-   2. [Plugin configuration](#plugin-configuration)
+   2. [Run without plugin](#run-without-plugin)
+      1. [Advantages](#advantages)
+      2. [Disadvantages](#disadvantages)
+   3. [Plugin configuration](#plugin-configuration)
       1. [Plugin options](#plugin-options)
       2. [With Next](#with-next)
       3. [With Webpack](#with-webpack)
-   3. [Run without plugin](#run-without-plugin)
-      1. [Advantages](#advantages)
-      2. [Disadvantages](#disadvantages)
+   3
 2. [Basic usage](#basic-usage)
    1. [Custom components](#custom-components)
 3. [Heritage](#heritage)
@@ -66,6 +67,23 @@ Still, I'll leave it here:
   ["\\.__extends\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // xxx.extends(`...`)
 ],
 ```
+
+## Run without plugin
+You can run Tailwind Factory without its plugin. It's faster in many cases, but very limited and more slower in __`production`__.
+
+I will list here some __`advantages`__ and __`disadvantages`__ of running Tailwind Factory without the plugin:
+
+### Advantages
+- Extremely fastest in development (because it will not be depending on the library's own cache to be checking the style of unchanged files);
+- Fastest build (because you won't be using __`Babel`__);
+- Support external classes (which do not belong to __`Tailwind`__);
+- It doesn't generate a styling file (it doesn't actually need one);
+- Specific classes of Tailwind may work better (because I don't have conditions to go out checking class by class).
+
+### Disadvantages
+- Extremely limited Deep Classes support;
+- Styles generated within Deep Classes will only be applied to the parent component's children, not to other child components. It works on the childrens of a HTML tag;
+- Costs a little more memory on the __`Client-Side`__, mainly if you are using Deep Classes resources.
 
 ## Plugin configuration
 Tailwind Factory has its own __`Babel`__ plugin that is used to generate the styles that are already included with the library. To use it you will need to provide it in your babel configuration file:
@@ -164,24 +182,6 @@ Import the __`generated styles`__ file and the __`Tailwind`__ configuration into
 import "../../tailwind.config";
 import "../styles/generated.css";
 ```
-
-## Run without plugin
-You can run Tailwind Factory without its plugin. It's faster in many cases, but very limited and more slower in __`production`__.
-
-I will list here some __`advantages`__ and __`disadvantages`__ of running Tailwind Factory without the plugin:
-
-### Advantages
-- Fastest in development (because it will not be depending on the library's own cache to be checking the style of unchanged files);
-- Fastest build (because you won't be using __`Babel`__);
-- Support external classes (which do not belong to __`Tailwind`__);
-- It doesn't generate a styling file (it doesn't actually need one);
-- Specific classes of Tailwind may work better (because I don't have conditions to go out checking class by class).
-
-### Disadvantages
-- Extremely limited Deep Classes support;
-- Styles generated within Deep Classes will only be applied to the parent component's children, not to other child components. It works on the childrens of a HTML tag;
-- Costs more memory on the __`Client-Side`__, mainly if you are using Deep Classes resources;
-- Weak documentation (since I don't have a team, it's hard to document all of this!).
 
 # Basic Usage
 ```tsx
@@ -395,7 +395,7 @@ Component structure example:
 </Container>
 ```
 
-Output example:
+Output example (with plugin):
 ```html
 <div class="factory__52dad3ab6fb6">
   <h1>Red Title</h1>
@@ -480,7 +480,7 @@ To inject only in the __`first group`__ of __`children`__ inside the component (
 }
 ```
 
-Inject with __`pseudo classes`__:
+Inject with __`pseudo classes`__ (need plugin):
 ```scss
 :hover {
   p:first-of-type {
@@ -495,7 +495,7 @@ div:focus {
 ```
 > This __`first focus`__ is not applied to everyone, but to the component created by the function.
 
-Inject into __`all`__:
+Inject into __`all`__ (need plugin):
 ```scss
 *:focus {
   p:first-of-type {
@@ -504,7 +504,7 @@ Inject into __`all`__:
 }
 ```
 
-Inject with __`media query`__:
+Inject with __`media query`__ (need plugin):
 ```scss
 //work
 md:rounded-md
@@ -532,7 +532,7 @@ text-[#5a74db]
 ```
 
 ### Is it possible to use external classes?
-Tailwind Factory with plugin does NOT support external classes (not part of Tailwind) in function call. However, you can still call a class by passing it directly to the component:
+Tailwind Factory __`with plugin`__ does NOT support external classes (not part of Tailwind) in function call. However, you can still call a class by passing it directly to the component:
 ```html
 <div className="custom-class"/>
 ```
