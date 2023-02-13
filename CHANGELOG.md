@@ -1,5 +1,11 @@
 # tailwind-factory
 
+## 2.3.6
+
+### Patch Changes
+
+- Updating readme
+
 ## 2.3.5
 
 ### Patch Changes

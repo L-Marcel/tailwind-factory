@@ -5,15 +5,14 @@ A lib to create and extends React components defining variants like Stitches and
 
 # Summary
 1. [Installation](#installation)
-   1. [Tailwind configuration](#tailwind-configuration)
-   2. [Run without plugin](#run-without-plugin)
+   1. [Run without plugin](#run-without-plugin)
       1. [Advantages](#advantages)
       2. [Disadvantages](#disadvantages)
+   2. [Tailwind configuration](#tailwind-configuration)
    3. [Plugin configuration](#plugin-configuration)
       1. [Plugin options](#plugin-options)
       2. [With Next](#with-next)
       3. [With Webpack](#with-webpack)
-   3
 2. [Basic usage](#basic-usage)
    1. [Custom components](#custom-components)
 3. [Heritage](#heritage)
@@ -43,6 +42,23 @@ npm install tailwind-factory
 yarn add tailwind-factory
 ```
 
+## Run without plugin
+You can run Tailwind Factory without its plugin. It's faster in many cases.
+
+I will list here some __`advantages`__ and __`disadvantages`__ of running Tailwind Factory without the plugin:
+
+### Advantages
+- Extremely fastest in development (because it will not be depending on the library's own cache to be checking the style of unchanged files);
+- Fastest build (because you won't be using __`Babel`__);
+- Support external classes (which do not belong to __`Tailwind`__);
+- It doesn't generate a styling file (it doesn't actually need one);
+- Specific classes of Tailwind may work better (because I don't have conditions to go out checking class by class).
+
+### Disadvantages
+- Extremely limited Deep Classes support;
+- Styles generated within Deep Classes will only be applied to the parent component's children, not to other child components. It works on the childrens of a HTML tag;
+- Costs a little more memory on the __`Client-Side`__, mainly if you are using Deep Classes resources.
+
 ## Tailwind configuration
 Now you should install and configure [Tailwind](https://tailwindcss.com/docs/installation/)!
 
@@ -67,23 +83,6 @@ Still, I'll leave it here:
   ["\\.__extends\\(([^)]*)\\)", "(?:`)([^'\"`]*)(?:`)"], // xxx.extends(`...`)
 ],
 ```
-
-## Run without plugin
-You can run Tailwind Factory without its plugin. It's faster in many cases, but very limited and more slower in __`production`__.
-
-I will list here some __`advantages`__ and __`disadvantages`__ of running Tailwind Factory without the plugin:
-
-### Advantages
-- Extremely fastest in development (because it will not be depending on the library's own cache to be checking the style of unchanged files);
-- Fastest build (because you won't be using __`Babel`__);
-- Support external classes (which do not belong to __`Tailwind`__);
-- It doesn't generate a styling file (it doesn't actually need one);
-- Specific classes of Tailwind may work better (because I don't have conditions to go out checking class by class).
-
-### Disadvantages
-- Extremely limited Deep Classes support;
-- Styles generated within Deep Classes will only be applied to the parent component's children, not to other child components. It works on the childrens of a HTML tag;
-- Costs a little more memory on the __`Client-Side`__, mainly if you are using Deep Classes resources.
 
 ## Plugin configuration
 Tailwind Factory has its own __`Babel`__ plugin that is used to generate the styles that are already included with the library. To use it you will need to provide it in your babel configuration file:
@@ -342,7 +341,7 @@ const Container = tf(
 `);
 ```
 
-Generated styles example:
+Plugin generated styles example:
 ```css
 .factory__52dad3ab6fb6 {
   width: 1rem;
