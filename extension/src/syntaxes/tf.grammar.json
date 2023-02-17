@@ -7,7 +7,7 @@
   ],
   "repository": {
     "tailwind-factory-function": {
-      "begin": "(tf\\(|[\\w\\d_]{1,}\\.__extends\\()",
+      "begin": " (tf\\(|[\\w\\d_]{1,}\\.__extends\\()",
       "end": "\\);",
       "name": "entity.factory.function",
       "patterns": [
