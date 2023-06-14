@@ -52,5 +52,3 @@ export const ButtonContainer = tf("button", `
     fixed: "false"
   }
 });
-
-export { Container };
