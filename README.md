@@ -26,8 +26,6 @@ A lib to create and extends React components defining variants like Stitches and
 7. [Extension](#extension)
    1. [Color tokens](#color-tokens)
    2. [Snippets](#snippets)
-8. [Roadmap](#roadmap)
-9. [About building the library](#about-building-the-library)
 
 # Installation
 To install Tailwind Factory you need to run in your project:
@@ -683,21 +681,3 @@ export const NewComponent = Parent.__extends(ParentComponent, `
   defaultVariants: {}
 });
 ```
-
-# Roadmap
-- [x] Finish plugin main features
-  - Deep classes support
-- [x] Update documentation
-- [x] Release 2.2.0 version
-- [x] Add custom colors in extension
-
-# About building the library
-> The intention I had was to create a styling library that was just like me, the way I wanted it to work. It might not be the best option you're going to have, but it's certainly the best I can offer at the moment. There must be an error here or there, nothing that can't be fixed. When I was doing it, I actually thought a lot about creating a macro like __`Twin.macro`__, but there are already too many! And I also want something similar to __`Stitches`__, which, by the way, I like a lot (but I like __`Tailwind`__ even more).
->
-> Disregard the level of English, as it's a lot of text and I'm not fluent I resorted a lot to Google translator, doing some small checks from time to time.
->
-> Another thing, when I finished the library I thought: wouldn't it be nice to have a __`preprocessor`__ that loaded styles like this? Well, unfortunately this is not the kind of thing I want to try to do myself, but I'll leave the idea here. Feel free to call me or try it __`yourself`__, 
->
-> I left a class called Standalone that has a function capable to transforming the styles that follow the Syntax of this library. However, you will need to call it asynchronously and with access to Node's fs (file system), a limitation of __`Tailwind API`__).
->
-> I think if you've read all this, you certainly have a lot of patience.
